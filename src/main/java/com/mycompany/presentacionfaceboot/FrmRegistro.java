@@ -264,8 +264,12 @@ public class FrmRegistro extends javax.swing.JFrame {
         //String usuario, String email, String contraseña, String celular, Sexo sexo, int edad, GregorianCalendar fechaNacimiento
         Usuario objetoUsuario= new Usuario(usuario, email, contrasenia, celular, sexo, edad, fechaNacimiento);
         
-        Solicitud respuesta= this.proxyClienteBroker.registrarUsuario(objetoUsuario);
-        this.mostrarMensaje(respuesta.getRespuesta());
+        String respuesta= this.proxyClienteBroker.registrarUsuario(objetoUsuario);
+        if(respuesta.startsWith("Excepción:")){
+            this.mostrarMensaje(respuesta);
+        }else{
+            this.mostrarMensaje("El usuario se ha registrado con éxito");
+        }
     }//GEN-LAST:event_btnRegistrarseActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
