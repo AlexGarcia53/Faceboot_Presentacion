@@ -1,5 +1,9 @@
 package com.mycompany.presentacionfaceboot;
 
+import dominio.Usuario;
+import interfaces.IProxy;
+import javax.swing.JOptionPane;
+
 
 //import com.sun.prism.paint.Paint;
 //import javafx.scene.paint.Color;
@@ -15,14 +19,16 @@ package com.mycompany.presentacionfaceboot;
  * @author Jarol
  */
 public class FrmInicioSesion extends javax.swing.JFrame {
-
+    private static FrmInicioSesion frmInicioSesion;
+    IProxy proxyClienteBroker;
+    
     /**
      * Creates new form FrmInicioSesion
      */
-    public FrmInicioSesion() {
+    private FrmInicioSesion(IProxy proxyClienteBroker) {
         initComponents();
         setLocationRelativeTo(null);
-  
+        this.proxyClienteBroker= proxyClienteBroker;
     }
 
     /**
@@ -136,12 +142,29 @@ public class FrmInicioSesion extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
-        // TODO add your handling code here:
+        String email= this.txtEmail.getText();
+        String contrasenia= this.txtContrasena.getText();
+        
+        Usuario usuario= new Usuario(email, contrasenia);
+        
+        String respuesta= this.proxyClienteBroker.iniciarSesion(usuario);
+        if(respuesta.startsWith("Excepción: ")){
+            this.mostrarMensaje(respuesta);
+        }else{
+            int nombreUsuario=1, idUsuario=0;
+            String datosUsuario[]= respuesta.split(", ");
+            
+            int opcionSeleccionada= JOptionPane.showConfirmDialog(this,"Bienvenido "+datosUsuario[nombreUsuario]+"!!!", "Confirmación", JOptionPane.YES_OPTION);
+            if(opcionSeleccionada == JOptionPane.YES_OPTION){
+                FrmMuro muro= FrmMuro.obtenerFrmMuro(Long.parseLong(datosUsuario[idUsuario]), this.proxyClienteBroker);
+                muro.setVisible(true);
+                this.dispose();
+            }
+        }
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
 
     private void btnMostrarRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarRegistrarseActionPerformed
-       FrmRegistro registrarse = new FrmRegistro();
-       
+       FrmRegistro registrarse = FrmRegistro.obtenerFrmRegistro();
        registrarse.setVisible(true);
        this.dispose();
     }//GEN-LAST:event_btnMostrarRegistrarseActionPerformed
@@ -150,6 +173,16 @@ public class FrmInicioSesion extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnSesionGithubActionPerformed
 
+    private void mostrarMensaje(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje, "Respuesta del servidor", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    public static FrmInicioSesion obtenerFrmInicioSesion(IProxy proxyClienteBroker){
+        if(frmInicioSesion==null){
+            frmInicioSesion= new FrmInicioSesion(proxyClienteBroker);
+        }
+        return frmInicioSesion;
+    }
 //    /**
 //     * @param args the command line arguments
 //     */

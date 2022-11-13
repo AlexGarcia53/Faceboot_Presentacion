@@ -19,17 +19,18 @@ import javax.swing.JOptionPane;
  * @author Jarol
  */
 public class FrmRegistro extends javax.swing.JFrame {
-
+    private static FrmRegistro frmRegistro;
     String identificador;
     IProxy proxyClienteBroker;
     /**
      * Creates new form FrmRegistro
      */
-    public FrmRegistro() {
+    private FrmRegistro() {
         initComponents();
         setLocationRelativeTo(null);
         this.identificador= Math.random()+"";
         this.proxyClienteBroker= new ProxyClienteBroker(identificador);
+        frmRegistro= this;
     }
 
     /**
@@ -209,7 +210,12 @@ public class FrmRegistro extends javax.swing.JFrame {
         });
         jPanel1.add(btnIniciarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 440, 140, 40));
 
-        comboBoxSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Masculino ", "Femenino" }));
+        comboBoxSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Masculino", "Femenino" }));
+        comboBoxSexo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboBoxSexoActionPerformed(evt);
+            }
+        });
         jPanel1.add(comboBoxSexo, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 290, 250, 30));
         jPanel1.add(fechaNacimiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 290, 250, 30));
 
@@ -233,7 +239,7 @@ public class FrmRegistro extends javax.swing.JFrame {
 
     private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
         // TODO add your handling code here:
-        FrmInicioSesion frmInicioSesion = new FrmInicioSesion();
+        FrmInicioSesion frmInicioSesion = FrmInicioSesion.obtenerFrmInicioSesion(this.proxyClienteBroker);
         frmInicioSesion.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
@@ -265,10 +271,10 @@ public class FrmRegistro extends javax.swing.JFrame {
         Usuario objetoUsuario= new Usuario(usuario, email, contrasenia, celular, sexo, edad, fechaNacimiento);
         
         String respuesta= this.proxyClienteBroker.registrarUsuario(objetoUsuario);
-        if(respuesta.startsWith("Excepción:")){
+        if(respuesta.startsWith("Excepción: ")){
             this.mostrarMensaje(respuesta);
         }else{
-            this.mostrarMensaje("El usuario se ha registrado con éxito");
+            this.mostrarMensaje(respuesta);
         }
     }//GEN-LAST:event_btnRegistrarseActionPerformed
 
@@ -288,10 +294,21 @@ public class FrmRegistro extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtContrasenaActionPerformed
 
+    private void comboBoxSexoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxSexoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboBoxSexoActionPerformed
+
     private void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, "Respuesta del servidor", JOptionPane.INFORMATION_MESSAGE);
     }
-    
+
+    public static FrmRegistro obtenerFrmRegistro(){
+        if(frmRegistro == null){
+            frmRegistro= new FrmRegistro();
+        }
+        return frmRegistro;
+    }   
+
     public void soloNumeros(java.awt.event.KeyEvent evt) {
          char car = evt.getKeyChar();
         if (Character.isDigit(car)) {
