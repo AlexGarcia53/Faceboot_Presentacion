@@ -43,7 +43,7 @@ public class FrmMuro extends javax.swing.JFrame {
 
         fondo = new javax.swing.JPanel();
         seccionMenu = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        btnHacerPublicacion = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         lblUsuario = new javax.swing.JLabel();
@@ -57,9 +57,14 @@ public class FrmMuro extends javax.swing.JFrame {
         seccionMenu.setBackground(new java.awt.Color(240, 115, 0));
         seccionMenu.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jButton1.setBackground(new java.awt.Color(255, 217, 183));
-        jButton1.setText("Hacer publicacion");
-        seccionMenu.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(305, 30, -1, 43));
+        btnHacerPublicacion.setBackground(new java.awt.Color(255, 217, 183));
+        btnHacerPublicacion.setText("Hacer publicacion");
+        btnHacerPublicacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHacerPublicacionActionPerformed(evt);
+            }
+        });
+        seccionMenu.add(btnHacerPublicacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(305, 30, -1, 43));
 
         jButton2.setBackground(new java.awt.Color(255, 217, 183));
         jButton2.setText("Editar  Perfil");
@@ -86,10 +91,14 @@ public class FrmMuro extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnHacerPublicacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHacerPublicacionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnHacerPublicacionActionPerformed
+
    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnHacerPublicacion;
     private javax.swing.JPanel fondo;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel lblUsuario;

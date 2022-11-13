@@ -5,17 +5,25 @@
  */
 package com.mycompany.presentacionfaceboot;
 
+import dominio.Contenido;
+import dominio.Publicacion;
+import interfaces.IProxy;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Jarol
  */
 public class FrmPublicacion extends javax.swing.JFrame {
-
+    private static FrmPublicacion frmPublicacion;
+    IProxy proxyClienteBroker;
     /**
      * Creates new form FrmPublicacion
      */
-    public FrmPublicacion() {
+    public FrmPublicacion(IProxy proxyClienteBroker) {
         initComponents();
+        setLocationRelativeTo(null);
+        this.proxyClienteBroker=proxyClienteBroker;
     }
 
     /**
@@ -27,22 +35,81 @@ public class FrmPublicacion extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtTextoPlano = new javax.swing.JTextArea();
+        btnPublicar = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        txtTextoPlano.setColumns(20);
+        txtTextoPlano.setRows(5);
+        jScrollPane1.setViewportView(txtTextoPlano);
+
+        btnPublicar.setText("Publicar");
+        btnPublicar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPublicarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 347, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(58, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(55, 55, 55))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(134, 134, 134)
+                .addComponent(btnPublicar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 286, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(53, 53, 53)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(47, 47, 47)
+                .addComponent(btnPublicar)
+                .addContainerGap(77, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnPublicarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPublicarActionPerformed
+        String textoPlano = this.txtTextoPlano.getText();
+
+        Contenido contenido = new Contenido(textoPlano);
+        Publicacion publicacion = new Publicacion(contenido);
+
+        String respuesta = this.proxyClienteBroker.registrarPublicacion(publicacion);
+        if (respuesta.startsWith("Excepción: ")) {
+            this.mostrarMensaje(respuesta);
+        } else {
+            int opcionSeleccionada = JOptionPane.showConfirmDialog(this, "Se realizó la publicación!", "Confirmación", JOptionPane.YES_OPTION);
+            if (opcionSeleccionada == JOptionPane.YES_OPTION) {
+                
+            }
+        }
+    }//GEN-LAST:event_btnPublicarActionPerformed
+
+    private void mostrarMensaje(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje, "Respuesta del servidor", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    public static FrmPublicacion obtenerFrmPublicacion(IProxy proxyClienteBroker){
+        if(frmPublicacion==null){
+            frmPublicacion = new FrmPublicacion(proxyClienteBroker);
+        }
+        return frmPublicacion;
+    }
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnPublicar;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea txtTextoPlano;
     // End of variables declaration//GEN-END:variables
 }
