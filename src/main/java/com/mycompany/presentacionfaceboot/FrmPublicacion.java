@@ -38,6 +38,7 @@ public class FrmPublicacion extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         txtTextoPlano = new javax.swing.JTextArea();
         btnPublicar = new javax.swing.JButton();
+        btnVolver = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -52,6 +53,13 @@ public class FrmPublicacion extends javax.swing.JFrame {
             }
         });
 
+        btnVolver.setText("Volver");
+        btnVolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVolverActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -61,8 +69,10 @@ public class FrmPublicacion extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(55, 55, 55))
             .addGroup(layout.createSequentialGroup()
-                .addGap(134, 134, 134)
+                .addGap(83, 83, 83)
                 .addComponent(btnPublicar)
+                .addGap(40, 40, 40)
+                .addComponent(btnVolver)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -70,9 +80,11 @@ public class FrmPublicacion extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(53, 53, 53)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(47, 47, 47)
-                .addComponent(btnPublicar)
-                .addContainerGap(77, Short.MAX_VALUE))
+                .addGap(50, 50, 50)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnPublicar)
+                    .addComponent(btnVolver))
+                .addContainerGap(74, Short.MAX_VALUE))
         );
 
         pack();
@@ -88,12 +100,13 @@ public class FrmPublicacion extends javax.swing.JFrame {
         if (respuesta.startsWith("Excepción: ")) {
             this.mostrarMensaje(respuesta);
         } else {
-            int opcionSeleccionada = JOptionPane.showConfirmDialog(this, "Se realizó la publicación!", "Confirmación", JOptionPane.YES_OPTION);
-            if (opcionSeleccionada == JOptionPane.YES_OPTION) {
-                
-            }
+            this.mostrarMensaje(respuesta);
         }
     }//GEN-LAST:event_btnPublicarActionPerformed
+
+    private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnVolverActionPerformed
 
     private void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, "Respuesta del servidor", JOptionPane.INFORMATION_MESSAGE);
@@ -109,6 +122,7 @@ public class FrmPublicacion extends javax.swing.JFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnPublicar;
+    private javax.swing.JButton btnVolver;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea txtTextoPlano;
     // End of variables declaration//GEN-END:variables
