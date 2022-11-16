@@ -29,7 +29,7 @@ public class FrmRegistro extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         this.identificador= Math.random()+"";
-        this.proxyClienteBroker= new ProxyClienteBroker(identificador);
+        this.proxyClienteBroker= new ProxyClienteBroker();
         frmRegistro= this;
     }
 
@@ -239,7 +239,7 @@ public class FrmRegistro extends javax.swing.JFrame {
 
     private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
         // TODO add your handling code here:
-        FrmInicioSesion frmInicioSesion = FrmInicioSesion.obtenerFrmInicioSesion(this.proxyClienteBroker);
+        FrmInicioSesion frmInicioSesion = FrmInicioSesion.obtenerFrmInicioSesion(proxyClienteBroker);
         frmInicioSesion.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnIniciarSesionActionPerformed

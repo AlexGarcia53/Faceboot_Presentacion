@@ -1,5 +1,6 @@
 package com.mycompany.presentacionfaceboot;
 
+import com.mycompany.proxyclientebroker.ProxyClienteBroker;
 import dominio.Usuario;
 import interfaces.IProxy;
 import javax.swing.JOptionPane;
@@ -148,6 +149,7 @@ public class FrmInicioSesion extends javax.swing.JFrame {
         Usuario usuario= new Usuario(email, contrasenia);
         
         String respuesta= this.proxyClienteBroker.iniciarSesion(usuario);
+        System.out.println(respuesta);
         if(respuesta.startsWith("Excepción: ")){
             this.mostrarMensaje(respuesta);
         }else{
@@ -156,7 +158,7 @@ public class FrmInicioSesion extends javax.swing.JFrame {
             
             int opcionSeleccionada= JOptionPane.showConfirmDialog(this,"Bienvenido "+datosUsuario[nombreUsuario]+"!!!", "Confirmación", JOptionPane.YES_OPTION);
             if(opcionSeleccionada == JOptionPane.YES_OPTION){
-                FrmMuro muro= FrmMuro.obtenerFrmMuro(Long.parseLong(datosUsuario[idUsuario]), this.proxyClienteBroker);
+                FrmMuro muro= FrmMuro.obtenerFrmMuro(Long.parseLong(datosUsuario[idUsuario]),this.proxyClienteBroker);
                 muro.setVisible(true);
                 this.dispose();
             }

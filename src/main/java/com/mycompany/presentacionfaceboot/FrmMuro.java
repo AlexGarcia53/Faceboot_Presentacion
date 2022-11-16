@@ -5,16 +5,17 @@
  */
 package com.mycompany.presentacionfaceboot;
 
+import com.mycompany.proxyclientebroker.ProxyClienteBroker;
 import dominio.Publicacion;
 import interfaces.IProxy;
-import interfaces.ISuscriptorFrmMuro;
+import interfaces.ISuscriptorEventoRegistrarPublicacion;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author Jarol
  */
-public class FrmMuro extends javax.swing.JFrame implements ISuscriptorFrmMuro {
+public class FrmMuro extends javax.swing.JFrame implements ISuscriptorEventoRegistrarPublicacion {
     private static FrmMuro frmMuro;
     private Long idUsuario;
     private IProxy proxyClienteBroker;
@@ -26,18 +27,22 @@ public class FrmMuro extends javax.swing.JFrame implements ISuscriptorFrmMuro {
         this.proxyClienteBroker= proxyClienteBroker;
         this.idUsuario= idUsuario;
         this.lblUsuario.setText(""+this.idUsuario);
-        this.suscribirse();
+        this.suscribirseEventoRegistrarPublicacion();
     }
     
     public static FrmMuro obtenerFrmMuro(Long idUsuario, IProxy proxyClienteBroker){
         if(frmMuro==null){
-            frmMuro= new FrmMuro(idUsuario, proxyClienteBroker);
+            frmMuro= new FrmMuro(idUsuario,proxyClienteBroker);
         }
         return frmMuro;
     }
     
-    public void suscribirse(){
-        this.proxyClienteBroker.suscribirse(this);
+    public void suscribirseEventoRegistrarPublicacion(){
+        this.proxyClienteBroker.suscribirseEventoRegistrarPublicacion(this);
+    }
+    
+    public void desuscribirseEventoRegistrarPublicacion(){
+        this.proxyClienteBroker.desuscribirseEventoRegistrarPublicacion();
     }
     
     @Override
@@ -120,7 +125,10 @@ public class FrmMuro extends javax.swing.JFrame implements ISuscriptorFrmMuro {
     }//GEN-LAST:event_btnHacerPublicacionActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
-        // TODO add your handling code here:
+        this.desuscribirseEventoRegistrarPublicacion();
+        FrmInicioSesion frmInicioSesion= FrmInicioSesion.obtenerFrmInicioSesion(this.proxyClienteBroker);
+        frmInicioSesion.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
 
    
