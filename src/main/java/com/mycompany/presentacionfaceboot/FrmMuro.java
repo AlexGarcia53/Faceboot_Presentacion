@@ -8,14 +8,17 @@ package com.mycompany.presentacionfaceboot;
 import com.mycompany.proxyclientebroker.ProxyClienteBroker;
 import dominio.Publicacion;
 import interfaces.IProxy;
-import interfaces.ISuscriptorEventoRegistrarPublicacion;
+import interfaces.IObservadorRegistrarPublicacion;
 import javax.swing.JOptionPane;
+import notificacion.CanalizadorEventos;
+import notificacion.ObservableRegistrarPublicacion;
+import notificacion.OyenteNotificacionesBroker;
 
 /**
  *
  * @author Jarol
  */
-public class FrmMuro extends javax.swing.JFrame implements ISuscriptorEventoRegistrarPublicacion {
+public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarPublicacion {
     private static FrmMuro frmMuro;
     private Long idUsuario;
     private IProxy proxyClienteBroker;
@@ -27,7 +30,7 @@ public class FrmMuro extends javax.swing.JFrame implements ISuscriptorEventoRegi
         this.proxyClienteBroker= proxyClienteBroker;
         this.idUsuario= idUsuario;
         this.lblUsuario.setText(""+this.idUsuario);
-        this.suscribirseEventoRegistrarPublicacion();
+//        this.suscribirseEventoRegistrarPublicacion();
     }
     
     public static FrmMuro obtenerFrmMuro(Long idUsuario, IProxy proxyClienteBroker){
@@ -36,20 +39,15 @@ public class FrmMuro extends javax.swing.JFrame implements ISuscriptorEventoRegi
         }
         return frmMuro;
     }
-    
+  
     public void suscribirseEventoRegistrarPublicacion(){
-        this.proxyClienteBroker.suscribirseEventoRegistrarPublicacion(this);
+        this.proxyClienteBroker.suscribirseEventoRegistrarPublicacion(frmMuro);
     }
     
     public void desuscribirseEventoRegistrarPublicacion(){
-        this.proxyClienteBroker.desuscribirseEventoRegistrarPublicacion();
+        this.proxyClienteBroker.desuscribirseEventoRegistrarPublicacion(frmMuro);
     }
     
-    @Override
-    public void notificarPublicacion(String actualizacion){
-        JOptionPane.showMessageDialog(this, actualizacion, "Se ha registrado una nueva publicación", JOptionPane.INFORMATION_MESSAGE);
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -128,7 +126,7 @@ public class FrmMuro extends javax.swing.JFrame implements ISuscriptorEventoRegi
         this.desuscribirseEventoRegistrarPublicacion();
         FrmInicioSesion frmInicioSesion= FrmInicioSesion.obtenerFrmInicioSesion(this.proxyClienteBroker);
         frmInicioSesion.setVisible(true);
-        this.dispose();
+//        this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
 
    
@@ -141,4 +139,9 @@ public class FrmMuro extends javax.swing.JFrame implements ISuscriptorEventoRegi
     private javax.swing.JLabel lblUsuario;
     private javax.swing.JPanel seccionMenu;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void notificarRegistroPublicacion(String actualizacion) {
+        JOptionPane.showMessageDialog(this, actualizacion, "Mensaje del servidor", JOptionPane.INFORMATION_MESSAGE);
+    }
 }

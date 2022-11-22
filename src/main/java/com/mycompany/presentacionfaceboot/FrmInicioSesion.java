@@ -4,6 +4,9 @@ import com.mycompany.proxyclientebroker.ProxyClienteBroker;
 import dominio.Usuario;
 import interfaces.IProxy;
 import javax.swing.JOptionPane;
+import notificacion.CanalizadorEventos;
+import notificacion.ObservableRegistrarPublicacion;
+import notificacion.OyenteNotificacionesBroker;
 
 
 //import com.sun.prism.paint.Paint;
@@ -159,6 +162,7 @@ public class FrmInicioSesion extends javax.swing.JFrame {
             int opcionSeleccionada= JOptionPane.showConfirmDialog(this,"Bienvenido "+datosUsuario[nombreUsuario]+"!!!", "Confirmación", JOptionPane.YES_OPTION);
             if(opcionSeleccionada == JOptionPane.YES_OPTION){
                 FrmMuro muro= FrmMuro.obtenerFrmMuro(Long.parseLong(datosUsuario[idUsuario]),this.proxyClienteBroker);
+                muro.suscribirseEventoRegistrarPublicacion();
                 muro.setVisible(true);
                 this.dispose();
             }
