@@ -35,62 +35,163 @@ public class FrmPublicacion extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
+        Fondo = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        comboBoxPersonasAEtiquetar = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
+        txtHashtags = new javax.swing.JTextField();
+        btnEtiquetar = new javax.swing.JButton();
+        btnAñadirHashtag = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        labelVisualizadorImagen = new javax.swing.JLabel();
+        btnAñadirimagen = new javax.swing.JButton();
+        btnEliminarImagen = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        comboBorEtiquetados = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
+        comboBoxHashtagsUsados = new javax.swing.JComboBox<>();
+        btnEliminarEtiqueta = new javax.swing.JButton();
+        btnEliminarHashtag = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
         txtTextoPlano = new javax.swing.JTextArea();
-        btnPublicar = new javax.swing.JButton();
-        btnVolver = new javax.swing.JButton();
+        btnPublicar1 = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
+        btnLimpiarTxt1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        Fondo.setBackground(new java.awt.Color(255, 217, 183));
+        Fondo.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 33)); // NOI18N
+        jLabel7.setText("Hacer publicación");
+        Fondo.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 50, -1, -1));
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        jLabel4.setText("Personas a etiquetar:");
+        Fondo.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 140, -1, -1));
+
+        Fondo.add(comboBoxPersonasAEtiquetar, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 160, 250, 30));
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        jLabel1.setText("Hashtags:");
+        Fondo.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 200, -1, -1));
+        Fondo.add(txtHashtags, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 220, 250, 30));
+
+        btnEtiquetar.setBackground(new java.awt.Color(240, 115, 0));
+        btnEtiquetar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnEtiquetar.setForeground(new java.awt.Color(255, 255, 255));
+        btnEtiquetar.setText("Etiquetar");
+        Fondo.add(btnEtiquetar, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 160, 130, 30));
+
+        btnAñadirHashtag.setBackground(new java.awt.Color(240, 115, 0));
+        btnAñadirHashtag.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnAñadirHashtag.setForeground(new java.awt.Color(255, 255, 255));
+        btnAñadirHashtag.setText("Añadir");
+        Fondo.add(btnAñadirHashtag, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 220, 130, 30));
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        jLabel3.setText("Imagen:");
+        Fondo.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 270, -1, -1));
+
+        labelVisualizadorImagen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelVisualizadorImagen.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 102, 0), 2));
+        labelVisualizadorImagen.setPreferredSize(new java.awt.Dimension(6, 6));
+        Fondo.add(labelVisualizadorImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 290, 320, 170));
+
+        btnAñadirimagen.setBackground(new java.awt.Color(240, 115, 0));
+        btnAñadirimagen.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnAñadirimagen.setForeground(new java.awt.Color(255, 255, 255));
+        btnAñadirimagen.setText("Añadir");
+        Fondo.add(btnAñadirimagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 290, 130, 30));
+
+        btnEliminarImagen.setBackground(new java.awt.Color(240, 115, 0));
+        btnEliminarImagen.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnEliminarImagen.setForeground(new java.awt.Color(255, 255, 255));
+        btnEliminarImagen.setText("Eliminar");
+        Fondo.add(btnEliminarImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 330, 130, 30));
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        jLabel6.setText("Personas etiquetadas:");
+        Fondo.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 140, -1, -1));
+
+        Fondo.add(comboBorEtiquetados, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 160, 250, 30));
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        jLabel2.setText("Hashtags usados:");
+        Fondo.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 200, -1, -1));
+
+        Fondo.add(comboBoxHashtagsUsados, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 220, 250, 30));
+
+        btnEliminarEtiqueta.setBackground(new java.awt.Color(240, 115, 0));
+        btnEliminarEtiqueta.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnEliminarEtiqueta.setForeground(new java.awt.Color(255, 255, 255));
+        btnEliminarEtiqueta.setText("Eliminar");
+        Fondo.add(btnEliminarEtiqueta, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 160, 130, 30));
+
+        btnEliminarHashtag.setBackground(new java.awt.Color(240, 115, 0));
+        btnEliminarHashtag.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnEliminarHashtag.setForeground(new java.awt.Color(255, 255, 255));
+        btnEliminarHashtag.setText("Eliminar");
+        Fondo.add(btnEliminarHashtag, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 220, 130, 30));
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        jLabel5.setText("Contenido");
+        Fondo.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 270, -1, -1));
+
         txtTextoPlano.setColumns(20);
         txtTextoPlano.setRows(5);
-        jScrollPane1.setViewportView(txtTextoPlano);
+        jScrollPane2.setViewportView(txtTextoPlano);
 
-        btnPublicar.setText("Publicar");
-        btnPublicar.addActionListener(new java.awt.event.ActionListener() {
+        Fondo.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 290, 370, 170));
+
+        btnPublicar1.setBackground(new java.awt.Color(240, 115, 0));
+        btnPublicar1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnPublicar1.setForeground(new java.awt.Color(255, 255, 255));
+        btnPublicar1.setText("Publicar");
+        btnPublicar1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPublicarActionPerformed(evt);
+                btnPublicar1ActionPerformed(evt);
             }
         });
+        Fondo.add(btnPublicar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 480, 170, 50));
 
-        btnVolver.setText("Volver");
-        btnVolver.addActionListener(new java.awt.event.ActionListener() {
+        btnCancelar.setBackground(new java.awt.Color(102, 102, 102));
+        btnCancelar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnCancelar.setForeground(new java.awt.Color(255, 255, 255));
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnVolverActionPerformed(evt);
+                btnCancelarActionPerformed(evt);
             }
         });
+        Fondo.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 480, 170, 50));
+
+        btnLimpiarTxt1.setBackground(new java.awt.Color(240, 115, 0));
+        btnLimpiarTxt1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnLimpiarTxt1.setForeground(new java.awt.Color(255, 255, 255));
+        btnLimpiarTxt1.setText("Limpiar");
+        Fondo.add(btnLimpiarTxt1, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 290, 110, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(58, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(55, 55, 55))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(83, 83, 83)
-                .addComponent(btnPublicar)
-                .addGap(40, 40, 40)
-                .addComponent(btnVolver)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(Fondo, javax.swing.GroupLayout.DEFAULT_SIZE, 1034, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(53, 53, 53)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnPublicar)
-                    .addComponent(btnVolver))
-                .addContainerGap(74, Short.MAX_VALUE))
+                .addComponent(Fondo, javax.swing.GroupLayout.PREFERRED_SIZE, 552, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnPublicarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPublicarActionPerformed
+    private void btnPublicar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPublicar1ActionPerformed
         String textoPlano = this.txtTextoPlano.getText();
 
         Contenido contenido = new Contenido(textoPlano);
@@ -102,11 +203,11 @@ public class FrmPublicacion extends javax.swing.JFrame {
         } else {
             this.mostrarMensaje(respuesta);
         }
-    }//GEN-LAST:event_btnPublicarActionPerformed
+    }//GEN-LAST:event_btnPublicar1ActionPerformed
 
-    private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         this.dispose();
-    }//GEN-LAST:event_btnVolverActionPerformed
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, "Respuesta del servidor", JOptionPane.INFORMATION_MESSAGE);
@@ -121,9 +222,29 @@ public class FrmPublicacion extends javax.swing.JFrame {
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnPublicar;
-    private javax.swing.JButton btnVolver;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel Fondo;
+    private javax.swing.JButton btnAñadirHashtag;
+    private javax.swing.JButton btnAñadirimagen;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnEliminarEtiqueta;
+    private javax.swing.JButton btnEliminarHashtag;
+    private javax.swing.JButton btnEliminarImagen;
+    private javax.swing.JButton btnEtiquetar;
+    private javax.swing.JButton btnLimpiarTxt1;
+    private javax.swing.JButton btnPublicar1;
+    private javax.swing.JComboBox<String> comboBorEtiquetados;
+    private javax.swing.JComboBox<String> comboBoxHashtagsUsados;
+    private javax.swing.JComboBox<String> comboBoxPersonasAEtiquetar;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel labelVisualizadorImagen;
+    private javax.swing.JTextField txtHashtags;
     private javax.swing.JTextArea txtTextoPlano;
     // End of variables declaration//GEN-END:variables
 }
