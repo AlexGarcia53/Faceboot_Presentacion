@@ -1,9 +1,12 @@
 package com.mycompany.presentacionfaceboot;
 
 import com.mycompany.proxyclientebroker.ProxyClienteBroker;
+import com.restfb.types.User;
 import dominio.Usuario;
 import interfaces.IProxy;
 import javax.swing.JOptionPane;
+import loginFacebook.LoginFacebook;
+import loginFacebook.UsuarioFacebook;
 import notificacion.CanalizadorEventos;
 import notificacion.ObservableRegistrarPublicacion;
 import notificacion.OyenteNotificacionesBroker;
@@ -25,6 +28,7 @@ import notificacion.OyenteNotificacionesBroker;
 public class FrmInicioSesion extends javax.swing.JFrame {
     private static FrmInicioSesion frmInicioSesion;
     IProxy proxyClienteBroker;
+    LoginFacebook loginFacebook = new LoginFacebook();
     
     /**
      * Creates new form FrmInicioSesion
@@ -56,8 +60,7 @@ public class FrmInicioSesion extends javax.swing.JFrame {
         btnCancelar = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         btnMostrarRegistrarse = new javax.swing.JButton();
-        btnSesionGithub = new javax.swing.JButton();
-        btnSesionTwitter = new javax.swing.JButton();
+        btnSesionFacebook = new javax.swing.JButton();
 
         jScrollPane1.setViewportView(jTextPane1);
 
@@ -116,20 +119,16 @@ public class FrmInicioSesion extends javax.swing.JFrame {
         });
         Fondo.add(btnMostrarRegistrarse, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 400, 150, 40));
 
-        btnSesionGithub.setFont(new java.awt.Font("Roboto", 1, 13)); // NOI18N
-        btnSesionGithub.setText("Iniciar sesión con Github");
-        btnSesionGithub.addActionListener(new java.awt.event.ActionListener() {
+        btnSesionFacebook.setBackground(new java.awt.Color(0, 68, 157));
+        btnSesionFacebook.setFont(new java.awt.Font("Roboto", 1, 13)); // NOI18N
+        btnSesionFacebook.setForeground(new java.awt.Color(255, 255, 255));
+        btnSesionFacebook.setText("Iniciar sesión con Facebook");
+        btnSesionFacebook.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSesionGithubActionPerformed(evt);
+                btnSesionFacebookActionPerformed(evt);
             }
         });
-        Fondo.add(btnSesionGithub, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 530, 260, 50));
-
-        btnSesionTwitter.setBackground(new java.awt.Color(0, 68, 157));
-        btnSesionTwitter.setFont(new java.awt.Font("Roboto", 1, 13)); // NOI18N
-        btnSesionTwitter.setForeground(new java.awt.Color(255, 255, 255));
-        btnSesionTwitter.setText("Iniciar sesión con Twitter");
-        Fondo.add(btnSesionTwitter, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 470, 260, 50));
+        Fondo.add(btnSesionFacebook, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 470, 260, 50));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -175,9 +174,28 @@ public class FrmInicioSesion extends javax.swing.JFrame {
        this.dispose();
     }//GEN-LAST:event_btnMostrarRegistrarseActionPerformed
 
-    private void btnSesionGithubActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSesionGithubActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnSesionGithubActionPerformed
+    private void btnSesionFacebookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSesionFacebookActionPerformed
+      UsuarioFacebook userFacebook = loginFacebook.IniciarSesionFacebook();
+      
+      Usuario usuario = new Usuario(userFacebook.getUser().getName(),userFacebook.getUser().getEmail(),userFacebook.getAtoken());
+      String respuesta = this.proxyClienteBroker.iniciarSesionFacebook(usuario);
+      System.out.println(respuesta);
+        if(respuesta.startsWith("Excepción: ")){
+            this.mostrarMensaje(respuesta);
+        }else{
+            int nombreUsuario=1, idUsuario=0;
+            String datosUsuario[]= respuesta.split(", ");
+            
+            int opcionSeleccionada= JOptionPane.showConfirmDialog(this,"Bienvenido "+datosUsuario[nombreUsuario]+"!!!", "Confirmación", JOptionPane.YES_OPTION);
+            if(opcionSeleccionada == JOptionPane.YES_OPTION){
+                FrmMuro muro= FrmMuro.obtenerFrmMuro(Long.parseLong(datosUsuario[idUsuario]),this.proxyClienteBroker);
+                muro.suscribirseEventoRegistrarPublicacion();
+                muro.setVisible(true);
+                this.dispose();
+            }
+        }
+        
+    }//GEN-LAST:event_btnSesionFacebookActionPerformed
 
     private void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, "Respuesta del servidor", JOptionPane.INFORMATION_MESSAGE);
@@ -233,8 +251,7 @@ public class FrmInicioSesion extends javax.swing.JFrame {
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnIniciarSesion;
     private javax.swing.JButton btnMostrarRegistrarse;
-    private javax.swing.JButton btnSesionGithub;
-    private javax.swing.JButton btnSesionTwitter;
+    private javax.swing.JButton btnSesionFacebook;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
