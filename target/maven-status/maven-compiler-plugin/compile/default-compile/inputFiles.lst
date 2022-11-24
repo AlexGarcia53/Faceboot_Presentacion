@@ -1,8 +1,9 @@
 C:\Users\Gael\Documents\GITHUB\Faceboot_Presentacion\src\main\java\com\mycompany\presentacionfaceboot\FrmInicioSesion.java
 C:\Users\Gael\Documents\GITHUB\Faceboot_Presentacion\src\main\java\com\mycompany\presentacionfaceboot\frmEditarPerfil.java
+C:\Users\Gael\Documents\GITHUB\Faceboot_Presentacion\src\main\java\logueo\EstrategiaFacebook.java
+C:\Users\Gael\Documents\GITHUB\Faceboot_Presentacion\src\main\java\logueo\Contexto.java
 C:\Users\Gael\Documents\GITHUB\Faceboot_Presentacion\src\main\java\com\mycompany\presentacionfaceboot\FrmPublicacion.java
 C:\Users\Gael\Documents\GITHUB\Faceboot_Presentacion\src\main\java\com\mycompany\presentacionfaceboot\FrmRegistro.java
 C:\Users\Gael\Documents\GITHUB\Faceboot_Presentacion\src\main\java\com\mycompany\presentacionfaceboot\FrmMuro.java
 C:\Users\Gael\Documents\GITHUB\Faceboot_Presentacion\src\main\java\com\mycompany\presentacionfaceboot\FrmNotificar.java
-C:\Users\Gael\Documents\GITHUB\Faceboot_Presentacion\src\main\java\loginFacebook\LoginFacebook.java
-C:\Users\Gael\Documents\GITHUB\Faceboot_Presentacion\src\main\java\loginFacebook\UsuarioFacebook.java
+C:\Users\Gael\Documents\GITHUB\Faceboot_Presentacion\src\main\java\logueo\IMetodoLogueo.java

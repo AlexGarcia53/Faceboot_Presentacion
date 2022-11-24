@@ -1,4 +1,5 @@
 com\mycompany\presentacionfaceboot\FrmRegistro$3.class
+logueo\Contexto.class
 com\mycompany\presentacionfaceboot\FrmPublicacion$4.class
 com\mycompany\presentacionfaceboot\FrmRegistro$8.class
 com\mycompany\presentacionfaceboot\FrmPublicacion.class
@@ -8,19 +9,19 @@ com\mycompany\presentacionfaceboot\frmEditarPerfil$1.class
 com\mycompany\presentacionfaceboot\FrmInicioSesion$3.class
 com\mycompany\presentacionfaceboot\FrmMuro$2.class
 com\mycompany\presentacionfaceboot\FrmRegistro$1.class
-loginFacebook\UsuarioFacebook.class
 com\mycompany\presentacionfaceboot\FrmRegistro$5.class
 com\mycompany\presentacionfaceboot\FrmRegistro$6.class
 com\mycompany\presentacionfaceboot\FrmInicioSesion$2.class
 com\mycompany\presentacionfaceboot\FrmPublicacion$2.class
+logueo\IMetodoLogueo.class
 com\mycompany\presentacionfaceboot\FrmMuro.class
-loginFacebook\LoginFacebook.class
 com\mycompany\presentacionfaceboot\FrmRegistro$9.class
 com\mycompany\presentacionfaceboot\FrmMuro$1.class
 com\mycompany\presentacionfaceboot\frmEditarPerfil.class
 com\mycompany\presentacionfaceboot\FrmRegistro.class
 com\mycompany\presentacionfaceboot\FrmRegistro$4.class
 com\mycompany\presentacionfaceboot\FrmNotificar$1.class
+logueo\EstrategiaFacebook.class
 com\mycompany\presentacionfaceboot\FrmPublicacion$5.class
 com\mycompany\presentacionfaceboot\FrmRegistro$10.class
 com\mycompany\presentacionfaceboot\FrmPublicacion$1.class

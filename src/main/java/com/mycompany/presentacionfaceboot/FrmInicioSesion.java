@@ -2,11 +2,11 @@ package com.mycompany.presentacionfaceboot;
 
 import com.mycompany.proxyclientebroker.ProxyClienteBroker;
 import com.restfb.types.User;
+import dominio.Operacion;
 import dominio.Usuario;
 import interfaces.IProxy;
 import javax.swing.JOptionPane;
-import loginFacebook.LoginFacebook;
-import loginFacebook.UsuarioFacebook;
+import logueo.Contexto;
 import notificacion.CanalizadorEventos;
 import notificacion.ObservableRegistrarPublicacion;
 import notificacion.OyenteNotificacionesBroker;
@@ -28,7 +28,6 @@ import notificacion.OyenteNotificacionesBroker;
 public class FrmInicioSesion extends javax.swing.JFrame {
     private static FrmInicioSesion frmInicioSesion;
     IProxy proxyClienteBroker;
-    LoginFacebook loginFacebook = new LoginFacebook();
     
     /**
      * Creates new form FrmInicioSesion
@@ -175,9 +174,11 @@ public class FrmInicioSesion extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMostrarRegistrarseActionPerformed
 
     private void btnSesionFacebookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSesionFacebookActionPerformed
-      UsuarioFacebook userFacebook = loginFacebook.IniciarSesionFacebook();
+
+      String tipoInicio = "iniciar_sesion_facebook";
       
-      Usuario usuario = new Usuario(userFacebook.getUser().getName(),userFacebook.getUser().getEmail(),userFacebook.getAtoken());
+      Usuario usuario = Contexto.getInstancia().canalizarSolicitud(tipoInicio);
+     
       String respuesta = this.proxyClienteBroker.iniciarSesionFacebook(usuario);
       System.out.println(respuesta);
         if(respuesta.startsWith("Excepción: ")){
