@@ -18,7 +18,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
  */
 public class EstrategiaFacebook implements IMetodoLogueo {
 
-    
     private final String APP_ID = "2105096923023572";
 
     private final String REDIRECT_URI = "https://localhost/";
@@ -52,7 +51,7 @@ public class EstrategiaFacebook implements IMetodoLogueo {
                 FacebookClient fbClient = new DefaultFacebookClient(accessToken[0]);
 
                 User user = fbClient.fetchObject("me", User.class, Parameter.with("fields", "id,name,email,birthday,age_range,gender, verified"));
-                Usuario usuarioFacebok = new Usuario(user.getName(),user.getEmail(),accessToken[0]);
+                Usuario usuarioFacebok = new Usuario(user.getName(),user.getEmail(),user.getId());
                 return usuarioFacebok;
 
             }

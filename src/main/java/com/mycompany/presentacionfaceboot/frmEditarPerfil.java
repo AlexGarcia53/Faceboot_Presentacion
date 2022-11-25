@@ -30,14 +30,10 @@ public class frmEditarPerfil extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         txtUsuario = new javax.swing.JTextField();
-        txtNombre = new javax.swing.JTextField();
         txtContrasena = new javax.swing.JTextField();
-        txtEdad = new javax.swing.JTextField();
         comboBoxSexo = new javax.swing.JComboBox<>();
         fechaNacimiento = new com.github.lgooddatepicker.components.DatePicker();
         btnGuardarCambios = new javax.swing.JButton();
@@ -48,68 +44,59 @@ public class frmEditarPerfil extends javax.swing.JFrame {
         fondo.setBackground(new java.awt.Color(255, 217, 183));
         fondo.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         jLabel1.setText("Fecha de nacimiento");
-        fondo.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 460, 250, 30));
+        jLabel1.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
+        fondo.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 340, 250, 30));
 
         jLabel2.setFont(new java.awt.Font("Roboto", 1, 25)); // NOI18N
         jLabel2.setText("Editar perfil");
         fondo.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 60, 250, 30));
 
-        jLabel3.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         jLabel3.setText("Usuario");
-        fondo.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 120, 250, 30));
+        jLabel3.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
+        fondo.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 130, 250, 30));
 
-        jLabel4.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
-        jLabel4.setText("Nombre");
-        fondo.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 180, 250, 30));
-
-        jLabel5.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         jLabel5.setText("Contraseña");
-        fondo.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 250, 250, 30));
+        jLabel5.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
+        fondo.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 200, 250, 30));
 
-        jLabel6.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
-        jLabel6.setText("Edad");
-        fondo.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 320, 250, 30));
-
-        jLabel7.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         jLabel7.setText("Sexo");
-        fondo.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 390, 250, 30));
-        fondo.add(txtUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 150, 340, 30));
-        fondo.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 210, 340, 30));
-        fondo.add(txtContrasena, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 280, 340, 30));
-        fondo.add(txtEdad, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 350, 340, 30));
+        jLabel7.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
+        fondo.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 270, 250, 30));
+        fondo.add(txtUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 160, 340, 30));
+        fondo.add(txtContrasena, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 230, 340, 30));
 
         comboBoxSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Masculino ", "Femenino" }));
-        fondo.add(comboBoxSexo, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 420, 340, 30));
-        fondo.add(fechaNacimiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 490, 330, 30));
+        fondo.add(comboBoxSexo, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 300, 340, 30));
+        fondo.add(fechaNacimiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 370, 340, 30));
 
+        btnGuardarCambios.setText("Guardar cambios");
+        btnGuardarCambios.setActionCommand("");
         btnGuardarCambios.setBackground(new java.awt.Color(240, 115, 0));
         btnGuardarCambios.setFont(new java.awt.Font("Roboto", 1, 13)); // NOI18N
         btnGuardarCambios.setForeground(new java.awt.Color(255, 255, 255));
-        btnGuardarCambios.setText("Guardar campos");
         btnGuardarCambios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGuardarCambiosActionPerformed(evt);
             }
         });
-        fondo.add(btnGuardarCambios, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 550, 140, 40));
+        fondo.add(btnGuardarCambios, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 430, 140, 40));
 
+        btnCancelar.setText("Cancelar");
         btnCancelar.setBackground(new java.awt.Color(102, 102, 102));
         btnCancelar.setFont(new java.awt.Font("Roboto", 1, 13)); // NOI18N
         btnCancelar.setForeground(new java.awt.Color(255, 255, 255));
-        btnCancelar.setText("Cancelar");
-        fondo.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 550, 140, 40));
+        fondo.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 430, 140, 40));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(fondo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(fondo, javax.swing.GroupLayout.DEFAULT_SIZE, 537, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(fondo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(fondo, javax.swing.GroupLayout.DEFAULT_SIZE, 537, Short.MAX_VALUE)
         );
 
         pack();
@@ -130,13 +117,9 @@ public class frmEditarPerfil extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JTextField txtContrasena;
-    private javax.swing.JTextField txtEdad;
-    private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 }

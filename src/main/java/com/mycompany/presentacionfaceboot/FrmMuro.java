@@ -7,6 +7,7 @@ package com.mycompany.presentacionfaceboot;
 
 import com.mycompany.proxyclientebroker.ProxyClienteBroker;
 import dominio.Publicacion;
+import dominio.Usuario;
 import interfaces.IProxy;
 import interfaces.IObservadorRegistrarPublicacion;
 import javax.swing.JOptionPane;
@@ -60,13 +61,13 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
         fondo = new javax.swing.JPanel();
         seccionMenu = new javax.swing.JPanel();
         btnHacerPublicacion = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnEditarPerfil = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
+        btnEnviarMensaje = new javax.swing.JButton();
         lblUsuario = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
+        logo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1080, 710));
 
         fondo.setBackground(new java.awt.Color(255, 217, 183));
         fondo.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -75,39 +76,60 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
         seccionMenu.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         btnHacerPublicacion.setBackground(new java.awt.Color(255, 217, 183));
-        btnHacerPublicacion.setText("Hacer publicacion");
+        btnHacerPublicacion.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnHacerPublicacion.setText("Publica aquí lo que estás pensando");
         btnHacerPublicacion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnHacerPublicacionActionPerformed(evt);
             }
         });
-        seccionMenu.add(btnHacerPublicacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(305, 30, -1, 43));
+        seccionMenu.add(btnHacerPublicacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 30, 290, 30));
 
-        jButton2.setBackground(new java.awt.Color(255, 217, 183));
-        jButton2.setText("Editar  Perfil");
-        seccionMenu.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(525, 30, 121, 43));
+        btnEditarPerfil.setBackground(new java.awt.Color(255, 217, 183));
+        btnEditarPerfil.setActionCommand("");
+        btnEditarPerfil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarPerfilActionPerformed(evt);
+            }
+        });
+        seccionMenu.add(btnEditarPerfil, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 30, 110, 30));
 
         btnSalir.setBackground(new java.awt.Color(255, 217, 183));
+        btnSalir.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnSalir.setText("Salir");
+        btnSalir.setActionCommand("");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalirActionPerformed(evt);
             }
         });
-        seccionMenu.add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 30, 90, 43));
-        seccionMenu.add(lblUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, 110, 30));
+        seccionMenu.add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 30, 70, 30));
 
-        jButton4.setBackground(new java.awt.Color(255, 217, 183));
-        jButton4.setText("Enviar mensaje");
-        seccionMenu.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(741, 30, -1, 43));
+        btnEnviarMensaje.setBackground(new java.awt.Color(255, 217, 183));
+        btnEnviarMensaje.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnEnviarMensaje.setText("Mensajes");
+        btnEnviarMensaje.setActionCommand("");
+        btnEnviarMensaje.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEnviarMensajeActionPerformed(evt);
+            }
+        });
+        seccionMenu.add(btnEnviarMensaje, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 30, 90, 30));
+        seccionMenu.add(lblUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 30, 60, 30));
 
-        fondo.add(seccionMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1060, 100));
+        logo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        logo.setIcon(new javax.swing.ImageIcon("C:\\Users\\Gael\\Documents\\GITHUB\\Faceboot_Presentacion\\src\\images\\logo3.png")); // NOI18N
+        logo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        logo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        seccionMenu.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 220, 50));
+
+        fondo.add(seccionMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 960, 80));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(fondo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(fondo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -129,14 +151,23 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
 //        this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
 
+    private void btnEditarPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarPerfilActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEditarPerfilActionPerformed
+
+    private void btnEnviarMensajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarMensajeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEnviarMensajeActionPerformed
+
    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnEditarPerfil;
+    private javax.swing.JButton btnEnviarMensaje;
     private javax.swing.JButton btnHacerPublicacion;
     private javax.swing.JButton btnSalir;
     private javax.swing.JPanel fondo;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel lblUsuario;
+    private javax.swing.JLabel logo;
     private javax.swing.JPanel seccionMenu;
     // End of variables declaration//GEN-END:variables
 

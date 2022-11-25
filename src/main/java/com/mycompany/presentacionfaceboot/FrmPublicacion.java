@@ -7,8 +7,16 @@ package com.mycompany.presentacionfaceboot;
 
 import dominio.Contenido;
 import dominio.Publicacion;
+import dominio.Usuario;
 import interfaces.IProxy;
+import java.awt.Image;
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.GregorianCalendar;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -17,6 +25,7 @@ import javax.swing.JOptionPane;
 public class FrmPublicacion extends javax.swing.JFrame {
     private static FrmPublicacion frmPublicacion;
     IProxy proxyClienteBroker;
+ 
     /**
      * Creates new form FrmPublicacion
      */
@@ -59,7 +68,7 @@ public class FrmPublicacion extends javax.swing.JFrame {
         jLabel3.setBackground(new java.awt.Color(0, 0, 0));
         jLabel3.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
         jLabel3.setText("HACER PUBLICACIÓN");
-        fondo.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 50, -1, -1));
+        fondo.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 50, -1, -1));
 
         jLabel4.setBackground(new java.awt.Color(0, 0, 0));
         jLabel4.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
@@ -80,7 +89,7 @@ public class FrmPublicacion extends javax.swing.JFrame {
                 btnEliminarActionPerformed(evt);
             }
         });
-        fondo.add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 390, 140, 40));
+        fondo.add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 180, 140, 40));
 
         btnCancelar.setBackground(new java.awt.Color(102, 102, 102));
         btnCancelar.setForeground(new java.awt.Color(255, 255, 255));
@@ -96,7 +105,8 @@ public class FrmPublicacion extends javax.swing.JFrame {
         lblImagen.setBackground(new java.awt.Color(0, 0, 0));
         lblImagen.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         lblImagen.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        fondo.add(lblImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 160, 340, 220));
+        lblImagen.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        fondo.add(lblImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 240, 340, 220));
 
         jLabel7.setBackground(new java.awt.Color(0, 0, 0));
         jLabel7.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
@@ -123,12 +133,12 @@ public class FrmPublicacion extends javax.swing.JFrame {
                 btnAñadirImagenActionPerformed(evt);
             }
         });
-        fondo.add(btnAñadirImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 390, 140, 40));
+        fondo.add(btnAñadirImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 180, 140, 40));
 
         jLabel8.setBackground(new java.awt.Color(0, 0, 0));
         jLabel8.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel8.setText("Imagen:");
-        fondo.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 120, -1, -1));
+        fondo.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 140, -1, -1));
 
         txtHashtags.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -181,11 +191,25 @@ public class FrmPublicacion extends javax.swing.JFrame {
     }//GEN-LAST:event_btnPublicarActionPerformed
 
     private void btnAñadirImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAñadirImagenActionPerformed
-        // TODO add your handling code here:
+        JFileChooser jfileChooser = new JFileChooser();
+        FileNameExtensionFilter filtrado = new FileNameExtensionFilter("JPG & PNG", "jpg", "png");
+        jfileChooser.setFileFilter(filtrado);
+        
+        int respuesta = jfileChooser.showOpenDialog(this);
+        
+        if(respuesta == JFileChooser.APPROVE_OPTION){
+           String path = jfileChooser.getSelectedFile().getPath();
+           Image imagen = new ImageIcon(path).getImage();
+           ImageIcon icono = new ImageIcon(imagen.getScaledInstance(lblImagen.getWidth(), lblImagen.getHeight(),Image.SCALE_SMOOTH));
+           lblImagen.setIcon(icono);
+           lblImagen.setText(path);
+           
+        }
     }//GEN-LAST:event_btnAñadirImagenActionPerformed
 
     private void txtHashtagsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHashtagsActionPerformed
-        // TODO add your handling code here:
+
+        
     }//GEN-LAST:event_txtHashtagsActionPerformed
 
     private void txtEtiquetadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEtiquetadosActionPerformed
