@@ -10,10 +10,14 @@ import dominio.Publicacion;
 import dominio.Usuario;
 import interfaces.IProxy;
 import interfaces.IObservadorRegistrarPublicacion;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import notificacion.CanalizadorEventos;
 import notificacion.ObservableRegistrarPublicacion;
 import notificacion.OyenteNotificacionesBroker;
+import utils.Barra;
+import utils.PublicacionCompleta;
 
 /**
  *
@@ -21,22 +25,31 @@ import notificacion.OyenteNotificacionesBroker;
  */
 public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarPublicacion {
     private static FrmMuro frmMuro;
-    private Long idUsuario;
+//    private Long idUsuario;
+    private Usuario usuario;
     private IProxy proxyClienteBroker;
     /**
      * Creates new form FrmMuro
      */
-    private FrmMuro(Long idUsuario, IProxy proxyClienteBroker) {
+    private FrmMuro(Usuario usuario, IProxy proxyClienteBroker) {
         initComponents();
         this.proxyClienteBroker= proxyClienteBroker;
-        this.idUsuario= idUsuario;
-        this.lblUsuario.setText(""+this.idUsuario);
+        this.usuario= usuario;
+        this.lblUsuario.setText(""+this.usuario.getUsuario());
+        cpnMuro.setVerticalScrollBar(new Barra());
 //        this.suscribirseEventoRegistrarPublicacion();
     }
     
-    public static FrmMuro obtenerFrmMuro(Long idUsuario, IProxy proxyClienteBroker){
+//    public static FrmMuro obtenerFrmMuro(Long idUsuario, IProxy proxyClienteBroker){
+//        if(frmMuro==null){
+//            frmMuro= new FrmMuro(idUsuario,proxyClienteBroker);
+//        }
+//        return frmMuro;
+//    }
+    
+    public static FrmMuro obtenerFrmMuro(Usuario usuario, IProxy proxyClienteBroker){
         if(frmMuro==null){
-            frmMuro= new FrmMuro(idUsuario,proxyClienteBroker);
+            frmMuro= new FrmMuro(usuario,proxyClienteBroker);
         }
         return frmMuro;
     }
@@ -61,13 +74,18 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
         fondo = new javax.swing.JPanel();
         seccionMenu = new javax.swing.JPanel();
         btnHacerPublicacion = new javax.swing.JButton();
+        lblUsuario = new javax.swing.JLabel();
         btnEditarPerfil = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
         btnEnviarMensaje = new javax.swing.JButton();
-        lblUsuario = new javax.swing.JLabel();
         logo = new javax.swing.JLabel();
+        btnPrueba = new javax.swing.JButton();
+        pnlMuro = new javax.swing.JPanel();
+        cpnMuro = new javax.swing.JScrollPane();
+        pnlPublicaciones = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         fondo.setBackground(new java.awt.Color(255, 217, 183));
         fondo.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -83,16 +101,16 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
                 btnHacerPublicacionActionPerformed(evt);
             }
         });
-        seccionMenu.add(btnHacerPublicacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 30, 290, 30));
+        seccionMenu.add(btnHacerPublicacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 30, 290, 30));
+        seccionMenu.add(lblUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 30, 110, 30));
 
         btnEditarPerfil.setBackground(new java.awt.Color(255, 217, 183));
-        btnEditarPerfil.setActionCommand("");
         btnEditarPerfil.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEditarPerfilActionPerformed(evt);
             }
         });
-        seccionMenu.add(btnEditarPerfil, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 30, 110, 30));
+        seccionMenu.add(btnEditarPerfil, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 30, 110, 30));
 
         btnSalir.setBackground(new java.awt.Color(255, 217, 183));
         btnSalir.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -103,7 +121,7 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
                 btnSalirActionPerformed(evt);
             }
         });
-        seccionMenu.add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 30, 70, 30));
+        seccionMenu.add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 30, 70, 30));
 
         btnEnviarMensaje.setBackground(new java.awt.Color(255, 217, 183));
         btnEnviarMensaje.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -114,8 +132,7 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
                 btnEnviarMensajeActionPerformed(evt);
             }
         });
-        seccionMenu.add(btnEnviarMensaje, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 30, 90, 30));
-        seccionMenu.add(lblUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 30, 60, 30));
+        seccionMenu.add(btnEnviarMensaje, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 30, 90, 30));
 
         logo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         logo.setIcon(new javax.swing.ImageIcon("C:\\Users\\Gael\\Documents\\GITHUB\\Faceboot_Presentacion\\src\\images\\logo3.png")); // NOI18N
@@ -123,7 +140,34 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
         logo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         seccionMenu.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 220, 50));
 
-        fondo.add(seccionMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 960, 80));
+        fondo.add(seccionMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 860, 80));
+
+        btnPrueba.setText("prueba");
+        btnPrueba.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPruebaActionPerformed(evt);
+            }
+        });
+        fondo.add(btnPrueba, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 100, -1, -1));
+
+        cpnMuro.setBorder(null);
+
+        pnlPublicaciones.setBackground(new java.awt.Color(255, 217, 183));
+        pnlPublicaciones.setLayout(new javax.swing.BoxLayout(pnlPublicaciones, javax.swing.BoxLayout.Y_AXIS));
+        cpnMuro.setViewportView(pnlPublicaciones);
+
+        javax.swing.GroupLayout pnlMuroLayout = new javax.swing.GroupLayout(pnlMuro);
+        pnlMuro.setLayout(pnlMuroLayout);
+        pnlMuroLayout.setHorizontalGroup(
+            pnlMuroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(cpnMuro, javax.swing.GroupLayout.DEFAULT_SIZE, 580, Short.MAX_VALUE)
+        );
+        pnlMuroLayout.setVerticalGroup(
+            pnlMuroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(cpnMuro)
+        );
+
+        fondo.add(pnlMuro, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 80, 580, 560));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -133,14 +177,15 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(fondo, javax.swing.GroupLayout.DEFAULT_SIZE, 645, Short.MAX_VALUE)
+            .addComponent(fondo, javax.swing.GroupLayout.DEFAULT_SIZE, 642, Short.MAX_VALUE)
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnHacerPublicacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHacerPublicacionActionPerformed
-        FrmPublicacion frmPublicacion= FrmPublicacion.obtenerFrmPublicacion(proxyClienteBroker);
+        FrmPublicacion frmPublicacion= FrmPublicacion.obtenerFrmPublicacion(usuario, proxyClienteBroker);
         frmPublicacion.setVisible(true);
     }//GEN-LAST:event_btnHacerPublicacionActionPerformed
 
@@ -148,7 +193,7 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
         this.desuscribirseEventoRegistrarPublicacion();
         FrmInicioSesion frmInicioSesion= FrmInicioSesion.obtenerFrmInicioSesion(this.proxyClienteBroker);
         frmInicioSesion.setVisible(true);
-//        this.dispose();
+        this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnEditarPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarPerfilActionPerformed
@@ -159,15 +204,29 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
         // TODO add your handling code here:
     }//GEN-LAST:event_btnEnviarMensajeActionPerformed
 
+    private void btnPruebaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPruebaActionPerformed
+        Date fecha= new Date();
+        SimpleDateFormat formatoFecha= new SimpleDateFormat("dd/MM/YYYY");
+        PublicacionCompleta publicacion= new PublicacionCompleta("Alex GL", formatoFecha.format(fecha));
+        
+        this.pnlPublicaciones.add(publicacion);
+        this.pnlPublicaciones.repaint();
+        this.pnlPublicaciones.revalidate();
+    }//GEN-LAST:event_btnPruebaActionPerformed
+
    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEditarPerfil;
     private javax.swing.JButton btnEnviarMensaje;
     private javax.swing.JButton btnHacerPublicacion;
+    private javax.swing.JButton btnPrueba;
     private javax.swing.JButton btnSalir;
+    private javax.swing.JScrollPane cpnMuro;
     private javax.swing.JPanel fondo;
     private javax.swing.JLabel lblUsuario;
     private javax.swing.JLabel logo;
+    private javax.swing.JPanel pnlMuro;
+    private javax.swing.JPanel pnlPublicaciones;
     private javax.swing.JPanel seccionMenu;
     // End of variables declaration//GEN-END:variables
 

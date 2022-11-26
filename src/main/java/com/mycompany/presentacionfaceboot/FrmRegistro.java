@@ -310,28 +310,28 @@ public class FrmRegistro extends javax.swing.JFrame {
 
     private void btnSesionFacebookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSesionFacebookActionPerformed
 
-        String tipoInicio = "iniciar_sesion_facebook";
-
-        Usuario usuario = Contexto.getInstancia().canalizarSolicitud(tipoInicio);
-
-        String respuesta = this.proxyClienteBroker.iniciarSesionFacebook(usuario);
-        System.out.println(respuesta);
-        if(respuesta.startsWith("Excepción: ")){
-            this.mostrarMensaje(respuesta);
-        }else{
-            int nombreUsuario=1, idUsuario=0;
-            String datosUsuario[]= respuesta.split(", ");
-            Usuario usuarioCompleto = new Usuario(datosUsuario[0],datosUsuario[1]);
-            //            (Long id, String usuario, String email, String contrasenia, String celular, Sexo sexo, int edad, GregorianCalendar fechaNacimiento)
-
-            int opcionSeleccionada= JOptionPane.showConfirmDialog(this,"Bienvenido "+datosUsuario[nombreUsuario]+"!!!", "Confirmación", JOptionPane.YES_OPTION);
-            if(opcionSeleccionada == JOptionPane.YES_OPTION){
-                FrmMuro muro= FrmMuro.obtenerFrmMuro(Long.parseLong(datosUsuario[idUsuario]),this.proxyClienteBroker);
-                muro.suscribirseEventoRegistrarPublicacion();
-                muro.setVisible(true);
-                this.dispose();
-            }
-        }
+//        String tipoInicio = "iniciar_sesion_facebook";
+//
+//        Usuario usuario = Contexto.getInstancia().canalizarSolicitud(tipoInicio);
+//
+//        String respuesta = this.proxyClienteBroker.iniciarSesionFacebook(usuario);
+//        System.out.println(respuesta);
+//        if(respuesta.startsWith("Excepción: ")){
+//            this.mostrarMensaje(respuesta);
+//        }else{
+//            int nombreUsuario=1, idUsuario=0;
+//            String datosUsuario[]= respuesta.split(", ");
+//            Usuario usuarioCompleto = new Usuario();
+//            //            (Long id, String usuario, String email, String contrasenia, String celular, Sexo sexo, int edad, GregorianCalendar fechaNacimiento)
+//
+//            int opcionSeleccionada= JOptionPane.showConfirmDialog(this,"Bienvenido "+datosUsuario[nombreUsuario]+"!!!", "Confirmación", JOptionPane.YES_OPTION);
+//            if(opcionSeleccionada == JOptionPane.YES_OPTION){
+//                FrmMuro muro= FrmMuro.obtenerFrmMuro(Long.parseLong(datosUsuario[idUsuario]),this.proxyClienteBroker);
+//                muro.suscribirseEventoRegistrarPublicacion();
+//                muro.setVisible(true);
+//                this.dispose();
+//            }
+//        }
     }//GEN-LAST:event_btnSesionFacebookActionPerformed
 
     private void mostrarMensaje(String mensaje) {

@@ -25,13 +25,14 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class FrmPublicacion extends javax.swing.JFrame {
     private static FrmPublicacion frmPublicacion;
     IProxy proxyClienteBroker;
- 
+    Usuario usuario;
     /**
      * Creates new form FrmPublicacion
      */
-    public FrmPublicacion(IProxy proxyClienteBroker) {
+    public FrmPublicacion(Usuario usuario, IProxy proxyClienteBroker) {
         initComponents();
         setLocationRelativeTo(null);
+        this.usuario = usuario;
         this.proxyClienteBroker=proxyClienteBroker;
     }
 
@@ -178,10 +179,11 @@ public class FrmPublicacion extends javax.swing.JFrame {
 
     private void btnPublicarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPublicarActionPerformed
         String textoPlano = this.txtTextoPlano.getText();
+        GregorianCalendar a = new GregorianCalendar();
 
         Contenido contenido = new Contenido(textoPlano);
-        Publicacion publicacion = new Publicacion(contenido);
-
+        Publicacion publicacion = new Publicacion(a,this.usuario,contenido);
+ 
         String respuesta = this.proxyClienteBroker.registrarPublicacion(publicacion);
         if (respuesta.startsWith("Excepción: ")) {
             this.mostrarMensaje(respuesta);
@@ -220,9 +222,9 @@ public class FrmPublicacion extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, mensaje, "Respuesta del servidor", JOptionPane.INFORMATION_MESSAGE);
     }
     
-    public static FrmPublicacion obtenerFrmPublicacion(IProxy proxyClienteBroker){
+    public static FrmPublicacion obtenerFrmPublicacion(Usuario usuario,IProxy proxyClienteBroker){
         if(frmPublicacion==null){
-            frmPublicacion = new FrmPublicacion(proxyClienteBroker);
+            frmPublicacion = new FrmPublicacion(usuario, proxyClienteBroker);
         }
         return frmPublicacion;
     }
