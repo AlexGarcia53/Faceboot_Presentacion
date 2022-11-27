@@ -4,33 +4,47 @@
  */
 package utils;
 
+import dominio.*;
+import interfaces.IProxy;
+import java.util.List;
+
 /**
  *
  * @author Gael
  */
 public class Comentarios extends javax.swing.JPanel {
-
+    private Usuario usuario;
+    private Publicacion publicacion;
+    private IProxy proxy;
     /**
      * Creates new form Comentario
      */
-    public Comentarios() {
+    public Comentarios(Usuario usuario, Publicacion publicacion, IProxy proxy) {
         initComponents();
         cpnComentarios.setVerticalScrollBar(new Barra());
-
+        this.usuario= usuario;
+        this.publicacion= publicacion;
+        this.proxy=proxy;
         this.actualizarContenido();
     }
     public void actualizarContenido(){
-
-        Comentario a = new Comentario();
-        Comentario b = new Comentario();
-        Comentario c = new Comentario();
+        List<Comentario> comentarios= publicacion.getComentarios();
         
+        for (Comentario comentario: comentarios){
+            ComentarioPublicacion comEspecifico= new ComentarioPublicacion(this.usuario, comentario, this.proxy);
+            pnlComentarios.add(comEspecifico);
+        }
         
-
-        pnlComentarios.add(a);
-
-        pnlComentarios.add(b);
-        pnlComentarios.add(c);
+//        ComentarioPublicacion a = new ComentarioPublicacion();
+//        ComentarioPublicacion b = new ComentarioPublicacion();
+//        ComentarioPublicacion c = new ComentarioPublicacion();
+//        
+//        
+//
+//        pnlComentarios.add(a);
+//
+//        pnlComentarios.add(b);
+//        pnlComentarios.add(c);
 
         this.repaint();
         this.revalidate();

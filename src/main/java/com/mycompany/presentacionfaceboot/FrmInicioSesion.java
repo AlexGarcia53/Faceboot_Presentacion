@@ -4,15 +4,13 @@ import com.mycompany.proxyclientebroker.ProxyClienteBroker;
 import com.restfb.types.User;
 import dominio.Operacion;
 import dominio.Usuario;
+import excepciones.ErrorBusquedaUsuarioException;
 import excepciones.ErrorDatosErroneosException;
 import interfaces.IProxy;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import logueo.Contexto;
-import notificacion.CanalizadorEventos;
-import notificacion.ObservableRegistrarPublicacion;
-import notificacion.OyenteNotificacionesBroker;
 
 
 //import com.sun.prism.paint.Paint;
@@ -35,7 +33,7 @@ public class FrmInicioSesion extends javax.swing.JFrame {
     /**
      * Creates new form FrmInicioSesion
      */
-    private FrmInicioSesion(IProxy proxyClienteBroker) {
+    public FrmInicioSesion(IProxy proxyClienteBroker) {
         initComponents();
         setLocationRelativeTo(null);
         this.proxyClienteBroker= proxyClienteBroker;
@@ -164,11 +162,7 @@ public class FrmInicioSesion extends javax.swing.JFrame {
             }
         });
         Fondo.add(btnSesionFacebook, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 470, 190, 50));
-
-        logoFacebook.setIcon(new javax.swing.ImageIcon("C:\\Users\\Gael\\Documents\\GITHUB\\Faceboot_Presentacion\\src\\images\\facebook-logo.png")); // NOI18N
         Fondo.add(logoFacebook, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 470, -1, 50));
-
-        logo.setIcon(new javax.swing.ImageIcon("C:\\Users\\Gael\\Documents\\GITHUB\\Faceboot_Presentacion\\src\\images\\logo3.png")); // NOI18N
         Fondo.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 40, 390, 50));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -188,8 +182,7 @@ public class FrmInicioSesion extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnMostrarRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarRegistrarseActionPerformed
-        FrmRegistro registrarse = FrmRegistro.obtenerFrmRegistro();
-        registrarse.setVisible(true);
+        FrmRegistro.obtenerFrmRegistro().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnMostrarRegistrarseActionPerformed
 
@@ -221,19 +214,16 @@ public class FrmInicioSesion extends javax.swing.JFrame {
 //                this.dispose();
 //            }
 //        }
-        Usuario respuesta= this.proxyClienteBroker.iniciarSesion(usuario);
-        System.out.println(respuesta);
-        if(respuesta == null){
-            this.mostrarMensaje("error");
-        }else{
-
+        try{
+            Usuario respuesta= this.proxyClienteBroker.iniciarSesion(usuario);
             int opcionSeleccionada= JOptionPane.showConfirmDialog(this,"Bienvenido "+respuesta.getUsuario()+"!!!", "Confirmación", JOptionPane.YES_OPTION);
             if(opcionSeleccionada == JOptionPane.YES_OPTION){
-                FrmMuro muro= FrmMuro.obtenerFrmMuro(respuesta,this.proxyClienteBroker);
-                muro.suscribirseEventoRegistrarPublicacion();
+                FrmMuro muro= new FrmMuro(respuesta,this.proxyClienteBroker);
                 muro.setVisible(true);
                 this.dispose();
             }
+        } catch(ErrorBusquedaUsuarioException e){
+            this.mostrarError(e.getMessage());
         }
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
 
@@ -247,40 +237,27 @@ public class FrmInicioSesion extends javax.swing.JFrame {
 
     private void btnSesionFacebookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSesionFacebookActionPerformed
 
-//        String tipoInicio = "iniciar_sesion_facebook";
-//
-//        Usuario usuario = Contexto.getInstancia().canalizarSolicitud(tipoInicio);
-//
-//        String respuesta = this.proxyClienteBroker.iniciarSesionFacebook(usuario);
-//        System.out.println(respuesta);
-//        if(respuesta.startsWith("Excepción: ")){
-//            this.mostrarMensaje(respuesta);
-//        }else{
-//            int nombreUsuario=1, idUsuario=0;
-//            String datosUsuario[]= respuesta.split(", ");
-//            Usuario usuarioCompleto = new Usuario(datosUsuario[0],datosUsuario[1]);
-//            //            (Long id, String usuario, String email, String contrasenia, String celular, Sexo sexo, int edad, GregorianCalendar fechaNacimiento)
-//
-//            int opcionSeleccionada= JOptionPane.showConfirmDialog(this,"Bienvenido "+datosUsuario[nombreUsuario]+"!!!", "Confirmación", JOptionPane.YES_OPTION);
-//            if(opcionSeleccionada == JOptionPane.YES_OPTION){
-//                FrmMuro muro= FrmMuro.obtenerFrmMuro(Long.parseLong(datosUsuario[idUsuario]),this.proxyClienteBroker);
-//                muro.suscribirseEventoRegistrarPublicacion();
-//                muro.setVisible(true);
-//                this.dispose();
-//            }
-//        }
+        String tipoInicio = "iniciar_sesion_facebook";
+
+        Usuario usuario = Contexto.getInstancia().canalizarSolicitud(tipoInicio);
+
+        try{
+            Usuario respuesta = this.proxyClienteBroker.iniciarSesionFacebook(usuario);
+            int opcionSeleccionada= JOptionPane.showConfirmDialog(this,"Bienvenido "+respuesta.getUsuario()+"!!!", "Confirmación", JOptionPane.YES_OPTION);
+            if(opcionSeleccionada == JOptionPane.YES_OPTION){
+                FrmMuro muro= new FrmMuro(respuesta,this.proxyClienteBroker);
+                muro.setVisible(true);
+                this.dispose();
+            }
+        } catch (ErrorBusquedaUsuarioException e){
+            this.mostrarError(e.getMessage());
+        }
     }//GEN-LAST:event_btnSesionFacebookActionPerformed
 
     private void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, "Respuesta del servidor", JOptionPane.INFORMATION_MESSAGE);
     }
     
-    public static FrmInicioSesion obtenerFrmInicioSesion(IProxy proxyClienteBroker){
-        if(frmInicioSesion==null){
-            frmInicioSesion= new FrmInicioSesion(proxyClienteBroker);
-        }
-        return frmInicioSesion;
-    }
 //    /**
 //     * @param args the command line arguments
 //     */

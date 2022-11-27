@@ -4,21 +4,29 @@
  */
 package utils;
 
+import dominio.*;
+import dominio.Comentario;
+import interfaces.IProxy;
 import java.awt.Label;
+import java.util.GregorianCalendar;
 
 /**
  *
  * @author Gael
  */
 public class Comentar extends javax.swing.JPanel {
-
+    private Usuario usuario;
+    private Publicacion publicacion;
+    private IProxy proxy;
     /**
      * Creates new form Comentario
      */
-    public Comentar() {
+    public Comentar(Usuario usuario, Publicacion publicacion, IProxy proxy) {
         initComponents();
         this.init();
-
+        this.usuario= usuario;
+        this.publicacion= publicacion;
+        this.proxy=proxy;
     }
     
     public void init(){
@@ -38,7 +46,7 @@ public class Comentar extends javax.swing.JPanel {
         jTextField1 = new javax.swing.JTextField();
         btnComentar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextPane1 = new javax.swing.JTextPane();
+        txtpnComentario = new javax.swing.JTextPane();
 
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -62,11 +70,11 @@ public class Comentar extends javax.swing.JPanel {
             }
         });
 
-        jTextPane1.setBackground(new java.awt.Color(255, 233, 214));
-        jTextPane1.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(255, 233, 214)));
-        jTextPane1.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        jTextPane1.setForeground(new java.awt.Color(204, 88, 3));
-        jScrollPane1.setViewportView(jTextPane1);
+        txtpnComentario.setBackground(new java.awt.Color(255, 233, 214));
+        txtpnComentario.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(255, 233, 214)));
+        txtpnComentario.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        txtpnComentario.setForeground(new java.awt.Color(204, 88, 3));
+        jScrollPane1.setViewportView(txtpnComentario);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -91,7 +99,11 @@ public class Comentar extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnComentarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnComentarActionPerformed
-
+        String contenidoComentario= this.txtpnComentario.getText();
+        Contenido contenido= new Contenido(contenidoComentario);
+        GregorianCalendar fechaActual=new GregorianCalendar();
+        Comentario comentario= new Comentario(fechaActual, this.publicacion, this.usuario, contenido);
+        
     }//GEN-LAST:event_btnComentarActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -103,6 +115,6 @@ public class Comentar extends javax.swing.JPanel {
     private javax.swing.JButton btnComentar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextPane jTextPane1;
+    private javax.swing.JTextPane txtpnComentario;
     // End of variables declaration//GEN-END:variables
 }

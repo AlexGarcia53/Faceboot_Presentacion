@@ -8,14 +8,14 @@ package com.mycompany.presentacionfaceboot;
 import com.mycompany.proxyclientebroker.ProxyClienteBroker;
 import dominio.Publicacion;
 import dominio.Usuario;
+import excepciones.ErrorBusquedaPublicacionesException;
 import interfaces.IProxy;
 import interfaces.IObservadorRegistrarPublicacion;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.swing.JOptionPane;
-import notificacion.CanalizadorEventos;
-import notificacion.ObservableRegistrarPublicacion;
-import notificacion.OyenteNotificacionesBroker;
 import utils.Barra;
 import utils.PublicacionCompleta;
 
@@ -28,16 +28,41 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
 //    private Long idUsuario;
     private Usuario usuario;
     private IProxy proxyClienteBroker;
+    public List<Publicacion> publicaciones= new ArrayList<>();
     /**
      * Creates new form FrmMuro
      */
-    private FrmMuro(Usuario usuario, IProxy proxyClienteBroker) {
+    public FrmMuro(Usuario usuario, IProxy proxyClienteBroker) {
         initComponents();
         this.proxyClienteBroker= proxyClienteBroker;
         this.usuario= usuario;
         this.lblUsuario.setText(""+this.usuario.getUsuario());
         cpnMuro.setVerticalScrollBar(new Barra());
-//        this.suscribirseEventoRegistrarPublicacion();
+        this.consultarPublicaciones();
+        this.pintarPublicaciones(publicaciones);
+        this.suscribirseEventoRegistrarPublicacion();
+    }
+    
+    public void consultarPublicaciones(){
+        try{
+            this.publicaciones = this.proxyClienteBroker.consultarPublicaciones();
+        }catch(ErrorBusquedaPublicacionesException e){
+            this.mostrarError(e.getMessage());
+        }
+    }
+    
+    public void pintarPublicaciones(List<Publicacion> publicaciones){
+        for(Publicacion publicacion: publicaciones){
+            System.out.println(publicacion);
+            PublicacionCompleta pnlPublicacion= new PublicacionCompleta(this.usuario, publicacion, this.proxyClienteBroker);
+            this.pnlPublicaciones.add(pnlPublicacion);
+        }
+        this.pnlPublicaciones.repaint();
+        this.pnlPublicaciones.revalidate();
+    }
+    
+    private void mostrarError(String error) {
+        JOptionPane.showMessageDialog(this, error, "Error!...", JOptionPane.ERROR_MESSAGE);
     }
     
 //    public static FrmMuro obtenerFrmMuro(Long idUsuario, IProxy proxyClienteBroker){
@@ -47,19 +72,13 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
 //        return frmMuro;
 //    }
     
-    public static FrmMuro obtenerFrmMuro(Usuario usuario, IProxy proxyClienteBroker){
-        if(frmMuro==null){
-            frmMuro= new FrmMuro(usuario,proxyClienteBroker);
-        }
-        return frmMuro;
-    }
   
     public void suscribirseEventoRegistrarPublicacion(){
-        this.proxyClienteBroker.suscribirseEventoRegistrarPublicacion(frmMuro);
+        this.proxyClienteBroker.suscribirseEventoRegistrarPublicacion(this);
     }
     
     public void desuscribirseEventoRegistrarPublicacion(){
-        this.proxyClienteBroker.desuscribirseEventoRegistrarPublicacion(frmMuro);
+        this.proxyClienteBroker.desuscribirseEventoRegistrarPublicacion(this);
     }
     
     /**
@@ -185,13 +204,15 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnHacerPublicacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHacerPublicacionActionPerformed
-        FrmPublicacion frmPublicacion= FrmPublicacion.obtenerFrmPublicacion(usuario, proxyClienteBroker);
+        this.desuscribirseEventoRegistrarPublicacion();
+        FrmPublicacion frmPublicacion= new FrmPublicacion(usuario, this.proxyClienteBroker);
         frmPublicacion.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnHacerPublicacionActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         this.desuscribirseEventoRegistrarPublicacion();
-        FrmInicioSesion frmInicioSesion= FrmInicioSesion.obtenerFrmInicioSesion(this.proxyClienteBroker);
+        FrmInicioSesion frmInicioSesion= new FrmInicioSesion(this.proxyClienteBroker);
         frmInicioSesion.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
@@ -207,7 +228,7 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
     private void btnPruebaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPruebaActionPerformed
         Date fecha= new Date();
         SimpleDateFormat formatoFecha= new SimpleDateFormat("dd/MM/YYYY");
-        PublicacionCompleta publicacion= new PublicacionCompleta("Alex GL", formatoFecha.format(fecha));
+        PublicacionCompleta publicacion= new PublicacionCompleta(this.usuario, publicaciones.get(1), this.proxyClienteBroker);
         
         this.pnlPublicaciones.add(publicacion);
         this.pnlPublicaciones.repaint();
@@ -232,6 +253,6 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
 
     @Override
     public void notificarRegistroPublicacion(String actualizacion) {
-        JOptionPane.showMessageDialog(this, actualizacion, "Mensaje del servidor", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Se añadió una nueva publicación", "Mensaje del servidor", JOptionPane.INFORMATION_MESSAGE);
     }
 }

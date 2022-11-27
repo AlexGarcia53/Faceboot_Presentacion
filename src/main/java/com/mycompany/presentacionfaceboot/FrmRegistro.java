@@ -10,6 +10,7 @@ import dominio.Sexo;
 import dominio.Solicitud;
 import dominio.Usuario;
 import excepciones.ErrorDatosErroneosException;
+import excepciones.ErrorGuardarUsuarioException;
 import interfaces.IProxy;
 import java.time.LocalDate;
 import java.util.GregorianCalendar;
@@ -25,7 +26,6 @@ import logueo.Contexto;
 public class FrmRegistro extends javax.swing.JFrame {
 
     private static FrmRegistro frmRegistro;
-    String identificador;
     IProxy proxyClienteBroker;
 
     /**
@@ -34,7 +34,6 @@ public class FrmRegistro extends javax.swing.JFrame {
     private FrmRegistro() {
         initComponents();
         setLocationRelativeTo(null);
-        this.identificador = Math.random() + "";
         this.proxyClienteBroker = new ProxyClienteBroker();
         frmRegistro = this;
     }
@@ -248,7 +247,7 @@ public class FrmRegistro extends javax.swing.JFrame {
 
     private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
         // TODO add your handling code here:
-        FrmInicioSesion frmInicioSesion = FrmInicioSesion.obtenerFrmInicioSesion(proxyClienteBroker);
+        FrmInicioSesion frmInicioSesion = new FrmInicioSesion(proxyClienteBroker);
         frmInicioSesion.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
@@ -284,11 +283,11 @@ public class FrmRegistro extends javax.swing.JFrame {
         //String usuario, String email, String contraseña, String celular, Sexo sexo, int edad, GregorianCalendar fechaNacimiento
         Usuario objetoUsuario= new Usuario(usuario, email, contrasenia, celular, sexo, fechaNacimiento);
         
-        String respuesta= this.proxyClienteBroker.registrarUsuario(objetoUsuario);
-        if(respuesta.startsWith("Excepción: ")){
-            this.mostrarMensaje(respuesta);
-        }else{
-            this.mostrarMensaje(respuesta);
+        try{
+            Usuario respuesta= this.proxyClienteBroker.registrarUsuario(objetoUsuario);
+            this.mostrarMensaje("Se registró correctamente al usuario");
+        } catch(ErrorGuardarUsuarioException e){
+            this.mostrarError(e.getMessage());
         }
     }//GEN-LAST:event_btnRegistrarseActionPerformed
 

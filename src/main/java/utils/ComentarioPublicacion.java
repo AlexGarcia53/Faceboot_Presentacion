@@ -4,23 +4,43 @@
  */
 package utils;
 
+import dominio.Comentario;
+import dominio.Usuario;
+import interfaces.IProxy;
+import java.util.Calendar;
+
 /**
  *
  * @author Gael
  */
-public class Comentario extends javax.swing.JPanel {
-
+public class ComentarioPublicacion extends javax.swing.JPanel {
+    private Usuario usuario;
+    private Comentario comentario;
+    private IProxy proxy;
     /**
      * Creates new form Comentario
      */
-    public Comentario() {
+    public ComentarioPublicacion(Usuario usuario, Comentario comentario, IProxy proxy) {
         initComponents();
+        this.usuario= usuario;
+        this.comentario= comentario;
+        this.proxy=proxy;
         this.actualizarContenido();
     }
 
     public void actualizarContenido() {
-
+        this.lblUsuario.setText(comentario.getUsuario().getUsuario());
+        this.lblFecha.setText(comentario.getFechaCreacion().get(Calendar.DAY_OF_MONTH)+"/"+(comentario.getFechaCreacion().get(Calendar.MONTH)+1)+"/"+comentario.getFechaCreacion().get(Calendar.YEAR));
+//        this.txtpnContenido.setText(textoPlano);
+//        this.repaint();
+//        this.revalidate();
+        this.pnlComentario.setText(comentario.getContenido().getTextoPlano());
+        this.pnlComentario.repaint();
+        this.pnlComentario.revalidate();
         
+        if(usuario.getId()!=comentario.getUsuario().getId()){
+            this.pnlOpciones.setVisible(false);
+        }
    
         this.repaint();
         this.revalidate();

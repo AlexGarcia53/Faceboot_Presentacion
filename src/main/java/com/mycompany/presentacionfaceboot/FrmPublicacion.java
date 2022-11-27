@@ -8,6 +8,7 @@ package com.mycompany.presentacionfaceboot;
 import dominio.Contenido;
 import dominio.Publicacion;
 import dominio.Usuario;
+import excepciones.ErrorGuardarPublicacionException;
 import interfaces.IProxy;
 import java.awt.Image;
 import java.io.File;
@@ -23,7 +24,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author Jarol
  */
 public class FrmPublicacion extends javax.swing.JFrame {
-    private static FrmPublicacion frmPublicacion;
     IProxy proxyClienteBroker;
     Usuario usuario;
     /**
@@ -184,11 +184,11 @@ public class FrmPublicacion extends javax.swing.JFrame {
         Contenido contenido = new Contenido(textoPlano);
         Publicacion publicacion = new Publicacion(a,this.usuario,contenido);
  
-        String respuesta = this.proxyClienteBroker.registrarPublicacion(publicacion);
-        if (respuesta.startsWith("Excepción: ")) {
-            this.mostrarMensaje(respuesta);
-        } else {
-            this.mostrarMensaje(respuesta);
+        try{
+            Publicacion respuesta = this.proxyClienteBroker.registrarPublicacion(publicacion);
+            this.mostrarMensaje("Se registró correctamente la publicación");
+        }catch(ErrorGuardarPublicacionException e){
+            this.mostrarMensaje(e.getMessage());
         }
     }//GEN-LAST:event_btnPublicarActionPerformed
 
@@ -220,13 +220,6 @@ public class FrmPublicacion extends javax.swing.JFrame {
 
     private void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, "Respuesta del servidor", JOptionPane.INFORMATION_MESSAGE);
-    }
-    
-    public static FrmPublicacion obtenerFrmPublicacion(Usuario usuario,IProxy proxyClienteBroker){
-        if(frmPublicacion==null){
-            frmPublicacion = new FrmPublicacion(usuario, proxyClienteBroker);
-        }
-        return frmPublicacion;
     }
     
     

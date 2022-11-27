@@ -5,6 +5,8 @@
 package utils;
 
 
+import dominio.*;
+import interfaces.IProxy;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 
@@ -13,23 +15,29 @@ import javax.swing.JPanel;
  * @author Admin
  */
 public class PublicacionCompleta extends javax.swing.JPanel {
-
+    private Usuario usuario;
+    private Publicacion publicacion;
+    private IProxy proxy;
     /**
      * Creates new form Publicacion
      */
-    public PublicacionCompleta(String usuario, String fecha) {
+    public PublicacionCompleta(Usuario usuario, Publicacion publicacion, IProxy proxy) {
         initComponents();
-        this.actualizarContenido(usuario, fecha);
+        this.usuario= usuario;
+        this.publicacion= publicacion;
+        this.proxy= proxy;
     }
     
     public void actualizarContenido(String usuario, String fecha){
-        CabeceraPublicacion cabeceraPublicacion= new CabeceraPublicacion();
+        CabeceraPublicacion cabeceraPublicacion= new CabeceraPublicacion(this.usuario, this.publicacion, this.proxy);
         
-        cabeceraPublicacion.init(usuario, fecha);
+//        cabeceraPublicacion.init(usuario, fecha);
+
         ContenidoPublicacion contenidoPublicacion= new ContenidoPublicacion();
-        contenidoPublicacion.init("hola");
-        Comentarios comentarios = new Comentarios();
-        Comentar comentar = new Comentar();
+        contenidoPublicacion.init(publicacion.getContenido().getTextoPlano());
+        
+        Comentarios comentarios = new Comentarios(this.usuario, this.publicacion, this.proxy);
+        Comentar comentar = new Comentar(this.usuario, this.publicacion, this.proxy);
       
 
         this.add(cabeceraPublicacion);
