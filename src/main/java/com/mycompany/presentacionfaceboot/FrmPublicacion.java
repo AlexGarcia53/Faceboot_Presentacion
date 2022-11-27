@@ -95,6 +95,11 @@ public class FrmPublicacion extends javax.swing.JFrame {
         btnCancelar.setBackground(new java.awt.Color(102, 102, 102));
         btnCancelar.setForeground(new java.awt.Color(255, 255, 255));
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
         fondo.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 530, 150, 40));
 
         txtTextoPlano.setColumns(20);
@@ -217,6 +222,12 @@ public class FrmPublicacion extends javax.swing.JFrame {
     private void txtEtiquetadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEtiquetadosActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtEtiquetadosActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        FrmMuro muro = new FrmMuro(this.usuario, this.proxyClienteBroker);
+        muro.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, "Respuesta del servidor", JOptionPane.INFORMATION_MESSAGE);

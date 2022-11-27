@@ -26,9 +26,10 @@ public class PublicacionCompleta extends javax.swing.JPanel {
         this.usuario= usuario;
         this.publicacion= publicacion;
         this.proxy= proxy;
+        this.actualizarContenido();
     }
     
-    public void actualizarContenido(String usuario, String fecha){
+    public void actualizarContenido(){
         CabeceraPublicacion cabeceraPublicacion= new CabeceraPublicacion(this.usuario, this.publicacion, this.proxy);
         
 //        cabeceraPublicacion.init(usuario, fecha);
