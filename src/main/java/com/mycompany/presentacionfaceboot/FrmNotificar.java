@@ -5,17 +5,31 @@
  */
 package com.mycompany.presentacionfaceboot;
 
+import com.mycompany.proxyclientebroker.ProxyClienteBroker;
+import dominio.Mensaje;
+import dominio.Usuario;
+import excepciones.ErrorDatosErroneosException;
+import interfaces.IProxy;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Jarol
  */
 public class FrmNotificar extends javax.swing.JFrame {
-
+ private static FrmNotificar frmNotificar;
+    String identificador;
+    IProxy proxyClienteBroker;
     /**
      * Creates new form FrmNotificar
      */
     public FrmNotificar() {
-        initComponents();
+         initComponents();
+        setLocationRelativeTo(null);
+        this.identificador= Math.random()+"";
+        this.proxyClienteBroker= new ProxyClienteBroker();
+       frmNotificar= this;
+       this.comboBoxDestinatario.requestFocus();
     }
 
     /**
@@ -35,9 +49,10 @@ public class FrmNotificar extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         txtMensaje = new javax.swing.JTextArea();
         jLabel5 = new javax.swing.JLabel();
-        comboBoxMetodo = new javax.swing.JComboBox<>();
         btnEnviarMensaje = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+        radioButtonCorreo = new javax.swing.JRadioButton();
+        radioButtonSms = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -73,13 +88,15 @@ public class FrmNotificar extends javax.swing.JFrame {
         jLabel5.setText("Mensaje");
         fondo.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 220, -1, -1));
 
-        comboBoxMetodo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        fondo.add(comboBoxMetodo, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 490, 310, 30));
-
         btnEnviarMensaje.setBackground(new java.awt.Color(240, 115, 0));
         btnEnviarMensaje.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
         btnEnviarMensaje.setForeground(new java.awt.Color(255, 255, 255));
         btnEnviarMensaje.setText("Enviar");
+        btnEnviarMensaje.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEnviarMensajeActionPerformed(evt);
+            }
+        });
         fondo.add(btnEnviarMensaje, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 530, 140, 40));
 
         btnCancelar.setBackground(new java.awt.Color(102, 102, 102));
@@ -91,6 +108,12 @@ public class FrmNotificar extends javax.swing.JFrame {
             }
         });
         fondo.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 530, 150, 40));
+
+        radioButtonCorreo.setText("Correo");
+        fondo.add(radioButtonCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 490, -1, -1));
+
+        radioButtonSms.setText("SMS");
+        fondo.add(radioButtonSms, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 490, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -107,21 +130,133 @@ public class FrmNotificar extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        // TODO add your handling code here:
+        System.exit(0);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
+    private void btnEnviarMensajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarMensajeActionPerformed
+        String texto=this.txtMensaje.getText();
+        boolean correo=this.radioButtonCorreo.isSelected();
+        boolean sms=this.radioButtonSms.isSelected();
+       try
+       {
+        validarDatos();
+        Mensaje m=new Mensaje();
+    
+        m.setTextoPlano(texto);
+        m.setId(Long.MIN_VALUE);
+        Usuario emisor = new Usuario();
+   
+         emisor.setUsuario("Jose Lopez");
 
+   //faceboot23a
+   
+    Usuario receptor= new Usuario();
+    receptor.setCelular("6731471748");
+    receptor.setUsuario("jarol4");
+    receptor.setEmail("tellezjarol89@gmail.com");
+    m.setReceptor(receptor);
+    m.setEnvioCorreo(correo);
+    m.setEnvioSms(sms);
+    m.setUsuario(emisor);
+    
+    String respuesta= this.proxyClienteBroker.Notificar(m);
+        if(respuesta.startsWith("Excepción: ")){
+            this.mostrarMensaje(respuesta);
+        }else{
+            this.mostrarMensaje(respuesta);
+        }
+         limpiarCampos();
+       }catch(ErrorDatosErroneosException e)
+       {
+           mostrarMensaje(e.getMessage());
+       }
+    }//GEN-LAST:event_btnEnviarMensajeActionPerformed
+
+    private void limpiarCampos()
+    {
+        this.txtMensaje.setText(null);
+        this.radioButtonCorreo.setSelected(false);
+        this.radioButtonSms.setSelected(false);
+        this.comboBoxDestinatario.requestFocus();
+    }
+    
+    private void  validarDatos()
+    {
+        /*
+        if(this.comboBoxDestinatario.getSelectedItem()==null)
+        {
+            throw new ErrorDatosErroneosException();
+        }*/
+        
+         if(this.txtMensaje.getText().trim().length()==0)
+        {
+             throw new ErrorDatosErroneosException("Agregue mensaje a enviar");
+        } else if(this.radioButtonCorreo.isSelected()==false&&this.radioButtonSms.isSelected()==false)
+        {
+            throw new ErrorDatosErroneosException("Seleccione Metodo de envio");
+        }
+          
+        
+    }
+    private void mostrarMensaje(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje, "Respuesta del servidor", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public static FrmNotificar obtenerFrmRegistro(){
+        if(frmNotificar == null){
+            frmNotificar= new FrmNotificar();
+        }
+        return frmNotificar;
+    }   
+
+     /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+              
+               
+            
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(FrmInicioSesion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(FrmInicioSesion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(FrmInicioSesion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(FrmInicioSesion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(() -> {
+            new FrmNotificar().setVisible(true);
+        });
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEnviarMensaje;
     private javax.swing.JComboBox<String> comboBoxDestinatario;
-    private javax.swing.JComboBox<String> comboBoxMetodo;
     private javax.swing.JPanel fondo;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JRadioButton radioButtonCorreo;
+    private javax.swing.JRadioButton radioButtonSms;
     private javax.swing.JTextArea txtMensaje;
     // End of variables declaration//GEN-END:variables
 }

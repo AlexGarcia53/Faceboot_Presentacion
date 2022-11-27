@@ -17,11 +17,14 @@
             <groupId>unknown.binary</groupId>
             <artifactId>AbsoluteLayout</artifactId>
             <version>SNAPSHOT</version>
+             <type>jar</type>
         </dependency>
+        
         <dependency>
             <groupId>unknown.binary</groupId>
             <artifactId>LGoodDatePicker-11.2.1</artifactId>
             <version>SNAPSHOT</version>
+             <type>jar</type>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>

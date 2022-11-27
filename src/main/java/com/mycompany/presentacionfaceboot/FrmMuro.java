@@ -7,14 +7,14 @@ package com.mycompany.presentacionfaceboot;
 
 import dominio.Publicacion;
 import interfaces.IProxy;
-import interfaces.ISuscriptorFrmMuro;
+import interfaces.IObservadorRegistrarPublicacion;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author Jarol
  */
-public class FrmMuro extends javax.swing.JFrame implements ISuscriptorFrmMuro {
+public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarPublicacion{
     private static FrmMuro frmMuro;
     private Long idUsuario;
     private IProxy proxyClienteBroker;
@@ -26,7 +26,7 @@ public class FrmMuro extends javax.swing.JFrame implements ISuscriptorFrmMuro {
         this.proxyClienteBroker= proxyClienteBroker;
         this.idUsuario= idUsuario;
         this.lblUsuario.setText(""+this.idUsuario);
-        this.suscribirse();
+       // this.suscribirse();
     }
     
     public static FrmMuro obtenerFrmMuro(Long idUsuario, IProxy proxyClienteBroker){
@@ -35,16 +35,20 @@ public class FrmMuro extends javax.swing.JFrame implements ISuscriptorFrmMuro {
         }
         return frmMuro;
     }
-    
+    /*
     public void suscribirse(){
         this.proxyClienteBroker.suscribirse(this);
     }
-    
-    @Override
-    public void notificarPublicacion(String actualizacion){
-        JOptionPane.showMessageDialog(this, actualizacion, "Se ha registrado una nueva publicación", JOptionPane.INFORMATION_MESSAGE);
+    */
+       public void suscribirseEventoRegistrarPublicacion(){
+        this.proxyClienteBroker.suscribirseEventoRegistrarPublicacion(frmMuro);
     }
-
+    
+    public void desuscribirseEventoRegistrarPublicacion(){
+        this.proxyClienteBroker.desuscribirseEventoRegistrarPublicacion(frmMuro);
+    }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -133,4 +137,9 @@ public class FrmMuro extends javax.swing.JFrame implements ISuscriptorFrmMuro {
     private javax.swing.JLabel lblUsuario;
     private javax.swing.JPanel seccionMenu;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void notificarRegistroPublicacion(String actualizacion) {
+      JOptionPane.showMessageDialog(this, actualizacion, "Mensaje del servidor", JOptionPane.INFORMATION_MESSAGE);
+    }
 }

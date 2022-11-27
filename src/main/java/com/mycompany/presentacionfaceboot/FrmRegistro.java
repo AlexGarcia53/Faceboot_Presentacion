@@ -29,7 +29,7 @@ public class FrmRegistro extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         this.identificador= Math.random()+"";
-        this.proxyClienteBroker= new ProxyClienteBroker(identificador);
+        this.proxyClienteBroker= new ProxyClienteBroker();
         frmRegistro= this;
     }
 
@@ -267,15 +267,20 @@ public class FrmRegistro extends javax.swing.JFrame {
         }else{
             sexo= Sexo.FEMENINO;
         }
-        //String usuario, String email, String contraseña, String celular, Sexo sexo, int edad, GregorianCalendar fechaNacimiento
+        
+        //QUITAR COMENTARIOS
+        /*
+        String usuario, String email, String contraseña, String celular, Sexo sexo, int edad, GregorianCalendar fechaNacimiento
         Usuario objetoUsuario= new Usuario(usuario, email, contrasenia, celular, sexo, edad, fechaNacimiento);
         
-        String respuesta= this.proxyClienteBroker.registrarUsuario(objetoUsuario);
+       String respuesta= this.proxyClienteBroker.registrarUsuario(objetoUsuario);
         if(respuesta.startsWith("Excepción: ")){
             this.mostrarMensaje(respuesta);
         }else{
             this.mostrarMensaje(respuesta);
         }
+        */
+        
     }//GEN-LAST:event_btnRegistrarseActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
