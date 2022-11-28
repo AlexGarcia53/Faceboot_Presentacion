@@ -48,8 +48,30 @@ public class PublicacionCompleta extends javax.swing.JPanel {
         this.repaint();
         this.revalidate();
         
-       
     }
+    
+    public void actualizarEdicionContenido(){
+        ContenidoPublicacion contenidoPublicacion= new ContenidoPublicacion();
+        contenidoPublicacion.init(publicacion.getContenido().getTextoPlano());
+        Comentarios comentarios = new Comentarios(this.usuario, this.publicacion, this.proxy);
+        
+        this.remove(1);
+        this.add(contenidoPublicacion, 1);
+        this.remove(2);
+        this.add(comentarios, 2);
+        
+        this.repaint();
+        this.revalidate();
+    }
+
+    public Publicacion getPublicacion() {
+        return publicacion;
+    }
+
+    public void setPublicacion(Publicacion publicacion) {
+        this.publicacion = publicacion;
+    }
+    
     
 
     /**

@@ -6,9 +6,14 @@
 package com.mycompany.presentacionfaceboot;
 
 import com.mycompany.proxyclientebroker.ProxyClienteBroker;
+import dominio.Comentario;
 import dominio.Publicacion;
 import dominio.Usuario;
 import excepciones.ErrorBusquedaPublicacionesException;
+import interfaces.IObservadorEditarComentario;
+import interfaces.IObservadorEditarPublicacion;
+import interfaces.IObservadorEliminarPublicacion;
+import interfaces.IObservadorRegistrarComentario;
 import interfaces.IProxy;
 import interfaces.IObservadorRegistrarPublicacion;
 import java.text.SimpleDateFormat;
@@ -23,12 +28,13 @@ import utils.PublicacionCompleta;
  *
  * @author Jarol
  */
-public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarPublicacion {
+public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarPublicacion, IObservadorEditarPublicacion, IObservadorEliminarPublicacion,
+        IObservadorRegistrarComentario, IObservadorEditarComentario{
     private static FrmMuro frmMuro;
 //    private Long idUsuario;
     private Usuario usuario;
     private IProxy proxyClienteBroker;
-    public List<Publicacion> publicaciones= new ArrayList<>();
+    public List<PublicacionCompleta> publicaciones= new ArrayList<>();
     /**
      * Creates new form FrmMuro
      */
@@ -39,13 +45,17 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
         this.lblUsuario.setText(""+this.usuario.getUsuario());
         cpnMuro.setVerticalScrollBar(new Barra());
         this.consultarPublicaciones();
-        this.pintarPublicaciones(publicaciones);
         this.suscribirseEventoRegistrarPublicacion();
+        this.suscribirseEventoEditarPublicacion();
+        this.suscribirseEventoEliminarPublicacion();
+        this.suscribirseEventoEditarComentario();
+        this.suscribirseEventoRegistrarComentario();
     }
     
     public void consultarPublicaciones(){
         try{
-            this.publicaciones = this.proxyClienteBroker.consultarPublicaciones();
+            List<Publicacion> publicaciones = this.proxyClienteBroker.consultarPublicaciones();
+            this.pintarPublicaciones(publicaciones);
         }catch(ErrorBusquedaPublicacionesException e){
             this.mostrarError(e.getMessage());
         }
@@ -55,6 +65,7 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
         for(Publicacion publicacion: publicaciones){
             System.out.println(publicacion);
             PublicacionCompleta pnlPublicacion= new PublicacionCompleta(this.usuario, publicacion, this.proxyClienteBroker);
+            this.publicaciones.add(pnlPublicacion);
             this.pnlPublicaciones.add(pnlPublicacion);
         }
         this.pnlPublicaciones.repaint();
@@ -72,7 +83,38 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
 //        return frmMuro;
 //    }
     
-  
+    public void suscribirseEventoRegistrarComentario(){
+        this.proxyClienteBroker.suscribirseEventoRegistrarComentario(this);
+    }
+    
+    public void desuscribirEventoRegistrarComentario(){
+        this.proxyClienteBroker.desuscribirseEventoRegistrarComentario(this);
+    }
+    
+    public void suscribirseEventoEditarComentario(){
+        this.proxyClienteBroker.suscribirseEventoEditarComentario(this);
+    }
+    
+    public void desuscribirEventoEditarComentario(){
+        this.proxyClienteBroker.desuscribirseEventoEditarComentario(this);
+    }
+    
+    public void suscribirseEventoEliminarPublicacion(){
+        this.proxyClienteBroker.suscribirseEventoEliminarPublicacion(this);
+    }
+    
+    public void desuscribirEventoEliminarPublicacion(){
+        this.proxyClienteBroker.desuscribirseEventoEliminarPublicacion(this);
+    }
+    
+    public void suscribirseEventoEditarPublicacion(){
+        this.proxyClienteBroker.suscribirseEventoEditarPublicacion(this);
+    }
+    
+    public void desuscribirEventoEditarPublicacion(){
+        this.proxyClienteBroker.desuscribirseEventoEditarPublicacion(this);
+    }
+    
     public void suscribirseEventoRegistrarPublicacion(){
         this.proxyClienteBroker.suscribirseEventoRegistrarPublicacion(this);
     }
@@ -205,6 +247,10 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
 
     private void btnHacerPublicacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHacerPublicacionActionPerformed
         this.desuscribirseEventoRegistrarPublicacion();
+        this.desuscribirEventoEditarPublicacion();
+        this.desuscribirEventoEliminarPublicacion();
+        this.desuscribirEventoEditarComentario();
+        this.desuscribirEventoRegistrarComentario();
         FrmPublicacion frmPublicacion= new FrmPublicacion(usuario, this.proxyClienteBroker);
         frmPublicacion.setVisible(true);
         this.dispose();
@@ -212,6 +258,10 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         this.desuscribirseEventoRegistrarPublicacion();
+        this.desuscribirEventoEditarPublicacion();
+        this.desuscribirEventoEliminarPublicacion();
+        this.desuscribirEventoEditarComentario();
+        this.desuscribirEventoRegistrarComentario();
         FrmInicioSesion frmInicioSesion= new FrmInicioSesion(this.proxyClienteBroker);
         frmInicioSesion.setVisible(true);
         this.dispose();
@@ -226,13 +276,13 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
     }//GEN-LAST:event_btnEnviarMensajeActionPerformed
 
     private void btnPruebaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPruebaActionPerformed
-        Date fecha= new Date();
-        SimpleDateFormat formatoFecha= new SimpleDateFormat("dd/MM/YYYY");
-        PublicacionCompleta publicacion= new PublicacionCompleta(this.usuario, publicaciones.get(1), this.proxyClienteBroker);
-        
-        this.pnlPublicaciones.add(publicacion);
-        this.pnlPublicaciones.repaint();
-        this.pnlPublicaciones.revalidate();
+//        Date fecha= new Date();
+//        SimpleDateFormat formatoFecha= new SimpleDateFormat("dd/MM/YYYY");
+//        PublicacionCompleta publicacion= new PublicacionCompleta(this.usuario, publicaciones.get(1), this.proxyClienteBroker);
+//        
+//        this.pnlPublicaciones.add(publicacion);
+//        this.pnlPublicaciones.repaint();
+//        this.pnlPublicaciones.revalidate();
     }//GEN-LAST:event_btnPruebaActionPerformed
 
    
@@ -252,7 +302,59 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void notificarRegistroPublicacion(String actualizacion) {
-        JOptionPane.showMessageDialog(this, "Se añadió una nueva publicación", "Mensaje del servidor", JOptionPane.INFORMATION_MESSAGE);
+    public void notificarRegistroPublicacion(Publicacion actualizacion) {
+//        JOptionPane.showMessageDialog(this, "Se añadió una nueva publicación", "Mensaje del servidor", JOptionPane.INFORMATION_MESSAGE);
+        PublicacionCompleta pnlPublicacion= new PublicacionCompleta(this.usuario, actualizacion, this.proxyClienteBroker);
+        this.publicaciones.add(pnlPublicacion);
+        this.pnlPublicaciones.add(pnlPublicacion);
+        this.pnlPublicaciones.repaint();
+        this.pnlPublicaciones.revalidate();
+    }
+
+    @Override
+    public void notificarEdicionPublicacion(Publicacion publicacion) {
+        System.out.println("Llego");
+        for (int i = 0; i < publicaciones.size(); i++) {
+            if(publicaciones.get(i).getPublicacion().getId()==publicacion.getId()){
+                publicaciones.get(i).setPublicacion(publicacion);
+                publicaciones.get(i).actualizarEdicionContenido();
+            }
+        }
+//        for(PublicacionCompleta panelPublicacion: publicaciones){
+//            if(panelPublicacion.getPublicacion().getId()==publicacion.getId()){
+//                panelPublicacion.setPublicacion(publicacion);
+//                panelPublicacion.actualizarContenido();
+//                publicaciones., panelPublicacion)
+//            }
+//        }
+//        this.pnlPublicaciones.repaint();
+//        this.pnlPublicaciones.revalidate();
+    }
+
+    @Override
+    public void notificarEliminacionPublicacion(Publicacion publicacion) {
+        for (int i = 0; i < publicaciones.size(); i++) {
+            if(publicaciones.get(i).getPublicacion().getId()==publicacion.getId()){
+                this.pnlPublicaciones.remove(publicaciones.get(i));
+                this.pnlPublicaciones.repaint();
+                this.pnlPublicaciones.revalidate();
+                publicaciones.remove(i);
+            }
+        }
+    }
+
+    @Override
+    public void notificarRegistroComentario(Comentario comentario) {
+        for (int i = 0; i < publicaciones.size(); i++) {
+            if(publicaciones.get(i).getPublicacion().getId()==comentario.getPublicacion().getId()){
+                publicaciones.get(i).getPublicacion().agregarComentario(comentario);
+                publicaciones.get(i).actualizarEdicionContenido();
+            }
+        }
+    }
+
+    @Override
+    public void notificarEdicionComentario(Comentario comentario) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

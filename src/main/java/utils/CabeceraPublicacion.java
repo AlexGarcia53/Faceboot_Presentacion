@@ -4,6 +4,8 @@
  */
 package utils;
 
+import com.mycompany.presentacionfaceboot.FrmEditarPublicacion;
+import com.mycompany.presentacionfaceboot.FrmEliminarPublicacion;
 import dominio.*;
 import interfaces.IProxy;
 import java.util.Calendar;
@@ -143,11 +145,13 @@ public class CabeceraPublicacion extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-
+        FrmEditarPublicacion editar= new FrmEditarPublicacion(this.usuario, this.proxy, this.publicacion);
+        editar.setVisible(true);
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
+        FrmEliminarPublicacion eliminar= new FrmEliminarPublicacion(this.usuario, this.proxy, this.publicacion);
+        eliminar.setVisible(true);
     }//GEN-LAST:event_btnEliminarActionPerformed
 
 

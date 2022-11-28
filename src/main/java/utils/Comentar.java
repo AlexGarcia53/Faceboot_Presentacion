@@ -6,9 +6,11 @@ package utils;
 
 import dominio.*;
 import dominio.Comentario;
+import excepciones.ErrorGuardarComentarioException;
 import interfaces.IProxy;
 import java.awt.Label;
 import java.util.GregorianCalendar;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -104,13 +106,22 @@ public class Comentar extends javax.swing.JPanel {
         GregorianCalendar fechaActual=new GregorianCalendar();
         Comentario comentario= new Comentario(fechaActual, this.publicacion, this.usuario, contenido);
         
+        try{
+            Comentario respuesta = this.proxy.registrarComentario(comentario);
+            this.mostrarMensaje("Se registró correctamente el comentario");
+        }catch(ErrorGuardarComentarioException e){
+            this.mostrarMensaje(e.getMessage());
+        }
     }//GEN-LAST:event_btnComentarActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
-
+    private void mostrarMensaje(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje, "Respuesta del servidor", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnComentar;
     private javax.swing.JScrollPane jScrollPane1;
