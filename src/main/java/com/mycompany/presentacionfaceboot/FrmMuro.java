@@ -12,6 +12,7 @@ import dominio.Usuario;
 import excepciones.ErrorBusquedaPublicacionesException;
 import interfaces.IObservadorEditarComentario;
 import interfaces.IObservadorEditarPublicacion;
+import interfaces.IObservadorEliminarComentario;
 import interfaces.IObservadorEliminarPublicacion;
 import interfaces.IObservadorRegistrarComentario;
 import interfaces.IProxy;
@@ -29,7 +30,7 @@ import utils.PublicacionCompleta;
  * @author Jarol
  */
 public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarPublicacion, IObservadorEditarPublicacion, IObservadorEliminarPublicacion,
-        IObservadorRegistrarComentario, IObservadorEditarComentario{
+        IObservadorRegistrarComentario, IObservadorEditarComentario, IObservadorEliminarComentario{
     private static FrmMuro frmMuro;
 //    private Long idUsuario;
     private Usuario usuario;
@@ -42,7 +43,7 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
         initComponents();
         this.proxyClienteBroker= proxyClienteBroker;
         this.usuario= usuario;
-        this.lblUsuario.setText(""+this.usuario.getUsuario());
+        this.btnEditarPerfil.setText(usuario.getUsuario());
         cpnMuro.setVerticalScrollBar(new Barra());
         this.consultarPublicaciones();
         this.suscribirseEventoRegistrarPublicacion();
@@ -50,6 +51,7 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
         this.suscribirseEventoEliminarPublicacion();
         this.suscribirseEventoEditarComentario();
         this.suscribirseEventoRegistrarComentario();
+        this.suscribirseEventoEliminarComentario();
     }
     
     public void consultarPublicaciones(){
@@ -66,7 +68,7 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
             System.out.println(publicacion);
             PublicacionCompleta pnlPublicacion= new PublicacionCompleta(this.usuario, publicacion, this.proxyClienteBroker);
             this.publicaciones.add(pnlPublicacion);
-            this.pnlPublicaciones.add(pnlPublicacion);
+            this.pnlPublicaciones.add(pnlPublicacion,0);
         }
         this.pnlPublicaciones.repaint();
         this.pnlPublicaciones.revalidate();
@@ -97,6 +99,14 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
     
     public void desuscribirEventoEditarComentario(){
         this.proxyClienteBroker.desuscribirseEventoEditarComentario(this);
+    }
+    
+    public void suscribirseEventoEliminarComentario(){
+        this.proxyClienteBroker.suscribirseEventoEliminarComentario(this);
+    }
+    
+    public void desuscribirEventoEliminarComentario(){
+        this.proxyClienteBroker.desuscribirseEventoEliminarComentario(this);
     }
     
     public void suscribirseEventoEliminarPublicacion(){
@@ -135,7 +145,6 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
         fondo = new javax.swing.JPanel();
         seccionMenu = new javax.swing.JPanel();
         btnHacerPublicacion = new javax.swing.JButton();
-        lblUsuario = new javax.swing.JLabel();
         btnEditarPerfil = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
         btnEnviarMensaje = new javax.swing.JButton();
@@ -147,6 +156,14 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         fondo.setBackground(new java.awt.Color(255, 217, 183));
         fondo.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -163,7 +180,6 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
             }
         });
         seccionMenu.add(btnHacerPublicacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 30, 290, 30));
-        seccionMenu.add(lblUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 30, 110, 30));
 
         btnEditarPerfil.setBackground(new java.awt.Color(255, 217, 183));
         btnEditarPerfil.addActionListener(new java.awt.event.ActionListener() {
@@ -196,7 +212,6 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
         seccionMenu.add(btnEnviarMensaje, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 30, 90, 30));
 
         logo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        logo.setIcon(new javax.swing.ImageIcon("C:\\Users\\Gael\\Documents\\GITHUB\\Faceboot_Presentacion\\src\\images\\logo3.png")); // NOI18N
         logo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         logo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         seccionMenu.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 220, 50));
@@ -251,6 +266,7 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
         this.desuscribirEventoEliminarPublicacion();
         this.desuscribirEventoEditarComentario();
         this.desuscribirEventoRegistrarComentario();
+        this.desuscribirEventoEliminarComentario();
         FrmPublicacion frmPublicacion= new FrmPublicacion(usuario, this.proxyClienteBroker);
         frmPublicacion.setVisible(true);
         this.dispose();
@@ -262,13 +278,22 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
         this.desuscribirEventoEliminarPublicacion();
         this.desuscribirEventoEditarComentario();
         this.desuscribirEventoRegistrarComentario();
+        this.desuscribirEventoEliminarComentario();
         FrmInicioSesion frmInicioSesion= new FrmInicioSesion(this.proxyClienteBroker);
         frmInicioSesion.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnEditarPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarPerfilActionPerformed
-        // TODO add your handling code here:
+        this.desuscribirseEventoRegistrarPublicacion();
+        this.desuscribirEventoEditarPublicacion();
+        this.desuscribirEventoEliminarPublicacion();
+        this.desuscribirEventoEditarComentario();
+        this.desuscribirEventoRegistrarComentario();
+        this.desuscribirEventoEliminarComentario();
+        frmEditarPerfil perfil= new frmEditarPerfil(this.usuario, this.proxyClienteBroker);
+        perfil.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnEditarPerfilActionPerformed
 
     private void btnEnviarMensajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarMensajeActionPerformed
@@ -285,6 +310,19 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
 //        this.pnlPublicaciones.revalidate();
     }//GEN-LAST:event_btnPruebaActionPerformed
 
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        
+    }//GEN-LAST:event_formWindowClosed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        this.desuscribirseEventoRegistrarPublicacion();
+        this.desuscribirEventoEditarPublicacion();
+        this.desuscribirEventoEliminarPublicacion();
+        this.desuscribirEventoEditarComentario();
+        this.desuscribirEventoRegistrarComentario();
+        this.desuscribirEventoEliminarComentario();
+    }//GEN-LAST:event_formWindowClosing
+
    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEditarPerfil;
@@ -294,7 +332,6 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
     private javax.swing.JButton btnSalir;
     private javax.swing.JScrollPane cpnMuro;
     private javax.swing.JPanel fondo;
-    private javax.swing.JLabel lblUsuario;
     private javax.swing.JLabel logo;
     private javax.swing.JPanel pnlMuro;
     private javax.swing.JPanel pnlPublicaciones;
@@ -306,7 +343,7 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
 //        JOptionPane.showMessageDialog(this, "Se añadió una nueva publicación", "Mensaje del servidor", JOptionPane.INFORMATION_MESSAGE);
         PublicacionCompleta pnlPublicacion= new PublicacionCompleta(this.usuario, actualizacion, this.proxyClienteBroker);
         this.publicaciones.add(pnlPublicacion);
-        this.pnlPublicaciones.add(pnlPublicacion);
+        this.pnlPublicaciones.add(pnlPublicacion, 0);
         this.pnlPublicaciones.repaint();
         this.pnlPublicaciones.revalidate();
     }
@@ -355,6 +392,27 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
 
     @Override
     public void notificarEdicionComentario(Comentario comentario) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        for (int i = 0; i < publicaciones.size(); i++) {
+            if(publicaciones.get(i).getPublicacion().getId()==comentario.getPublicacion().getId()){
+                publicaciones.get(i).getPublicacion().editarComentario(comentario);
+                publicaciones.get(i).actualizarEdicionContenido();
+            }
+        }
+    }
+
+    @Override
+    public void notificarEliminacionComentario(Comentario comentario) {
+        System.out.println("Entró a notificar eliminación");
+        System.out.println(comentario);
+        for (int i = 0; i < publicaciones.size(); i++) {
+            if(publicaciones.get(i).getPublicacion().getId()==comentario.getPublicacion().getId()){
+                publicaciones.get(i).getPublicacion().eliminarComentario(comentario);
+                publicaciones.get(i).actualizarEdicionContenido();
+//                this.pnlPublicaciones.remove(publicaciones.get(i));
+//                this.pnlPublicaciones.repaint();
+//                this.pnlPublicaciones.revalidate();
+//                publicaciones.get(i).getPublicacion().eliminarComentario(comentario);
+            }
+        }
     }
 }

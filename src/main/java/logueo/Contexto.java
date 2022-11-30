@@ -9,7 +9,7 @@ import dominio.*;
  * @author Gael
  */
 public class Contexto {
-        private IMetodoLogueo estrategia;
+//        private IMetodoLogueo estrategia;
     
     private static Contexto contexto;
     
@@ -24,31 +24,16 @@ public class Contexto {
         return contexto;
     }
     
-    public Usuario canalizarSolicitud(String tipoInicio){
-        
-        switch (tipoInicio) {
-            case "iniciar_sesion_facebook":{
-                contexto.establecerEstrategia(new EstrategiaFacebook());
-                break;
-            }
-//            case "iniciar_sesion_local":{
-//                contexto.establecerEstrategia(new EstrategiaLocal());
-//                break;
-//            }
-            default:{
-                contexto.establecerEstrategia(null);
-                break;
-            }
-        }
-        return contexto.iniciarSesion();
+    public IMetodoLogueo obtenerAdaptador(){
+        return new EstrategiaFacebook();
     }
     
-    public void establecerEstrategia(IMetodoLogueo estrategia){
-        this.estrategia = estrategia;
-    }
-    
-    public Usuario iniciarSesion(){
-       return this.estrategia.iniciarSesion();
-    }  
+//    public void establecerEstrategia(IMetodoLogueo estrategia){
+//        this.estrategia = estrategia;
+//    }
+//    
+//    public Usuario iniciarSesion(){
+//       return this.estrategia.iniciarSesion();
+//    }  
     
 }

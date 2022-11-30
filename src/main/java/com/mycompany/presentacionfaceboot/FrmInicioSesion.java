@@ -11,6 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import logueo.Contexto;
+import logueo.IMetodoLogueo;
 
 
 //import com.sun.prism.paint.Paint;
@@ -237,9 +238,9 @@ public class FrmInicioSesion extends javax.swing.JFrame {
 
     private void btnSesionFacebookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSesionFacebookActionPerformed
 
-        String tipoInicio = "iniciar_sesion_facebook";
+        IMetodoLogueo metodoLogueo= Contexto.getInstancia().obtenerAdaptador();
 
-        Usuario usuario = Contexto.getInstancia().canalizarSolicitud(tipoInicio);
+        Usuario usuario = metodoLogueo.iniciarSesion();
 
         try{
             Usuario respuesta = this.proxyClienteBroker.iniciarSesionFacebook(usuario);

@@ -13,6 +13,8 @@ import interfaces.IProxy;
 import java.awt.Image;
 import java.io.File;
 import java.io.FileInputStream;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -184,10 +186,12 @@ public class FrmPublicacion extends javax.swing.JFrame {
 
     private void btnPublicarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPublicarActionPerformed
         String textoPlano = this.txtTextoPlano.getText();
-        GregorianCalendar a = new GregorianCalendar();
+//        Date fechaActual= new Date();
+        GregorianCalendar fechaPublicacion= new GregorianCalendar();
+//        fechaPublicacion.setTimeInMillis(fechaActual.getTime());
 
         Contenido contenido = new Contenido(textoPlano);
-        Publicacion publicacion = new Publicacion(a,this.usuario,contenido);
+        Publicacion publicacion = new Publicacion(fechaPublicacion,this.usuario,contenido);
  
         try{
             Publicacion respuesta = this.proxyClienteBroker.registrarPublicacion(publicacion);

@@ -196,6 +196,8 @@ public class FrmEditarPublicacion extends javax.swing.JFrame {
         }catch(ErrorGuardarPublicacionException e){
             this.mostrarMensaje(e.getMessage());
         }
+        
+        this.dispose();
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnAñadirImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAñadirImagenActionPerformed

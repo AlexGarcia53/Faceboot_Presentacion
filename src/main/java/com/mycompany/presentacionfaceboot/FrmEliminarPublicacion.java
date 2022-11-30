@@ -78,7 +78,7 @@ public class FrmEliminarPublicacion extends javax.swing.JFrame {
 
         jLabel3.setBackground(new java.awt.Color(0, 0, 0));
         jLabel3.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
-        jLabel3.setText("HACER PUBLICACIÓN");
+        jLabel3.setText("ELIMINAR PUBLICACIÓN");
         fondo.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 50, -1, -1));
 
         jLabel4.setBackground(new java.awt.Color(0, 0, 0));
@@ -183,6 +183,8 @@ public class FrmEliminarPublicacion extends javax.swing.JFrame {
         }catch(ErrorGuardarPublicacionException e){
             this.mostrarMensaje(e.getMessage());
         }
+        
+        this.dispose();
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void txtHashtagsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHashtagsActionPerformed

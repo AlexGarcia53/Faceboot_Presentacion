@@ -4,6 +4,8 @@
  */
 package utils;
 
+import com.mycompany.presentacionfaceboot.FrmEditarComentario;
+import com.mycompany.presentacionfaceboot.FrmEliminarComentario;
 import dominio.Comentario;
 import dominio.Usuario;
 import interfaces.IProxy;
@@ -182,11 +184,13 @@ public class ComentarioPublicacion extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-
+        FrmEditarComentario editar= new FrmEditarComentario(this.usuario, this.proxy, this.comentario);
+        editar.setVisible(true);
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
+        FrmEliminarComentario eliminar= new FrmEliminarComentario(this.usuario, this.proxy, this.comentario);
+        eliminar.setVisible(true);
     }//GEN-LAST:event_btnEliminarActionPerformed
 
 

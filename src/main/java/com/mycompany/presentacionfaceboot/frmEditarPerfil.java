@@ -4,17 +4,65 @@
  */
 package com.mycompany.presentacionfaceboot;
 
+import dominio.Sexo;
+import dominio.Usuario;
+import excepciones.ErrorEditarUsuarioException;
+import interfaces.IProxy;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Jarol
  */
 public class frmEditarPerfil extends javax.swing.JFrame {
-
+    private Usuario usuario;
+    private IProxy proxy;
+    
     /**
      * Creates new form frmEditarPerfil
      */
-    public frmEditarPerfil() {
+    public frmEditarPerfil(Usuario usuario, IProxy proxy) {
         initComponents();
+        this.usuario=usuario;
+        this.proxy= proxy;
+        this.llenarComboBoxSexo();
+        this.llenarCampos();
+    }
+    
+    public void llenarComboBoxSexo(){
+        DefaultComboBoxModel modelo= (DefaultComboBoxModel) this.comboBoxSexo.getModel();
+        modelo.addElement(Sexo.MASCULINO);
+        modelo.addElement(Sexo.FEMENINO);
+        this.comboBoxSexo.setSelectedIndex(0);
+    }
+    
+    public void llenarCampos(){
+        this.txtUsuario.setText(this.usuario.getUsuario());
+        if(this.usuario.getContrasenia()!=null){
+            this.txtContrasena.setText(this.usuario.getContrasenia());
+        }
+        if(this.usuario.getSexo()!=null){
+            this.comboBoxSexo.setSelectedItem(this.usuario.getSexo());
+        }
+        if(this.usuario.getFechaNacimiento()!=null){
+            this.fechaNacimiento.setDate(LocalDate.of(this.usuario.getFechaNacimiento().get(Calendar.YEAR), (this.usuario.getFechaNacimiento().get(Calendar.MONTH)+1) , this.usuario.getFechaNacimiento().get(Calendar.DAY_OF_MONTH)));
+        }
+    }
+    
+    private void mostrarMensaje(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje, "Respuesta del servidor", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    public void cerrarVentana(Usuario usuario, IProxy proxy){
+        FrmMuro muro = new FrmMuro(usuario, proxy);
+        muro.setVisible(true);
+        this.dispose();
     }
 
     /**
@@ -66,7 +114,6 @@ public class frmEditarPerfil extends javax.swing.JFrame {
         fondo.add(txtUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 160, 340, 30));
         fondo.add(txtContrasena, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 230, 340, 30));
 
-        comboBoxSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Masculino ", "Femenino" }));
         fondo.add(comboBoxSexo, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 300, 340, 30));
         fondo.add(fechaNacimiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 370, 340, 30));
 
@@ -86,6 +133,11 @@ public class frmEditarPerfil extends javax.swing.JFrame {
         btnCancelar.setBackground(new java.awt.Color(102, 102, 102));
         btnCancelar.setFont(new java.awt.Font("Roboto", 1, 13)); // NOI18N
         btnCancelar.setForeground(new java.awt.Color(255, 255, 255));
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
         fondo.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 430, 140, 40));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -103,8 +155,27 @@ public class frmEditarPerfil extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGuardarCambiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarCambiosActionPerformed
-        // TODO add your handling code here:
+        Usuario nuevo= this.usuario;
+        nuevo.setUsuario(this.txtUsuario.getText());
+        nuevo.setContrasenia(this.txtContrasena.getText());
+        nuevo.setSexo((Sexo)this.comboBoxSexo.getSelectedItem());
+        LocalDate fechaTemporal= this.fechaNacimiento.getDate();
+        GregorianCalendar fechaNacimiento= new GregorianCalendar(fechaTemporal.getYear(), (fechaTemporal.getMonthValue()-1), fechaTemporal.getDayOfMonth(),0,0,0);
+        nuevo.setFechaNacimiento(fechaNacimiento);
+        
+        try{
+            Usuario respuesta = this.proxy.editarPerfilUsuario(nuevo);
+            this.mostrarMensaje("Se editó correctamente el usuario");
+            this.cerrarVentana(respuesta, this.proxy);
+        }catch(ErrorEditarUsuarioException e){
+            this.mostrarMensaje(e.getMessage());
+        }
+
     }//GEN-LAST:event_btnGuardarCambiosActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        this.cerrarVentana(this.usuario, this.proxy);
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
    
 

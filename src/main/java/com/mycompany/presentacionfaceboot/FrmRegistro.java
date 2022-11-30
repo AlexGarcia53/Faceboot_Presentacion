@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.util.GregorianCalendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import logueo.Contexto;
 
@@ -36,6 +37,7 @@ public class FrmRegistro extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         this.proxyClienteBroker = new ProxyClienteBroker();
         frmRegistro = this;
+        this.llenarComboBoxSexo();
     }
 
     private void verificarCampos() throws ErrorDatosErroneosException {
@@ -62,6 +64,13 @@ public class FrmRegistro extends javax.swing.JFrame {
             throw new ErrorDatosErroneosException("El celular contiene caracteres no válidos");
         }
 
+    }
+    
+    public void llenarComboBoxSexo(){
+        DefaultComboBoxModel modelo= (DefaultComboBoxModel) this.comboBoxSexo.getModel();
+        modelo.addElement(Sexo.MASCULINO);
+        modelo.addElement(Sexo.FEMENINO);
+        this.comboBoxSexo.setSelectedIndex(0);
     }
 
     private void mostrarError(String error) {
@@ -204,7 +213,6 @@ public class FrmRegistro extends javax.swing.JFrame {
         });
         jPanel1.add(btnIniciarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 430, 140, 40));
 
-        comboBoxSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Masculino", "Femenino" }));
         comboBoxSexo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboBoxSexoActionPerformed(evt);
@@ -212,8 +220,6 @@ public class FrmRegistro extends javax.swing.JFrame {
         });
         jPanel1.add(comboBoxSexo, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 290, 250, 30));
         jPanel1.add(dtpfechaNacimiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 290, 250, 30));
-
-        logoFacebook.setIcon(new javax.swing.ImageIcon("C:\\Users\\Gael\\Documents\\GITHUB\\Faceboot_Presentacion\\src\\images\\facebook-logo.png")); // NOI18N
         jPanel1.add(logoFacebook, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 500, -1, 50));
 
         btnSesionFacebook.setBackground(new java.awt.Color(43, 121, 242));
@@ -227,8 +233,6 @@ public class FrmRegistro extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnSesionFacebook, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 500, 190, 50));
-
-        logo.setIcon(new javax.swing.ImageIcon("C:\\Users\\Gael\\Documents\\GITHUB\\Faceboot_Presentacion\\src\\images\\logo3.png")); // NOI18N
         jPanel1.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 30, 390, 50));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -261,14 +265,7 @@ public class FrmRegistro extends javax.swing.JFrame {
         String email= this.txtEmail.getText();
         String contrasenia= this.txtContrasena.getText();
         String celular= this.txtCelular.getText();
-        Sexo sexo;
-        
-        
-        if(this.comboBoxSexo.getSelectedItem().equals("Masculino")){
-            sexo= Sexo.MASCULINO;
-        }else{
-            sexo= Sexo.FEMENINO;
-        }
+        Sexo sexo= (Sexo) this.comboBoxSexo.getSelectedItem();
 
         try {
             this.verificarCampos();

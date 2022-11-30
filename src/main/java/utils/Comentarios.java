@@ -32,7 +32,7 @@ public class Comentarios extends javax.swing.JPanel {
         
         for (Comentario comentario: comentarios){
             ComentarioPublicacion comEspecifico= new ComentarioPublicacion(this.usuario, comentario, this.proxy);
-            pnlComentarios.add(comEspecifico);
+            pnlComentarios.add(comEspecifico, 0);
         }
         
 //        ComentarioPublicacion a = new ComentarioPublicacion();
