@@ -151,7 +151,6 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
         btnSalir = new javax.swing.JButton();
         btnEnviarMensaje = new javax.swing.JButton();
         logo = new javax.swing.JLabel();
-        btnPrueba = new javax.swing.JButton();
         pnlMuro = new javax.swing.JPanel();
         cpnMuro = new javax.swing.JScrollPane();
         pnlPublicaciones = new javax.swing.JPanel();
@@ -219,14 +218,6 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
         seccionMenu.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 220, 50));
 
         fondo.add(seccionMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 860, 80));
-
-        btnPrueba.setText("prueba");
-        btnPrueba.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPruebaActionPerformed(evt);
-            }
-        });
-        fondo.add(btnPrueba, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 100, -1, -1));
 
         cpnMuro.setBorder(null);
 
@@ -302,16 +293,6 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
         // TODO add your handling code here:
     }//GEN-LAST:event_btnEnviarMensajeActionPerformed
 
-    private void btnPruebaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPruebaActionPerformed
-//        Date fecha= new Date();
-//        SimpleDateFormat formatoFecha= new SimpleDateFormat("dd/MM/YYYY");
-//        PublicacionCompleta publicacion= new PublicacionCompleta(this.usuario, publicaciones.get(1), this.proxyClienteBroker);
-//        
-//        this.pnlPublicaciones.add(publicacion);
-//        this.pnlPublicaciones.repaint();
-//        this.pnlPublicaciones.revalidate();
-    }//GEN-LAST:event_btnPruebaActionPerformed
-
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         
     }//GEN-LAST:event_formWindowClosed
@@ -330,7 +311,6 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
     private javax.swing.JButton btnEditarPerfil;
     private javax.swing.JButton btnEnviarMensaje;
     private javax.swing.JButton btnHacerPublicacion;
-    private javax.swing.JButton btnPrueba;
     private javax.swing.JButton btnSalir;
     private javax.swing.JScrollPane cpnMuro;
     private javax.swing.JPanel fondo;

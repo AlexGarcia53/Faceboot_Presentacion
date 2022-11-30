@@ -36,9 +36,20 @@ public class FrmEditarPublicacion extends javax.swing.JFrame {
         this.usuario = usuario;
         this.proxyClienteBroker=proxyClienteBroker;
         this.publicacion= publicacion;
-        this.txtTextoPlano.setText(publicacion.getContenido().getTextoPlano());
+        this.llenarCampos();
     }
-
+    
+    public void llenarCampos(){
+        this.txtTextoPlano.setText(publicacion.getContenido().getTextoPlano());
+        if(this.publicacion.getContenido().getImagen()!=null){
+            Image imagen = new ImageIcon(this.publicacion.getContenido().getImagen()).getImage();
+            ImageIcon icono = new ImageIcon(imagen.getScaledInstance(lblImagen.getWidth(), lblImagen.getHeight(), Image.SCALE_SMOOTH));
+            lblImagen.setIcon(icono);
+            lblImagen.setFont(new java.awt.Font("Lucida Grande", 1, 0));
+            lblImagen.setText(this.publicacion.getContenido().getImagen());
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -187,8 +198,10 @@ public class FrmEditarPublicacion extends javax.swing.JFrame {
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         String textoPlano = this.txtTextoPlano.getText();
+        String imagen = this.lblImagen.getText();
 
         publicacion.getContenido().setTextoPlano(textoPlano);
+        publicacion.getContenido().setImagen(imagen);
  
         try{
             Publicacion respuesta = this.proxyClienteBroker.editarPublicacion(publicacion);
@@ -202,7 +215,7 @@ public class FrmEditarPublicacion extends javax.swing.JFrame {
 
     private void btnAñadirImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAñadirImagenActionPerformed
         JFileChooser jfileChooser = new JFileChooser();
-        FileNameExtensionFilter filtrado = new FileNameExtensionFilter("JPG & PNG", "jpg", "png");
+        FileNameExtensionFilter filtrado = new FileNameExtensionFilter("JPG & PNG", "jpg", "png","gif");
         jfileChooser.setFileFilter(filtrado);
         
         int respuesta = jfileChooser.showOpenDialog(this);
@@ -212,6 +225,7 @@ public class FrmEditarPublicacion extends javax.swing.JFrame {
            Image imagen = new ImageIcon(path).getImage();
            ImageIcon icono = new ImageIcon(imagen.getScaledInstance(lblImagen.getWidth(), lblImagen.getHeight(),Image.SCALE_SMOOTH));
            lblImagen.setIcon(icono);
+           lblImagen.setFont(new java.awt.Font("Lucida Grande", 1, 0));
            lblImagen.setText(path);
            
         }

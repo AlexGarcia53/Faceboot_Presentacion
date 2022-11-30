@@ -43,7 +43,14 @@ public class FrmEliminarPublicacion extends javax.swing.JFrame {
     }
     
     public void llenarCampos(){
-        this.txtTextoPlano.setText(this.publicacion.getContenido().getTextoPlano());
+        this.txtTextoPlano.setText(publicacion.getContenido().getTextoPlano());
+        if(this.publicacion.getContenido().getImagen()!=null){
+            Image imagen = new ImageIcon(this.publicacion.getContenido().getImagen()).getImage();
+            ImageIcon icono = new ImageIcon(imagen.getScaledInstance(lblImagen.getWidth(), lblImagen.getHeight(), Image.SCALE_SMOOTH));
+            lblImagen.setIcon(icono);
+            lblImagen.setFont(new java.awt.Font("Lucida Grande", 1, 0));
+            lblImagen.setText(this.publicacion.getContenido().getImagen());
+        }
     }
 
     /**

@@ -6,6 +6,7 @@
 package com.mycompany.presentacionfaceboot;
 
 import dominio.Contenido;
+import dominio.Hashtag;
 import dominio.Publicacion;
 import dominio.Usuario;
 import excepciones.ErrorGuardarPublicacionException;
@@ -65,6 +66,8 @@ public class FrmPublicacion extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         txtHashtags = new javax.swing.JTextField();
         txtEtiquetados = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -77,9 +80,9 @@ public class FrmPublicacion extends javax.swing.JFrame {
         fondo.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 50, -1, -1));
 
         jLabel4.setBackground(new java.awt.Color(0, 0, 0));
-        jLabel4.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        jLabel4.setText("Hashtags:");
-        fondo.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 190, -1, -1));
+        jLabel4.setFont(new java.awt.Font("Roboto", 1, 10)); // NOI18N
+        jLabel4.setText("Formato: @Persona @Persona");
+        fondo.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, -1, -1));
 
         jLabel5.setBackground(new java.awt.Color(0, 0, 0));
         jLabel5.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
@@ -152,12 +155,20 @@ public class FrmPublicacion extends javax.swing.JFrame {
         jLabel8.setText("Imagen:");
         fondo.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 140, -1, -1));
 
+        txtHashtags.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtHashtagsFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtHashtagsFocusLost(evt);
+            }
+        });
         txtHashtags.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtHashtagsActionPerformed(evt);
             }
         });
-        fondo.add(txtHashtags, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 220, 310, 30));
+        fondo.add(txtHashtags, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 230, 310, 30));
 
         txtEtiquetados.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -165,6 +176,16 @@ public class FrmPublicacion extends javax.swing.JFrame {
             }
         });
         fondo.add(txtEtiquetados, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 150, 310, 30));
+
+        jLabel6.setBackground(new java.awt.Color(0, 0, 0));
+        jLabel6.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jLabel6.setText("Hashtags:");
+        fondo.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 200, -1, -1));
+
+        jLabel9.setBackground(new java.awt.Color(0, 0, 0));
+        jLabel9.setFont(new java.awt.Font("Roboto", 1, 10)); // NOI18N
+        jLabel9.setText("Formato: #Hashtag #Hashtag");
+        fondo.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 260, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -200,6 +221,16 @@ public class FrmPublicacion extends javax.swing.JFrame {
         String textoPlano = this.txtTextoPlano.getText();
         String imagen = this.lblImagen.getText();
         Contenido contenido = new Contenido(textoPlano,imagen);
+        String campoHashtags= this.txtHashtags.getText().replace(" ", "");
+        if(!campoHashtags.equals("")){
+            System.out.println(campoHashtags);
+            String[] hashtags= campoHashtags.split("#");
+            for (int i = 0; i < hashtags.length; i++) {
+                if (!hashtags[i].equals("")) {
+                    contenido.agregarHashtag(new Hashtag(hashtags[i]));
+                }
+            }
+        }
         Publicacion publicacion = new Publicacion(fechaPublicacion,this.usuario,contenido);
 
  
@@ -249,6 +280,14 @@ public class FrmPublicacion extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
+    private void txtHashtagsFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtHashtagsFocusGained
+//        this.txtHashtags.setText("");
+    }//GEN-LAST:event_txtHashtagsFocusGained
+
+    private void txtHashtagsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtHashtagsFocusLost
+//        this.txtHashtags.setText("Formato: #Hashtag #Hashtag");
+    }//GEN-LAST:event_txtHashtagsFocusLost
+
     private void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, "Respuesta del servidor", JOptionPane.INFORMATION_MESSAGE);
     }
@@ -263,8 +302,10 @@ public class FrmPublicacion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JLabel lblImagen;
     private javax.swing.JTextField txtEtiquetados;

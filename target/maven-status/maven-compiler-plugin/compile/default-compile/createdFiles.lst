@@ -24,11 +24,13 @@ utils\MyScrollBarUI$1.class
 com\mycompany\presentacionfaceboot\frmEditarPerfil.class
 com\mycompany\presentacionfaceboot\FrmInicioSesion$4.class
 com\mycompany\presentacionfaceboot\FrmRegistro.class
+com\mycompany\presentacionfaceboot\FrmMuro$6.class
 com\mycompany\presentacionfaceboot\FrmNotificar$1.class
 logueo\EstrategiaFacebook.class
 utils\Barra.class
 com\mycompany\presentacionfaceboot\FrmPublicacion$5.class
 com\mycompany\presentacionfaceboot\FrmEditarComentario$1.class
+com\mycompany\presentacionfaceboot\frmEditarPerfil$2.class
 com\mycompany\presentacionfaceboot\FrmEditarPublicacion$6.class
 com\mycompany\presentacionfaceboot\FrmEliminarPublicacion$2.class
 com\mycompany\presentacionfaceboot\FrmPublicacion$1.class
