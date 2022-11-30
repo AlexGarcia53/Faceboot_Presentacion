@@ -19,6 +19,7 @@ import java.util.GregorianCalendar;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -36,6 +37,8 @@ public class FrmPublicacion extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         this.usuario = usuario;
         this.proxyClienteBroker=proxyClienteBroker;
+        this.txtTextoPlano = initTextArea(this.txtTextoPlano);
+        
     }
 
     /**
@@ -106,6 +109,7 @@ public class FrmPublicacion extends javax.swing.JFrame {
 
         txtTextoPlano.setColumns(20);
         txtTextoPlano.setRows(5);
+        txtTextoPlano.setMaximumSize(new java.awt.Dimension(13, 20));
         jScrollPane5.setViewportView(txtTextoPlano);
 
         fondo.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 310, 310, 190));
@@ -185,13 +189,19 @@ public class FrmPublicacion extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnPublicarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPublicarActionPerformed
-        String textoPlano = this.txtTextoPlano.getText();
+
+        
 //        Date fechaActual= new Date();
         GregorianCalendar fechaPublicacion= new GregorianCalendar();
 //        fechaPublicacion.setTimeInMillis(fechaActual.getTime());
 
-        Contenido contenido = new Contenido(textoPlano);
+
+
+        String textoPlano = this.txtTextoPlano.getText();
+        String imagen = this.lblImagen.getText();
+        Contenido contenido = new Contenido(textoPlano,imagen);
         Publicacion publicacion = new Publicacion(fechaPublicacion,this.usuario,contenido);
+
  
         try{
             Publicacion respuesta = this.proxyClienteBroker.registrarPublicacion(publicacion);
@@ -200,10 +210,15 @@ public class FrmPublicacion extends javax.swing.JFrame {
             this.mostrarMensaje(e.getMessage());
         }
     }//GEN-LAST:event_btnPublicarActionPerformed
-
+    private JTextArea initTextArea(JTextArea texto){
+        texto.setLineWrap(true);
+        texto.setWrapStyleWord(true);
+        return texto;
+    }
+    
     private void btnAñadirImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAñadirImagenActionPerformed
         JFileChooser jfileChooser = new JFileChooser();
-        FileNameExtensionFilter filtrado = new FileNameExtensionFilter("JPG & PNG", "jpg", "png");
+        FileNameExtensionFilter filtrado = new FileNameExtensionFilter("JPG & PNG", "jpg", "png","gif");
         jfileChooser.setFileFilter(filtrado);
         
         int respuesta = jfileChooser.showOpenDialog(this);
@@ -213,6 +228,7 @@ public class FrmPublicacion extends javax.swing.JFrame {
            Image imagen = new ImageIcon(path).getImage();
            ImageIcon icono = new ImageIcon(imagen.getScaledInstance(lblImagen.getWidth(), lblImagen.getHeight(),Image.SCALE_SMOOTH));
            lblImagen.setIcon(icono);
+           lblImagen.setFont(new java.awt.Font("Lucida Grande", 1, 0));
            lblImagen.setText(path);
            
         }

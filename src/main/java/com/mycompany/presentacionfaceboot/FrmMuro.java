@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
+import static javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER;
 import utils.Barra;
 import utils.PublicacionCompleta;
 
@@ -45,6 +46,7 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
         this.usuario= usuario;
         this.btnEditarPerfil.setText(usuario.getUsuario());
         cpnMuro.setVerticalScrollBar(new Barra());
+//        cpnMuro.setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
         this.consultarPublicaciones();
         this.suscribirseEventoRegistrarPublicacion();
         this.suscribirseEventoEditarPublicacion();

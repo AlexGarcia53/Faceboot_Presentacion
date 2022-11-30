@@ -9,6 +9,7 @@ import com.mycompany.presentacionfaceboot.FrmEliminarComentario;
 import dominio.Comentario;
 import dominio.Usuario;
 import interfaces.IProxy;
+import java.awt.Dimension;
 import java.util.Calendar;
 
 /**
@@ -28,6 +29,7 @@ public class ComentarioPublicacion extends javax.swing.JPanel {
         this.comentario= comentario;
         this.proxy=proxy;
         this.actualizarContenido();
+        this.init();
     }
 
     public void actualizarContenido() {
@@ -36,6 +38,7 @@ public class ComentarioPublicacion extends javax.swing.JPanel {
 //        this.txtpnContenido.setText(textoPlano);
 //        this.repaint();
 //        this.revalidate();
+   
         this.pnlComentario.setText(comentario.getContenido().getTextoPlano());
         this.pnlComentario.repaint();
         this.pnlComentario.revalidate();
@@ -48,6 +51,11 @@ public class ComentarioPublicacion extends javax.swing.JPanel {
         this.revalidate();
 
     }
+    
+     public void init(){
+     this.pnlTodoComentario.setPreferredSize(new Dimension(482, 115));
+ 
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -58,7 +66,7 @@ public class ComentarioPublicacion extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        pnlTodoComentario = new javax.swing.JPanel();
         pnlOpciones = new javax.swing.JPanel();
         btnEditar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
@@ -72,8 +80,8 @@ public class ComentarioPublicacion extends javax.swing.JPanel {
         setForeground(new java.awt.Color(255, 217, 183));
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
 
-        jPanel1.setBackground(new java.awt.Color(255, 217, 183));
-        jPanel1.setForeground(new java.awt.Color(255, 217, 183));
+        pnlTodoComentario.setBackground(new java.awt.Color(255, 217, 183));
+        pnlTodoComentario.setForeground(new java.awt.Color(255, 217, 183));
 
         pnlOpciones.setBackground(new java.awt.Color(255, 217, 183));
 
@@ -103,18 +111,16 @@ public class ComentarioPublicacion extends javax.swing.JPanel {
         pnlOpcionesLayout.setHorizontalGroup(
             pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlOpcionesLayout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         pnlOpcionesLayout.setVerticalGroup(
             pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlOpcionesLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+            .addGroup(pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(btnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pnlComentario.setEditable(false);
@@ -155,33 +161,38 @@ public class ComentarioPublicacion extends javax.swing.JPanel {
                     .addComponent(lblUsuario)))
         );
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnlTodoComentarioLayout = new javax.swing.GroupLayout(pnlTodoComentario);
+        pnlTodoComentario.setLayout(pnlTodoComentarioLayout);
+        pnlTodoComentarioLayout.setHorizontalGroup(
+            pnlTodoComentarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlTodoComentarioLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlTodoComentarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlTodoComentarioLayout.createSequentialGroup()
                         .addComponent(pnlDatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 155, Short.MAX_VALUE)
-                        .addComponent(pnlOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 144, Short.MAX_VALUE)
+                        .addComponent(pnlOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1))
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(pnlOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(pnlDatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        pnlTodoComentarioLayout.setVerticalGroup(
+            pnlTodoComentarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlTodoComentarioLayout.createSequentialGroup()
+                .addGroup(pnlTodoComentarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlTodoComentarioLayout.createSequentialGroup()
+                        .addGap(9, 9, 9)
+                        .addComponent(pnlDatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlTodoComentarioLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(pnlOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
-        add(jPanel1);
+        add(pnlTodoComentario);
     }// </editor-fold>//GEN-END:initComponents
+
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         FrmEditarComentario editar= new FrmEditarComentario(this.usuario, this.proxy, this.comentario);
@@ -197,12 +208,12 @@ public class ComentarioPublicacion extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblFecha;
     private javax.swing.JLabel lblUsuario;
     private javax.swing.JTextPane pnlComentario;
     private javax.swing.JPanel pnlDatos;
     private javax.swing.JPanel pnlOpciones;
+    private javax.swing.JPanel pnlTodoComentario;
     // End of variables declaration//GEN-END:variables
 }
