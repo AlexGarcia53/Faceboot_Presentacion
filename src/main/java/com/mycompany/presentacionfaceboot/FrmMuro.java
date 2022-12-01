@@ -290,7 +290,15 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
     }//GEN-LAST:event_btnEditarPerfilActionPerformed
 
     private void btnEnviarMensajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarMensajeActionPerformed
-        // TODO add your handling code here:
+        this.desuscribirseEventoRegistrarPublicacion();
+        this.desuscribirEventoEditarPublicacion();
+        this.desuscribirEventoEliminarPublicacion();
+        this.desuscribirEventoEditarComentario();
+        this.desuscribirEventoRegistrarComentario();
+        this.desuscribirEventoEliminarComentario();
+        FrmNotificar notificacion= new FrmNotificar(usuario, proxyClienteBroker);
+        notificacion.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnEnviarMensajeActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed

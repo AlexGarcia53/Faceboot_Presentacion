@@ -5,17 +5,28 @@
  */
 package com.mycompany.presentacionfaceboot;
 
+import dominio.Mensaje;
+import dominio.Usuario;
+import excepciones.ErrorBusquedaUsuarioException;
+import excepciones.ErrorEnviarMensajeException;
+import interfaces.IProxy;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Jarol
  */
 public class FrmNotificar extends javax.swing.JFrame {
-
+    private Usuario usuario;
+    private IProxy proxy;
+    
     /**
      * Creates new form FrmNotificar
      */
-    public FrmNotificar() {
+    public FrmNotificar(Usuario usuario, IProxy proxy) {
         initComponents();
+        this.usuario= usuario;
+        this.proxy= proxy;
     }
 
     /**
@@ -30,14 +41,15 @@ public class FrmNotificar extends javax.swing.JFrame {
         fondo = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        comboBoxDestinatario = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtMensaje = new javax.swing.JTextArea();
         jLabel5 = new javax.swing.JLabel();
-        comboBoxMetodo = new javax.swing.JComboBox<>();
         btnEnviarMensaje = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+        txtDestinatario = new javax.swing.JTextField();
+        rbnSMS = new javax.swing.JRadioButton();
+        rbnEmail = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -47,15 +59,12 @@ public class FrmNotificar extends javax.swing.JFrame {
         jLabel2.setBackground(new java.awt.Color(0, 0, 0));
         jLabel2.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel2.setText("Metodo de  envío");
-        fondo.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 460, -1, -1));
+        fondo.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 440, -1, -1));
 
         jLabel3.setBackground(new java.awt.Color(0, 0, 0));
         jLabel3.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
         jLabel3.setText("Enviar mensaje");
         fondo.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 70, -1, -1));
-
-        comboBoxDestinatario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        fondo.add(comboBoxDestinatario, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 170, 310, 30));
 
         jLabel4.setBackground(new java.awt.Color(0, 0, 0));
         jLabel4.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
@@ -66,20 +75,22 @@ public class FrmNotificar extends javax.swing.JFrame {
         txtMensaje.setRows(5);
         jScrollPane1.setViewportView(txtMensaje);
 
-        fondo.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 250, 310, 190));
+        fondo.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 240, 310, 190));
 
         jLabel5.setBackground(new java.awt.Color(0, 0, 0));
         jLabel5.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel5.setText("Mensaje");
-        fondo.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 220, -1, -1));
-
-        comboBoxMetodo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        fondo.add(comboBoxMetodo, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 490, 310, 30));
+        fondo.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 210, -1, -1));
 
         btnEnviarMensaje.setBackground(new java.awt.Color(240, 115, 0));
         btnEnviarMensaje.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
         btnEnviarMensaje.setForeground(new java.awt.Color(255, 255, 255));
         btnEnviarMensaje.setText("Enviar");
+        btnEnviarMensaje.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEnviarMensajeActionPerformed(evt);
+            }
+        });
         fondo.add(btnEnviarMensaje, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 530, 140, 40));
 
         btnCancelar.setBackground(new java.awt.Color(102, 102, 102));
@@ -91,6 +102,13 @@ public class FrmNotificar extends javax.swing.JFrame {
             }
         });
         fondo.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 530, 150, 40));
+        fondo.add(txtDestinatario, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 170, 310, -1));
+
+        rbnSMS.setText("SMS");
+        fondo.add(rbnSMS, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 480, -1, -1));
+
+        rbnEmail.setText("Email");
+        fondo.add(rbnEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 480, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -107,21 +125,53 @@ public class FrmNotificar extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        // TODO add your handling code here:
+        FrmMuro muro= new FrmMuro(usuario, proxy);
+        muro.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
+    private void btnEnviarMensajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarMensajeActionPerformed
+        Mensaje mensaje= new Mensaje();
+        String textoPlano= this.txtMensaje.getText();
+        boolean sms= this.rbnSMS.isSelected();
+        boolean email= this.rbnEmail.isSelected();
+        mensaje.setTextoPlano(textoPlano);
+        mensaje.setMensajeSMS(sms);
+        mensaje.setMensajeEmail(email);
+        mensaje.setUsuario(usuario);
+        
+        try{
+            Usuario destinatario= new Usuario(this.txtDestinatario.getText());
+            
+            Usuario usuarioDestinatario= this.proxy.consultarUsuarioNombre(destinatario);
+            
+            mensaje.setReceptor(usuarioDestinatario);
+            
+            Mensaje respuesta= proxy.enviarMensaje(mensaje);
+            this.mostrarMensaje("Se envió correctamente el mensaje");
+        } catch (ErrorBusquedaUsuarioException e){
+            this.mostrarMensaje(e.getMessage());
+        } catch (ErrorEnviarMensajeException e){
+            this.mostrarMensaje(e.getMessage());
+        }
+    }//GEN-LAST:event_btnEnviarMensajeActionPerformed
+
+    private void mostrarMensaje(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje, "Respuesta del servidor", JOptionPane.INFORMATION_MESSAGE);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEnviarMensaje;
-    private javax.swing.JComboBox<String> comboBoxDestinatario;
-    private javax.swing.JComboBox<String> comboBoxMetodo;
     private javax.swing.JPanel fondo;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JRadioButton rbnEmail;
+    private javax.swing.JRadioButton rbnSMS;
+    private javax.swing.JTextField txtDestinatario;
     private javax.swing.JTextArea txtMensaje;
     // End of variables declaration//GEN-END:variables
 }

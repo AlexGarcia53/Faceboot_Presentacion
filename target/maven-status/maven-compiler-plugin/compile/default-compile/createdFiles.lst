@@ -1,5 +1,6 @@
 com\mycompany\presentacionfaceboot\FrmPublicacion$4.class
 com\mycompany\presentacionfaceboot\FrmInicioSesion$5.class
+com\mycompany\presentacionfaceboot\FrmNotificar$2.class
 com\mycompany\presentacionfaceboot\FrmEliminarComentario$4.class
 com\mycompany\presentacionfaceboot\FrmRegistro$8.class
 com\mycompany\presentacionfaceboot\FrmPublicacion.class
@@ -13,6 +14,7 @@ com\mycompany\presentacionfaceboot\FrmRegistro$5.class
 utils\MyScrollBarUI.class
 utils\ComentarioPublicacion$2.class
 com\mycompany\presentacionfaceboot\FrmInicioSesion$2.class
+com\mycompany\presentacionfaceboot\FrmPublicacion$7.class
 com\mycompany\presentacionfaceboot\FrmEditarPublicacion$5.class
 logueo\IMetodoLogueo.class
 utils\ContenidoPublicacion.class
@@ -24,7 +26,6 @@ utils\MyScrollBarUI$1.class
 com\mycompany\presentacionfaceboot\frmEditarPerfil.class
 com\mycompany\presentacionfaceboot\FrmInicioSesion$4.class
 com\mycompany\presentacionfaceboot\FrmRegistro.class
-com\mycompany\presentacionfaceboot\FrmMuro$6.class
 com\mycompany\presentacionfaceboot\FrmNotificar$1.class
 logueo\EstrategiaFacebook.class
 utils\Barra.class
