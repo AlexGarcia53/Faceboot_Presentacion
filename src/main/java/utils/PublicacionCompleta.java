@@ -36,7 +36,7 @@ public class PublicacionCompleta extends javax.swing.JPanel {
 
         ContenidoPublicacion contenidoPublicacion= new ContenidoPublicacion();
         
-        contenidoPublicacion.init(publicacion.getContenido().getTextoPlano(), publicacion.getContenido().getImagen());
+        contenidoPublicacion.init(publicacion.getContenido().getTextoPlano(), publicacion.getContenido().getImagen(), publicacion.getHashtags());
         
         Comentarios comentarios = new Comentarios(this.usuario, this.publicacion, this.proxy);
         Comentar comentar = new Comentar(this.usuario, this.publicacion, this.proxy);
@@ -53,7 +53,7 @@ public class PublicacionCompleta extends javax.swing.JPanel {
     
     public void actualizarEdicionContenido(){
         ContenidoPublicacion contenidoPublicacion= new ContenidoPublicacion();
-        contenidoPublicacion.init(publicacion.getContenido().getTextoPlano(), publicacion.getContenido().getImagen());
+        contenidoPublicacion.init(publicacion.getContenido().getTextoPlano(), publicacion.getContenido().getImagen(), publicacion.getHashtags());
         Comentarios comentarios = new Comentarios(this.usuario, this.publicacion, this.proxy);
         Comentar comentar = new Comentar(this.usuario, this.publicacion, this.proxy);
         

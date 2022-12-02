@@ -7,9 +7,11 @@ package com.mycompany.presentacionfaceboot;
 
 import com.mycompany.proxyclientebroker.ProxyClienteBroker;
 import dominio.Comentario;
+import dominio.Hashtag;
 import dominio.Publicacion;
 import dominio.Usuario;
 import excepciones.ErrorBusquedaPublicacionesException;
+import excepciones.ErrorConsultarPublicacionException;
 import interfaces.IObservadorEditarComentario;
 import interfaces.IObservadorEditarPublicacion;
 import interfaces.IObservadorEliminarComentario;
@@ -32,11 +34,12 @@ import utils.PublicacionCompleta;
  */
 public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarPublicacion, IObservadorEditarPublicacion, IObservadorEliminarPublicacion,
         IObservadorRegistrarComentario, IObservadorEditarComentario, IObservadorEliminarComentario{
-    private static FrmMuro frmMuro;
+//    private static FrmMuro frmMuro;
 //    private Long idUsuario;
+    private String hashtagActual="";
     private Usuario usuario;
     private IProxy proxyClienteBroker;
-    public List<PublicacionCompleta> publicaciones= new ArrayList<>();
+    private List<PublicacionCompleta> publicaciones= new ArrayList<>();
     /**
      * Creates new form FrmMuro
      */
@@ -61,6 +64,15 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
             List<Publicacion> publicaciones = this.proxyClienteBroker.consultarPublicaciones();
             this.pintarPublicaciones(publicaciones);
         }catch(ErrorBusquedaPublicacionesException e){
+            this.mostrarError(e.getMessage());
+        }
+    }
+    
+    public void consultarPublicacionHashtag(String hashtag){
+        try{
+            List<Publicacion> publicaciones = this.proxyClienteBroker.consultarPublicaciones(new Hashtag(hashtag));
+            this.pintarPublicaciones(publicaciones);
+        }catch(ErrorConsultarPublicacionException e){
             this.mostrarError(e.getMessage());
         }
     }
@@ -151,11 +163,14 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
         btnSalir = new javax.swing.JButton();
         btnEnviarMensaje = new javax.swing.JButton();
         logo = new javax.swing.JLabel();
+        btnBuscar = new javax.swing.JButton();
+        txtHashtag = new javax.swing.JTextField();
         pnlMuro = new javax.swing.JPanel();
         cpnMuro = new javax.swing.JScrollPane();
         pnlPublicaciones = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Faceboot - Muro");
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
@@ -180,7 +195,7 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
                 btnHacerPublicacionActionPerformed(evt);
             }
         });
-        seccionMenu.add(btnHacerPublicacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 30, 290, 30));
+        seccionMenu.add(btnHacerPublicacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 30, 220, 30));
 
         btnEditarPerfil.setBackground(new java.awt.Color(255, 217, 183));
         btnEditarPerfil.addActionListener(new java.awt.event.ActionListener() {
@@ -215,7 +230,23 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
         logo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         logo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         logo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        seccionMenu.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 220, 50));
+        seccionMenu.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 50, 20));
+
+        btnBuscar.setBackground(new java.awt.Color(255, 217, 183));
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
+        seccionMenu.add(btnBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 30, 70, 30));
+
+        txtHashtag.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtHashtagActionPerformed(evt);
+            }
+        });
+        seccionMenu.add(txtHashtag, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 200, 30));
 
         fondo.add(seccionMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 860, 80));
 
@@ -254,15 +285,15 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnHacerPublicacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHacerPublicacionActionPerformed
-        this.desuscribirseEventoRegistrarPublicacion();
-        this.desuscribirEventoEditarPublicacion();
-        this.desuscribirEventoEliminarPublicacion();
-        this.desuscribirEventoEditarComentario();
-        this.desuscribirEventoRegistrarComentario();
-        this.desuscribirEventoEliminarComentario();
+//        this.desuscribirseEventoRegistrarPublicacion();
+//        this.desuscribirEventoEditarPublicacion();
+//        this.desuscribirEventoEliminarPublicacion();
+//        this.desuscribirEventoEditarComentario();
+//        this.desuscribirEventoRegistrarComentario();
+//        this.desuscribirEventoEliminarComentario();
         FrmPublicacion frmPublicacion= new FrmPublicacion(usuario, this.proxyClienteBroker);
         frmPublicacion.setVisible(true);
-        this.dispose();
+//        this.dispose();
     }//GEN-LAST:event_btnHacerPublicacionActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
@@ -314,8 +345,26 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
         this.desuscribirEventoEliminarComentario();
     }//GEN-LAST:event_formWindowClosing
 
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        this.hashtagActual= this.txtHashtag.getText();
+        if(!this.txtHashtag.getText().equals("")){
+            this.publicaciones= new ArrayList<>();
+            this.pnlPublicaciones.removeAll();
+            this.consultarPublicacionHashtag(this.txtHashtag.getText());
+        } else {
+            this.publicaciones= new ArrayList<>();
+            this.pnlPublicaciones.removeAll();
+            this.consultarPublicaciones();
+        }
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void txtHashtagActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHashtagActionPerformed
+
+    }//GEN-LAST:event_txtHashtagActionPerformed
+
    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnEditarPerfil;
     private javax.swing.JButton btnEnviarMensaje;
     private javax.swing.JButton btnHacerPublicacion;
@@ -326,42 +375,48 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
     private javax.swing.JPanel pnlMuro;
     private javax.swing.JPanel pnlPublicaciones;
     private javax.swing.JPanel seccionMenu;
+    private javax.swing.JTextField txtHashtag;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public void notificarRegistroPublicacion(Publicacion actualizacion) {
 //        JOptionPane.showMessageDialog(this, "Se añadió una nueva publicación", "Mensaje del servidor", JOptionPane.INFORMATION_MESSAGE);
-        PublicacionCompleta pnlPublicacion= new PublicacionCompleta(this.usuario, actualizacion, this.proxyClienteBroker);
-        this.publicaciones.add(pnlPublicacion);
-        this.pnlPublicaciones.add(pnlPublicacion, 0);
-        this.pnlPublicaciones.repaint();
-        this.pnlPublicaciones.revalidate();
+        if (this.hashtagActual.equals("")) {
+            PublicacionCompleta pnlPublicacion = new PublicacionCompleta(this.usuario, actualizacion, this.proxyClienteBroker);
+            this.publicaciones.add(pnlPublicacion);
+            this.pnlPublicaciones.add(pnlPublicacion, 0);
+            this.pnlPublicaciones.repaint();
+            this.pnlPublicaciones.revalidate();
+        } else {
+            if(actualizacion.getHashtags()!=null){
+                List<Hashtag> hashtagsPublicacion= actualizacion.getHashtags();
+                for (int i = 0; i < hashtagsPublicacion.size(); i++) {
+                    if(hashtagsPublicacion.get(i).getNombre().equals(this.hashtagActual)){
+                        PublicacionCompleta pnlPublicacion = new PublicacionCompleta(this.usuario, actualizacion, this.proxyClienteBroker);
+                        this.publicaciones.add(pnlPublicacion);
+                        this.pnlPublicaciones.add(pnlPublicacion, 0);
+                        this.pnlPublicaciones.repaint();
+                        this.pnlPublicaciones.revalidate();
+                    }
+                }
+            }
+        }
     }
 
     @Override
     public void notificarEdicionPublicacion(Publicacion publicacion) {
-        System.out.println("Llego");
         for (int i = 0; i < publicaciones.size(); i++) {
-            if(publicaciones.get(i).getPublicacion().getId()==publicacion.getId()){
+            if (publicaciones.get(i).getPublicacion().getId() == publicacion.getId()) {
                 publicaciones.get(i).setPublicacion(publicacion);
                 publicaciones.get(i).actualizarEdicionContenido();
             }
         }
-//        for(PublicacionCompleta panelPublicacion: publicaciones){
-//            if(panelPublicacion.getPublicacion().getId()==publicacion.getId()){
-//                panelPublicacion.setPublicacion(publicacion);
-//                panelPublicacion.actualizarContenido();
-//                publicaciones., panelPublicacion)
-//            }
-//        }
-//        this.pnlPublicaciones.repaint();
-//        this.pnlPublicaciones.revalidate();
     }
 
     @Override
     public void notificarEliminacionPublicacion(Publicacion publicacion) {
         for (int i = 0; i < publicaciones.size(); i++) {
-            if(publicaciones.get(i).getPublicacion().getId()==publicacion.getId()){
+            if (publicaciones.get(i).getPublicacion().getId() == publicacion.getId()) {
                 this.pnlPublicaciones.remove(publicaciones.get(i));
                 this.pnlPublicaciones.repaint();
                 this.pnlPublicaciones.revalidate();

@@ -16,13 +16,13 @@ import org.openqa.selenium.chrome.ChromeDriver;
  *
  * @author Gael
  */
-public class EstrategiaFacebook implements IMetodoLogueo {
+public class AdaptadorFacebook implements IAdapterLogueo {
 
     private final String APP_ID = "2105096923023572";
 
     private final String REDIRECT_URI = "https://localhost/";
 
-    private final String authUrl = "https://graph.facebook.com/oauth/authorize?type=user_agent&client_id=" + APP_ID + "&redirect_uri=" + REDIRECT_URI + "&scope=user_about_me,"
+    private final String AUTHURL = "https://graph.facebook.com/oauth/authorize?type=user_agent&client_id=" + APP_ID + "&redirect_uri=" + REDIRECT_URI + "&scope=user_about_me,"
             + "user_actions.books,user_actions.fitness,user_actions.music,user_actions.news,user_actions.video,user_activities,user_birthday,user_education_history,"
             + "user_events,user_photos,user_friends,user_games_activity,user_groups,user_hometown,user_interests,user_likes,user_location,user_photos,user_relationship_details,"
             + "user_relationships,user_religion_politics,user_status,user_tagged_places,user_videos,user_website,user_work_history,ads_management,ads_read,email,"
@@ -34,7 +34,7 @@ public class EstrategiaFacebook implements IMetodoLogueo {
         System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
 
         WebDriver driver = new ChromeDriver();
-        driver.get(authUrl);
+        driver.get(AUTHURL);
         String url;
         String[] accessToken;
                 

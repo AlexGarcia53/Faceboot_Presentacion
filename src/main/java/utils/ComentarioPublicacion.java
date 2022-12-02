@@ -34,7 +34,7 @@ public class ComentarioPublicacion extends javax.swing.JPanel {
 
     public void actualizarContenido() {
         this.lblUsuario.setText(comentario.getUsuario().getUsuario());
-        this.lblFecha.setText(comentario.getFechaCreacion().get(Calendar.DAY_OF_MONTH)+"/"+(comentario.getFechaCreacion().get(Calendar.MONTH)+1)+"/"+comentario.getFechaCreacion().get(Calendar.YEAR));
+        this.lblFecha.setText(comentario.getFechaCreacion().get(Calendar.DAY_OF_MONTH)+"/"+(comentario.getFechaCreacion().get(Calendar.MONTH)+1)+"/"+comentario.getFechaCreacion().get(Calendar.YEAR)+" "+comentario.getFechaCreacion().get(Calendar.HOUR_OF_DAY)+":"+comentario.getFechaCreacion().get(Calendar.MINUTE)+":"+comentario.getFechaCreacion().get(Calendar.SECOND));
 //        this.txtpnContenido.setText(textoPlano);
 //        this.repaint();
 //        this.revalidate();

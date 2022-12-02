@@ -6,6 +6,7 @@
 package com.mycompany.presentacionfaceboot;
 
 import dominio.Contenido;
+import dominio.Hashtag;
 import dominio.Publicacion;
 import dominio.Usuario;
 import excepciones.ErrorGuardarPublicacionException;
@@ -14,6 +15,7 @@ import java.awt.Image;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.GregorianCalendar;
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -37,9 +39,16 @@ public class FrmEditarPublicacion extends javax.swing.JFrame {
         this.proxyClienteBroker=proxyClienteBroker;
         this.publicacion= publicacion;
         this.llenarCampos();
+        this.txtHashtags.setEditable(false);
     }
     
     public void llenarCampos(){
+        if(this.publicacion.getHashtags()!=null){
+            List<Hashtag> hashtags= publicacion.getHashtags();
+            for (int i = 0; i < hashtags.size(); i++) {
+                txtHashtags.setText(txtHashtags.getText()+"#"+hashtags.get(i).getNombre()+" ");
+            }
+        }
         this.txtTextoPlano.setText(publicacion.getContenido().getTextoPlano());
         if(this.publicacion.getContenido().getImagen()!=null){
             Image imagen = new ImageIcon(this.publicacion.getContenido().getImagen()).getImage();
@@ -68,14 +77,14 @@ public class FrmEditarPublicacion extends javax.swing.JFrame {
         jScrollPane5 = new javax.swing.JScrollPane();
         txtTextoPlano = new javax.swing.JTextArea();
         lblImagen = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
         btnEditar = new javax.swing.JButton();
         btnAñadirImagen = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         txtHashtags = new javax.swing.JTextField();
-        txtEtiquetados = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Faceboot - Editar Publicacion");
+        setResizable(false);
 
         fondo.setBackground(new java.awt.Color(255, 217, 183));
         fondo.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -88,12 +97,12 @@ public class FrmEditarPublicacion extends javax.swing.JFrame {
         jLabel4.setBackground(new java.awt.Color(0, 0, 0));
         jLabel4.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel4.setText("Hashtags:");
-        fondo.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 190, -1, -1));
+        fondo.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, -1, -1));
 
         jLabel5.setBackground(new java.awt.Color(0, 0, 0));
         jLabel5.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel5.setText("Mensaje:");
-        fondo.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 280, -1, -1));
+        fondo.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 190, -1, -1));
 
         btnEliminar.setBackground(new java.awt.Color(240, 115, 0));
         btnEliminar.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
@@ -114,24 +123,19 @@ public class FrmEditarPublicacion extends javax.swing.JFrame {
                 btnCancelarActionPerformed(evt);
             }
         });
-        fondo.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 530, 150, 40));
+        fondo.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 430, 150, 40));
 
         txtTextoPlano.setColumns(20);
         txtTextoPlano.setRows(5);
         jScrollPane5.setViewportView(txtTextoPlano);
 
-        fondo.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 310, 310, 190));
+        fondo.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 220, 310, 190));
 
         lblImagen.setBackground(new java.awt.Color(0, 0, 0));
         lblImagen.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         lblImagen.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         lblImagen.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         fondo.add(lblImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 240, 340, 220));
-
-        jLabel7.setBackground(new java.awt.Color(0, 0, 0));
-        jLabel7.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        jLabel7.setText("Personas a etiquetar:");
-        fondo.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 120, -1, -1));
 
         btnEditar.setBackground(new java.awt.Color(240, 115, 0));
         btnEditar.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
@@ -142,7 +146,7 @@ public class FrmEditarPublicacion extends javax.swing.JFrame {
                 btnEditarActionPerformed(evt);
             }
         });
-        fondo.add(btnEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 530, 140, 40));
+        fondo.add(btnEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 430, 140, 40));
 
         btnAñadirImagen.setBackground(new java.awt.Color(240, 115, 0));
         btnAñadirImagen.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
@@ -165,31 +169,23 @@ public class FrmEditarPublicacion extends javax.swing.JFrame {
                 txtHashtagsActionPerformed(evt);
             }
         });
-        fondo.add(txtHashtags, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 220, 310, 30));
-
-        txtEtiquetados.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtEtiquetadosActionPerformed(evt);
-            }
-        });
-        fondo.add(txtEtiquetados, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 150, 310, 30));
+        fondo.add(txtHashtags, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, 310, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(fondo, javax.swing.GroupLayout.PREFERRED_SIZE, 766, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(fondo, javax.swing.GroupLayout.PREFERRED_SIZE, 603, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(fondo, javax.swing.GroupLayout.PREFERRED_SIZE, 515, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
@@ -236,10 +232,6 @@ public class FrmEditarPublicacion extends javax.swing.JFrame {
         
     }//GEN-LAST:event_txtHashtagsActionPerformed
 
-    private void txtEtiquetadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEtiquetadosActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtEtiquetadosActionPerformed
-
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
@@ -258,11 +250,9 @@ public class FrmEditarPublicacion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JLabel lblImagen;
-    private javax.swing.JTextField txtEtiquetados;
     private javax.swing.JTextField txtHashtags;
     private javax.swing.JTextArea txtTextoPlano;
     // End of variables declaration//GEN-END:variables

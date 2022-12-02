@@ -52,6 +52,8 @@ public class FrmNotificar extends javax.swing.JFrame {
         rbnEmail = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Faceboot - Enviar Mensaje");
+        setResizable(false);
 
         fondo.setBackground(new java.awt.Color(255, 217, 183));
         fondo.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -122,6 +124,7 @@ public class FrmNotificar extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -131,6 +134,11 @@ public class FrmNotificar extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnEnviarMensajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarMensajeActionPerformed
+        if(rbnSMS.isSelected()==false && rbnEmail.isSelected()==false){
+            this.mostrarError("No se ha seleccionado un método de envío");
+            return;
+        }
+        
         Mensaje mensaje= new Mensaje();
         String textoPlano= this.txtMensaje.getText();
         boolean sms= this.rbnSMS.isSelected();
@@ -158,6 +166,10 @@ public class FrmNotificar extends javax.swing.JFrame {
 
     private void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, "Respuesta del servidor", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    private void mostrarError(String error) {
+        JOptionPane.showMessageDialog(this, error, "Error!...", JOptionPane.ERROR_MESSAGE);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -88,6 +88,8 @@ public class frmEditarPerfil extends javax.swing.JFrame {
         btnCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Faceboot - Editar Perfil");
+        setResizable(false);
 
         fondo.setBackground(new java.awt.Color(255, 217, 183));
         fondo.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());

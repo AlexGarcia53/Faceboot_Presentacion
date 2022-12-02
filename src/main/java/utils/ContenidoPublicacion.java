@@ -4,8 +4,10 @@
  */
 package utils;
 
+import dominio.Hashtag;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -17,7 +19,7 @@ import javax.swing.text.Document;
  * @author Admin
  */
 public class ContenidoPublicacion extends javax.swing.JPanel {
-
+    private List<Hashtag> hashtags;
     private String textoPlano;
     private String imagen;
 
@@ -29,14 +31,34 @@ public class ContenidoPublicacion extends javax.swing.JPanel {
     }
 
     public void actualizarContenido() {
+        if (hashtags!=null){
+            for (int i = 0; i < hashtags.size(); i++) {
+                txtTexto.setText(txtTexto.getText()+"#"+hashtags.get(i).getNombre()+" ");
+            }
+            txtTexto.setText(txtTexto.getText()+"\n"+textoPlano);
+            
+            JLabel labelImagen = new JLabel();
 
-        txtTexto.setText(textoPlano);
-        JLabel labelImagen = new JLabel();
-        
-        ImageIcon imagenRedimensionada = redimensionarImagen(imagen);
-        labelImagen.setIcon(imagenRedimensionada);
-        pnlContenido.add(labelImagen);
-        lblImagen.setIcon(imagenRedimensionada);
+            ImageIcon imagenRedimensionada = redimensionarImagen(imagen);
+            labelImagen.setIcon(imagenRedimensionada);
+            pnlContenido.add(labelImagen);
+            lblImagen.setIcon(imagenRedimensionada);
+        } else {
+            txtTexto.setText(textoPlano);
+            JLabel labelImagen = new JLabel();
+
+            ImageIcon imagenRedimensionada = redimensionarImagen(imagen);
+            labelImagen.setIcon(imagenRedimensionada);
+            pnlContenido.add(labelImagen);
+            lblImagen.setIcon(imagenRedimensionada);
+        }
+//        txtTexto.setText(textoPlano);
+//        JLabel labelImagen = new JLabel();
+//        
+//        ImageIcon imagenRedimensionada = redimensionarImagen(imagen);
+//        labelImagen.setIcon(imagenRedimensionada);
+//        pnlContenido.add(labelImagen);
+//        lblImagen.setIcon(imagenRedimensionada);
         
         pnlContenido.repaint();
         pnlContenido.revalidate();
@@ -45,12 +67,13 @@ public class ContenidoPublicacion extends javax.swing.JPanel {
 
     }
 
-    public void init(String textoPlano, String imagen) {
+    public void init(String textoPlano, String imagen, List<Hashtag> hashtags) {
         this.txtTexto.setEditable(false);
         this.txtTexto.setLineWrap(true);
         this.txtTexto.setWrapStyleWord(true);
         this.textoPlano = textoPlano;
         this.imagen = imagen;
+        this.hashtags= hashtags;
 
         this.actualizarContenido();
     }

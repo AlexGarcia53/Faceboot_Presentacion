@@ -31,7 +31,7 @@ public class CabeceraPublicacion extends javax.swing.JPanel {
     
     public void actualizarContenido(){
         this.lblUsuario.setText(publicacion.getUsuario().getUsuario());
-        this.lblFecha.setText(publicacion.getFechaCreacion().get(Calendar.DAY_OF_MONTH)+"/"+(publicacion.getFechaCreacion().get(Calendar.MONTH)+1)+"/"+publicacion.getFechaCreacion().get(Calendar.YEAR));
+        this.lblFecha.setText(publicacion.getFechaCreacion().get(Calendar.DAY_OF_MONTH)+"/"+(publicacion.getFechaCreacion().get(Calendar.MONTH)+1)+"/"+publicacion.getFechaCreacion().get(Calendar.YEAR)+" "+publicacion.getFechaCreacion().get(Calendar.HOUR_OF_DAY)+":"+publicacion.getFechaCreacion().get(Calendar.MINUTE)+":"+publicacion.getFechaCreacion().get(Calendar.SECOND));
         
         if(usuario.getId()!=publicacion.getUsuario().getId()){
             this.pnlOpciones.setVisible(false);

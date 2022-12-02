@@ -9,6 +9,7 @@ import com.mycompany.proxyclientebroker.ProxyClienteBroker;
 import dominio.Sexo;
 import dominio.Solicitud;
 import dominio.Usuario;
+import excepciones.ErrorBusquedaUsuarioException;
 import excepciones.ErrorDatosErroneosException;
 import excepciones.ErrorGuardarUsuarioException;
 import interfaces.IProxy;
@@ -18,7 +19,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
-import logueo.Contexto;
+import logueo.ConstructorAdapterFacebook;
 
 /**
  *
@@ -27,7 +28,7 @@ import logueo.Contexto;
 public class FrmRegistro extends javax.swing.JFrame {
 
     private static FrmRegistro frmRegistro;
-    IProxy proxyClienteBroker;
+    private IProxy proxyClienteBroker;
 
     /**
      * Creates new form FrmRegistro
@@ -66,7 +67,7 @@ public class FrmRegistro extends javax.swing.JFrame {
 
     }
     
-    public void llenarComboBoxSexo(){
+    private void llenarComboBoxSexo(){
         DefaultComboBoxModel modelo= (DefaultComboBoxModel) this.comboBoxSexo.getModel();
         modelo.addElement(Sexo.MASCULINO);
         modelo.addElement(Sexo.FEMENINO);
@@ -110,6 +111,7 @@ public class FrmRegistro extends javax.swing.JFrame {
         logo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Faceboot - Registrarse");
         setLocationByPlatform(true);
         setResizable(false);
 
@@ -222,10 +224,10 @@ public class FrmRegistro extends javax.swing.JFrame {
         jPanel1.add(dtpfechaNacimiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 290, 250, 30));
         jPanel1.add(logoFacebook, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 500, -1, 50));
 
+        btnSesionFacebook.setText("Ingresar con Facebook");
         btnSesionFacebook.setBackground(new java.awt.Color(43, 121, 242));
         btnSesionFacebook.setFont(new java.awt.Font("Roboto", 1, 13)); // NOI18N
         btnSesionFacebook.setForeground(new java.awt.Color(255, 255, 255));
-        btnSesionFacebook.setText("Ingresar con Facebook");
         btnSesionFacebook.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnSesionFacebook.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -247,6 +249,7 @@ public class FrmRegistro extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
@@ -305,29 +308,19 @@ public class FrmRegistro extends javax.swing.JFrame {
     }//GEN-LAST:event_comboBoxSexoActionPerformed
 
     private void btnSesionFacebookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSesionFacebookActionPerformed
-
-//        String tipoInicio = "iniciar_sesion_facebook";
-//
-//        Usuario usuario = Contexto.getInstancia().canalizarSolicitud(tipoInicio);
-//
-//        String respuesta = this.proxyClienteBroker.iniciarSesionFacebook(usuario);
-//        System.out.println(respuesta);
-//        if(respuesta.startsWith("Excepción: ")){
-//            this.mostrarMensaje(respuesta);
-//        }else{
-//            int nombreUsuario=1, idUsuario=0;
-//            String datosUsuario[]= respuesta.split(", ");
-//            Usuario usuarioCompleto = new Usuario();
-//            //            (Long id, String usuario, String email, String contrasenia, String celular, Sexo sexo, int edad, GregorianCalendar fechaNacimiento)
-//
-//            int opcionSeleccionada= JOptionPane.showConfirmDialog(this,"Bienvenido "+datosUsuario[nombreUsuario]+"!!!", "Confirmación", JOptionPane.YES_OPTION);
-//            if(opcionSeleccionada == JOptionPane.YES_OPTION){
-//                FrmMuro muro= FrmMuro.obtenerFrmMuro(Long.parseLong(datosUsuario[idUsuario]),this.proxyClienteBroker);
-//                muro.suscribirseEventoRegistrarPublicacion();
-//                muro.setVisible(true);
-//                this.dispose();
-//            }
-//        }
+        Usuario usuario= ConstructorAdapterFacebook.getInstancia().obtenerAdaptador().iniciarSesion();
+        
+        try{
+            Usuario respuesta = this.proxyClienteBroker.iniciarSesionFacebook(usuario);
+            int opcionSeleccionada= JOptionPane.showConfirmDialog(this,"Bienvenido "+respuesta.getUsuario()+"!!!", "Confirmación", JOptionPane.YES_OPTION);
+            if(opcionSeleccionada == JOptionPane.YES_OPTION){
+                FrmMuro muro= new FrmMuro(respuesta,this.proxyClienteBroker);
+                muro.setVisible(true);
+                this.dispose();
+            }
+        } catch (ErrorBusquedaUsuarioException e){
+            this.mostrarError(e.getMessage());
+        }
     }//GEN-LAST:event_btnSesionFacebookActionPerformed
 
     private void mostrarMensaje(String mensaje) {

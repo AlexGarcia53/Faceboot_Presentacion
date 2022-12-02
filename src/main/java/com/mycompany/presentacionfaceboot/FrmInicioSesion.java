@@ -10,9 +10,8 @@ import interfaces.IProxy;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
-import logueo.Contexto;
-import logueo.IMetodoLogueo;
-
+import logueo.ConstructorAdapterFacebook;
+import logueo.IAdapterLogueo;
 
 //import com.sun.prism.paint.Paint;
 //import javafx.scene.paint.Color;
@@ -29,7 +28,7 @@ import logueo.IMetodoLogueo;
  */
 public class FrmInicioSesion extends javax.swing.JFrame {
     private static FrmInicioSesion frmInicioSesion;
-    IProxy proxyClienteBroker;
+    private IProxy proxyClienteBroker;
     
     /**
      * Creates new form FrmInicioSesion
@@ -87,6 +86,7 @@ public class FrmInicioSesion extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTextPane1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Faceboot - Iniciar Sesion");
         setLocationByPlatform(true);
         setPreferredSize(new java.awt.Dimension(525, 650));
         setResizable(false);
@@ -180,6 +180,7 @@ public class FrmInicioSesion extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnMostrarRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarRegistrarseActionPerformed
@@ -198,23 +199,7 @@ public class FrmInicioSesion extends javax.swing.JFrame {
             this.mostrarError(ex.getMessage());
             return;
         }
-//
-//        String respuesta= this.proxyClienteBroker.iniciarSesion(usuario);
-//        System.out.println(respuesta);
-//        if(respuesta.startsWith("Excepción: ")){
-//            this.mostrarMensaje(respuesta);
-//        }else{
-//            int nombreUsuario=1, idUsuario=0;
-//            String datosUsuario[]= respuesta.split(", ");
-//
-//            int opcionSeleccionada= JOptionPane.showConfirmDialog(this,"Bienvenido "+datosUsuario[nombreUsuario]+"!!!", "Confirmación", JOptionPane.YES_OPTION);
-//            if(opcionSeleccionada == JOptionPane.YES_OPTION){
-//                FrmMuro muro= FrmMuro.obtenerFrmMuro(Long.parseLong(datosUsuario[idUsuario]),this.proxyClienteBroker);
-//                muro.suscribirseEventoRegistrarPublicacion();
-//                muro.setVisible(true);
-//                this.dispose();
-//            }
-//        }
+
         try{
             Usuario respuesta= this.proxyClienteBroker.iniciarSesion(usuario);
             int opcionSeleccionada= JOptionPane.showConfirmDialog(this,"Bienvenido "+respuesta.getUsuario()+"!!!", "Confirmación", JOptionPane.YES_OPTION);
@@ -233,14 +218,13 @@ public class FrmInicioSesion extends javax.swing.JFrame {
     }//GEN-LAST:event_txtEmailActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        this.dispose();
+        System.exit(0);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnSesionFacebookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSesionFacebookActionPerformed
 
-        IMetodoLogueo metodoLogueo= Contexto.getInstancia().obtenerAdaptador();
+        Usuario usuario= ConstructorAdapterFacebook.getInstancia().obtenerAdaptador().iniciarSesion();
 
-        Usuario usuario = metodoLogueo.iniciarSesion();
 
         try{
             Usuario respuesta = this.proxyClienteBroker.iniciarSesionFacebook(usuario);

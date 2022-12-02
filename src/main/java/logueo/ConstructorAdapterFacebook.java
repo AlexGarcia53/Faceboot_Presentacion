@@ -8,24 +8,24 @@ import dominio.*;
  *
  * @author Gael
  */
-public class Contexto {
+public class ConstructorAdapterFacebook {
 //        private IMetodoLogueo estrategia;
     
-    private static Contexto contexto;
+    private static ConstructorAdapterFacebook adapter;
     
-    private Contexto(){
+    private ConstructorAdapterFacebook(){
         
     }
     
-    public static Contexto getInstancia(){
-        if(contexto==null){
-            contexto= new Contexto();
+    public static ConstructorAdapterFacebook getInstancia(){
+        if(adapter==null){
+            adapter= new ConstructorAdapterFacebook();
         }
-        return contexto;
+        return adapter;
     }
     
-    public IMetodoLogueo obtenerAdaptador(){
-        return new EstrategiaFacebook();
+    public IAdapterLogueo obtenerAdaptador(){
+        return new AdaptadorFacebook();
     }
     
 //    public void establecerEstrategia(IMetodoLogueo estrategia){

@@ -10,6 +10,6 @@ import dominio.Usuario;
  *
  * @author Gael
  */
-public interface IMetodoLogueo {
+public interface IAdapterLogueo {
     public Usuario iniciarSesion();
 }
