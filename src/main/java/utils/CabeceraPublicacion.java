@@ -11,15 +11,28 @@ import interfaces.IProxy;
 import java.util.Calendar;
 
 /**
+ * Clase utilizada para construir la cabecera de una publicación.
  *
- * @author Admin
+ * @author Equipo broker
  */
 public class CabeceraPublicacion extends javax.swing.JPanel {
+    /**
+     * Usuario con el que se construye el componente.
+     */
     private Usuario usuario;
+    /**
+     * Publicación con el que se construye el componente.
+     */
     private Publicacion publicacion;
+    /**
+     * Instancia del proxy que utiliza el cliente.
+     */
     private IProxy proxy;
     /**
-     * Creates new form CabeceraPublicacion
+     * Constructor que inicializa los componentes y atributos del panel.
+     * @param usuario Usuario con el que se construye el componente.
+     * @param publicacion Publicación con el que se construye el componente.
+     * @param proxy Instancia del proxy que utiliza el cliente.
      */
     public CabeceraPublicacion(Usuario usuario, Publicacion publicacion, IProxy proxy) {
         initComponents();
@@ -28,7 +41,9 @@ public class CabeceraPublicacion extends javax.swing.JPanel {
         this.proxy= proxy;
         this.actualizarContenido();
     }
-    
+    /**
+     * Método utilizado para actualizar el contenido del componente.
+     */
     public void actualizarContenido(){
         this.lblUsuario.setText(publicacion.getUsuario().getUsuario());
         this.lblFecha.setText(publicacion.getFechaCreacion().get(Calendar.DAY_OF_MONTH)+"/"+(publicacion.getFechaCreacion().get(Calendar.MONTH)+1)+"/"+publicacion.getFechaCreacion().get(Calendar.YEAR)+" "+publicacion.getFechaCreacion().get(Calendar.HOUR_OF_DAY)+":"+publicacion.getFechaCreacion().get(Calendar.MINUTE)+":"+publicacion.getFechaCreacion().get(Calendar.SECOND));
@@ -140,12 +155,18 @@ public class CabeceraPublicacion extends javax.swing.JPanel {
                         .addComponent(lblFecha))))
         );
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Botón de editar publicación.
+     * @param evt evento.
+     */
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         FrmEditarPublicacion editar= new FrmEditarPublicacion(this.usuario, this.proxy, this.publicacion);
         editar.setVisible(true);
     }//GEN-LAST:event_btnEditarActionPerformed
-
+    /**
+     * Botón de eliminar publicación.
+     * @param evt evento.
+     */
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         FrmEliminarPublicacion eliminar= new FrmEliminarPublicacion(this.usuario, this.proxy, this.publicacion);
         eliminar.setVisible(true);

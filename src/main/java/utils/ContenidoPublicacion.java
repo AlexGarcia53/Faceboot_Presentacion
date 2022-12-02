@@ -15,28 +15,43 @@ import javax.swing.JLabel;
 import javax.swing.text.Document;
 
 /**
+ * Clase utilizada para construir el contenido de la publicación.
  *
- * @author Admin
+ * @author Equipo broker
  */
 public class ContenidoPublicacion extends javax.swing.JPanel {
+
+    /**
+     * Lista de hashtags de la publicación.
+     */
     private List<Hashtag> hashtags;
+    /**
+     * Texto plano de la publicación.
+     */
     private String textoPlano;
+    /**
+     * Imagen de la publicación.
+     */
     private String imagen;
 
     /**
-     * Creates new form ContenidoPublicacion
+     * Constructor que inicializa los componentes del panel.
+     *
      */
     public ContenidoPublicacion() {
         initComponents();
     }
 
+    /**
+     * Método utilizado para actualizar el contenido del componente.
+     */
     public void actualizarContenido() {
-        if (hashtags!=null){
+        if (hashtags != null) {
             for (int i = 0; i < hashtags.size(); i++) {
-                txtTexto.setText(txtTexto.getText()+"#"+hashtags.get(i).getNombre()+" ");
+                txtTexto.setText(txtTexto.getText() + "#" + hashtags.get(i).getNombre() + " ");
             }
-            txtTexto.setText(txtTexto.getText()+"\n"+textoPlano);
-            
+            txtTexto.setText(txtTexto.getText() + "\n" + textoPlano);
+
             JLabel labelImagen = new JLabel();
 
             ImageIcon imagenRedimensionada = redimensionarImagen(imagen);
@@ -59,7 +74,7 @@ public class ContenidoPublicacion extends javax.swing.JPanel {
 //        labelImagen.setIcon(imagenRedimensionada);
 //        pnlContenido.add(labelImagen);
 //        lblImagen.setIcon(imagenRedimensionada);
-        
+
         pnlContenido.repaint();
         pnlContenido.revalidate();
         this.repaint();
@@ -67,17 +82,30 @@ public class ContenidoPublicacion extends javax.swing.JPanel {
 
     }
 
+    /**
+     * Método que inicializa los elementos del componente.
+     *
+     * @param textoPlano texto del publicación.
+     * @param imagen imagen de la publicación.
+     * @param hashtags hashtags de la publicación.
+     */
     public void init(String textoPlano, String imagen, List<Hashtag> hashtags) {
         this.txtTexto.setEditable(false);
         this.txtTexto.setLineWrap(true);
         this.txtTexto.setWrapStyleWord(true);
         this.textoPlano = textoPlano;
         this.imagen = imagen;
-        this.hashtags= hashtags;
+        this.hashtags = hashtags;
 
         this.actualizarContenido();
     }
 
+    /**
+     * Método utilizado para redimensionar el tamaño de la imagen.
+     *
+     * @param imagen url de la imagen a redimensionar.
+     * @return imagen redimensionada.
+     */
     public ImageIcon redimensionarImagen(String imagen) {
         ImageIcon imageIcon = new ImageIcon(imagen);
         Image image = imageIcon.getImage();
@@ -85,8 +113,6 @@ public class ContenidoPublicacion extends javax.swing.JPanel {
         imageIcon = new ImageIcon(nuevaImagen);
         return imageIcon;
     }
-
-
 
     /**
      * This method is called from within the constructor to initialize the form.

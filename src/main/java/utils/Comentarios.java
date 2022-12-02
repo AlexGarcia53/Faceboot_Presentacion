@@ -9,47 +9,55 @@ import interfaces.IProxy;
 import java.util.List;
 
 /**
+ * Clase utilizada para construir los comentarios.
  *
- * @author Gael
+ * @author Equipo broker
  */
 public class Comentarios extends javax.swing.JPanel {
-    private Usuario usuario;
-    private Publicacion publicacion;
-    private IProxy proxy;
+
     /**
-     * Creates new form Comentario
+     * Usuario con el que se construye el componente.
+     */
+    private Usuario usuario;
+    /**
+     * Publicación con el que se construye el componente.
+     */
+    private Publicacion publicacion;
+    /**
+     * Instancia del proxy que utiliza el cliente.
+     */
+    private IProxy proxy;
+
+    /**
+     * Constructor que inicializa los atributos y componentes del panel.
+     *
+     * @param usuario Usuario con el que se construye el componente.
+     * @param publicacion Publicación con el que se construye el componente.
+     * @param proxy Instancia del proxy que utiliza el cliente.
      */
     public Comentarios(Usuario usuario, Publicacion publicacion, IProxy proxy) {
         initComponents();
         cpnComentarios.setVerticalScrollBar(new Barra());
-        this.usuario= usuario;
-        this.publicacion= publicacion;
-        this.proxy=proxy;
+        this.usuario = usuario;
+        this.publicacion = publicacion;
+        this.proxy = proxy;
         this.actualizarContenido();
     }
-    public void actualizarContenido(){
-        List<Comentario> comentarios= publicacion.getComentarios();
-        
-        for (Comentario comentario: comentarios){
-            ComentarioPublicacion comEspecifico= new ComentarioPublicacion(this.usuario, comentario, this.proxy);
+
+    /**
+     * Método utilizado para actualizar el contenido del panel.
+     */
+    public void actualizarContenido() {
+        List<Comentario> comentarios = publicacion.getComentarios();
+
+        for (Comentario comentario : comentarios) {
+            ComentarioPublicacion comEspecifico = new ComentarioPublicacion(this.usuario, comentario, this.proxy);
             pnlComentarios.add(comEspecifico, 0);
         }
-        
-//        ComentarioPublicacion a = new ComentarioPublicacion();
-//        ComentarioPublicacion b = new ComentarioPublicacion();
-//        ComentarioPublicacion c = new ComentarioPublicacion();
-//        
-//        
-//
-//        pnlComentarios.add(a);
-//
-//        pnlComentarios.add(b);
-//        pnlComentarios.add(c);
 
         this.repaint();
         this.revalidate();
-        
-       
+
     }
 
     /**

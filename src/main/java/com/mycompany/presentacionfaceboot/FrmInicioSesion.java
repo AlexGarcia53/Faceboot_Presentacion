@@ -13,32 +13,40 @@ import javax.swing.JOptionPane;
 import logueo.ConstructorAdapterFacebook;
 import logueo.IAdapterLogueo;
 
-//import com.sun.prism.paint.Paint;
-//import javafx.scene.paint.Color;
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
+ * Formulario para editar el perfil de un usuario.
  *
- * @author Jarol
+ * @author Equipo broker
  */
 public class FrmInicioSesion extends javax.swing.JFrame {
-    private static FrmInicioSesion frmInicioSesion;
-    private IProxy proxyClienteBroker;
-    
+
     /**
-     * Creates new form FrmInicioSesion
+     * Instancia de FrmInicioSesion.
+     */
+    private static FrmInicioSesion frmInicioSesion;
+    /**
+     * Instancia del proxy que utiliza el cliente.
+     */
+    private IProxy proxyClienteBroker;
+
+    /**
+     * Método constructor que inicializa los componentes y atributos del
+     * formulario.
+     *
+     * @param proxyClienteBroker Instancia del proxy que utiliza el cliente.
      */
     public FrmInicioSesion(IProxy proxyClienteBroker) {
         initComponents();
         setLocationRelativeTo(null);
-        this.proxyClienteBroker= proxyClienteBroker;
+        this.proxyClienteBroker = proxyClienteBroker;
     }
-    
+
+    /**
+     * Método que verfica los campos que tiene el formulario.
+     *
+     * @throws ErrorDatosErroneosException Excepción utilizada para especificar
+     * errores en inserción de datos.
+     */
     private void verificarCampos() throws ErrorDatosErroneosException {
 
         if (this.txtEmail.getText().equals("")) {
@@ -54,6 +62,11 @@ public class FrmInicioSesion extends javax.swing.JFrame {
 
     }
 
+    /**
+     * Método utilizado para mostrar mensajes de error.
+     *
+     * @param error error específico.
+     */
     private void mostrarError(String error) {
         JOptionPane.showMessageDialog(this, error, "Error!...", JOptionPane.ERROR_MESSAGE);
     }
@@ -182,67 +195,86 @@ public class FrmInicioSesion extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Botón utilizado para abrir el formulario de registrar usuario.
+     *
+     * @param evt evento.
+     */
     private void btnMostrarRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarRegistrarseActionPerformed
         FrmRegistro.obtenerFrmRegistro().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnMostrarRegistrarseActionPerformed
-
+    /**
+     * Botón utilizado para iniciar sesión.
+     *
+     * @param evt evento.
+     */
     private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
-        String email= this.txtEmail.getText();
-        String contrasenia= this.txtContrasena.getText();
+        String email = this.txtEmail.getText();
+        String contrasenia = this.txtContrasena.getText();
 
-        Usuario usuario= new Usuario(email, contrasenia);
-        try{
+        Usuario usuario = new Usuario(email, contrasenia);
+        try {
             this.verificarCampos();
-        } catch (ErrorDatosErroneosException ex){
+        } catch (ErrorDatosErroneosException ex) {
             this.mostrarError(ex.getMessage());
             return;
         }
 
-        try{
-            Usuario respuesta= this.proxyClienteBroker.iniciarSesion(usuario);
-            int opcionSeleccionada= JOptionPane.showConfirmDialog(this,"Bienvenido "+respuesta.getUsuario()+"!!!", "Confirmación", JOptionPane.YES_OPTION);
-            if(opcionSeleccionada == JOptionPane.YES_OPTION){
-                FrmMuro muro= new FrmMuro(respuesta,this.proxyClienteBroker);
+        try {
+            Usuario respuesta = this.proxyClienteBroker.iniciarSesion(usuario);
+            int opcionSeleccionada = JOptionPane.showConfirmDialog(this, "Bienvenido " + respuesta.getUsuario() + "!!!", "Confirmación", JOptionPane.YES_OPTION);
+            if (opcionSeleccionada == JOptionPane.YES_OPTION) {
+                FrmMuro muro = new FrmMuro(respuesta, this.proxyClienteBroker);
                 muro.setVisible(true);
                 this.dispose();
             }
-        } catch(ErrorBusquedaUsuarioException e){
+        } catch (ErrorBusquedaUsuarioException e) {
             this.mostrarError(e.getMessage());
         }
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
 
     private void txtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmailActionPerformed
- 
-    }//GEN-LAST:event_txtEmailActionPerformed
 
+    }//GEN-LAST:event_txtEmailActionPerformed
+    /**
+     * Botón utilizado para cerrar el formulario actual.
+     *
+     * @param evt
+     */
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         System.exit(0);
     }//GEN-LAST:event_btnCancelarActionPerformed
-
+    /**
+     * Botón utilizado para iniciar sesión con facebook.
+     *
+     * @param evt evento.
+     */
     private void btnSesionFacebookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSesionFacebookActionPerformed
 
-        Usuario usuario= ConstructorAdapterFacebook.getInstancia().obtenerAdaptador().iniciarSesion();
+        Usuario usuario = ConstructorAdapterFacebook.getInstancia().obtenerAdaptador().iniciarSesion();
 
-
-        try{
+        try {
             Usuario respuesta = this.proxyClienteBroker.iniciarSesionFacebook(usuario);
-            int opcionSeleccionada= JOptionPane.showConfirmDialog(this,"Bienvenido "+respuesta.getUsuario()+"!!!", "Confirmación", JOptionPane.YES_OPTION);
-            if(opcionSeleccionada == JOptionPane.YES_OPTION){
-                FrmMuro muro= new FrmMuro(respuesta,this.proxyClienteBroker);
+            int opcionSeleccionada = JOptionPane.showConfirmDialog(this, "Bienvenido " + respuesta.getUsuario() + "!!!", "Confirmación", JOptionPane.YES_OPTION);
+            if (opcionSeleccionada == JOptionPane.YES_OPTION) {
+                FrmMuro muro = new FrmMuro(respuesta, this.proxyClienteBroker);
                 muro.setVisible(true);
                 this.dispose();
             }
-        } catch (ErrorBusquedaUsuarioException e){
+        } catch (ErrorBusquedaUsuarioException e) {
             this.mostrarError(e.getMessage());
         }
     }//GEN-LAST:event_btnSesionFacebookActionPerformed
-
+    /**
+     * Método utilizado para mostrar un mensaje.
+     *
+     * @param mensaje mensaje a mostrar.
+     */
     private void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, "Respuesta del servidor", JOptionPane.INFORMATION_MESSAGE);
     }
-    
+
 //    /**
 //     * @param args the command line arguments
 //     */

@@ -20,27 +20,46 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
+ * Formulario para eliminar un comentario.
  *
- * @author Jarol
+ * @author Equipo broker
  */
 public class FrmEliminarComentario extends javax.swing.JFrame {
-    IProxy proxyClienteBroker;
-    Usuario usuario;
-    Comentario comentario;
+
     /**
-     * Creates new form FrmPublicacion
+     * Instancia del proxy que utiliza el cliente.
+     */
+    IProxy proxyClienteBroker;
+    /**
+     * Usuario que abre el formulario.
+     */
+    Usuario usuario;
+    /**
+     * Comentario a eliminar.
+     */
+    Comentario comentario;
+
+    /**
+     * Constructor que inicializa los componentes y atributos del formulario.
+     *
+     * @param usuario Usuario que abre el formulario.
+     * @param proxyClienteBroker Instancia del proxy que utiliza el cliente.
+     * @param comentario Comentario a eliminar.
      */
     public FrmEliminarComentario(Usuario usuario, IProxy proxyClienteBroker, Comentario comentario) {
         initComponents();
         setLocationRelativeTo(null);
         this.usuario = usuario;
-        this.proxyClienteBroker=proxyClienteBroker;
-        this.comentario= comentario;
+        this.proxyClienteBroker = proxyClienteBroker;
+        this.comentario = comentario;
         this.txtTextoPlano.setEditable(false);
         this.llenarCampos();
     }
-    
-    public void llenarCampos(){
+
+    /**
+     * Método utilizado para llenar los campos del formulario.
+     */
+    public void llenarCampos() {
         this.txtTextoPlano.setText(this.comentario.getContenido().getTextoPlano());
     }
 
@@ -133,27 +152,39 @@ public class FrmEliminarComentario extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Botón utilizado para eliminar un comentario.
+     *
+     * @param evt evento.
+     */
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        try{
+        try {
             Comentario respuesta = this.proxyClienteBroker.eliminarComentario(comentario);
             this.mostrarMensaje("Se eliminó correctamente el comentario");
-        }catch(ErrorEliminarComentarioException e){
+        } catch (ErrorEliminarComentarioException e) {
             this.mostrarMensaje(e.getMessage());
         }
-        
+
         this.dispose();
     }//GEN-LAST:event_btnEliminarActionPerformed
-
+    /**
+     * Botón que cierra el formulario actual.
+     *
+     * @param evt evento.
+     */
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
-
+    /**
+     * Método para mostrar un mensaje.
+     *
+     * @param mensaje mensaje a mostrar.
+     */
     private void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, "Respuesta del servidor", JOptionPane.INFORMATION_MESSAGE);
     }
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEliminar;

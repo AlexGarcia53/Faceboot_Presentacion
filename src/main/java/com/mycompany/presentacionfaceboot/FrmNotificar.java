@@ -8,25 +8,36 @@ package com.mycompany.presentacionfaceboot;
 import dominio.Mensaje;
 import dominio.Usuario;
 import excepciones.ErrorBusquedaUsuarioException;
+import excepciones.ErrorDatosErroneosException;
 import excepciones.ErrorEnviarMensajeException;
 import interfaces.IProxy;
 import javax.swing.JOptionPane;
 
 /**
+ * Formulario para enviar mensajes a otros usuarios.
  *
- * @author Jarol
+ * @author Equipo broker
  */
 public class FrmNotificar extends javax.swing.JFrame {
-    private Usuario usuario;
-    private IProxy proxy;
-    
+
     /**
-     * Creates new form FrmNotificar
+     * Usuario que abre el formulario.
+     */
+    private Usuario usuario;
+    /**
+     * Instancia del proxy que utiliza el cliente.
+     */
+    private IProxy proxy;
+
+    /**
+     * Método constructor que inicializa los componentes y atributos del formulario.
+     * @param usuario Usuario que abre el formulario.
+     * @param proxy Instancia del proxy que utiliza el cliente.
      */
     public FrmNotificar(Usuario usuario, IProxy proxy) {
         initComponents();
-        this.usuario= usuario;
-        this.proxy= proxy;
+        this.usuario = usuario;
+        this.proxy = proxy;
     }
 
     /**
@@ -126,51 +137,83 @@ public class FrmNotificar extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Botón para cerrar el formulario actual.
+     * @param evt evento.
+     */
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        FrmMuro muro= new FrmMuro(usuario, proxy);
+        FrmMuro muro = new FrmMuro(usuario, proxy);
         muro.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
-
+    /**
+     * Botón para enviar el mensaje a un usuario.
+     * @param evt evento.
+     */
     private void btnEnviarMensajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarMensajeActionPerformed
-        if(rbnSMS.isSelected()==false && rbnEmail.isSelected()==false){
-            this.mostrarError("No se ha seleccionado un método de envío");
-            return;
-        }
-        
-        Mensaje mensaje= new Mensaje();
-        String textoPlano= this.txtMensaje.getText();
-        boolean sms= this.rbnSMS.isSelected();
-        boolean email= this.rbnEmail.isSelected();
+
+        Mensaje mensaje = new Mensaje();
+        String textoPlano = this.txtMensaje.getText();
+        boolean sms = this.rbnSMS.isSelected();
+        boolean email = this.rbnEmail.isSelected();
         mensaje.setTextoPlano(textoPlano);
         mensaje.setMensajeSMS(sms);
         mensaje.setMensajeEmail(email);
         mensaje.setUsuario(usuario);
-        
-        try{
-            Usuario destinatario= new Usuario(this.txtDestinatario.getText());
-            
-            Usuario usuarioDestinatario= this.proxy.consultarUsuarioNombre(destinatario);
-            
+
+        try {
+            this.verificarCampos();
+        } catch (ErrorDatosErroneosException ex) {
+            this.mostrarError(ex.getMessage());
+            return;
+        }
+
+        try {
+            Usuario destinatario = new Usuario(this.txtDestinatario.getText());
+
+            Usuario usuarioDestinatario = this.proxy.consultarUsuarioNombre(destinatario);
+
             mensaje.setReceptor(usuarioDestinatario);
-            
-            Mensaje respuesta= proxy.enviarMensaje(mensaje);
+
+            Mensaje respuesta = proxy.enviarMensaje(mensaje);
             this.mostrarMensaje("Se envió correctamente el mensaje");
-        } catch (ErrorBusquedaUsuarioException e){
+        } catch (ErrorBusquedaUsuarioException e) {
             this.mostrarMensaje(e.getMessage());
-        } catch (ErrorEnviarMensajeException e){
+        } catch (ErrorEnviarMensajeException e) {
             this.mostrarMensaje(e.getMessage());
         }
     }//GEN-LAST:event_btnEnviarMensajeActionPerformed
+    /**
+     * Método que verfica los campos que tiene el formulario.
+     * @throws ErrorDatosErroneosException Excepción utilizada para especificar errores en inserción de datos.
+     */
+    private void verificarCampos() throws ErrorDatosErroneosException {
+        if (this.txtDestinatario.getText().isEmpty()) {
+            throw new ErrorDatosErroneosException("El destinatario esta vacío");
+        } else if (this.txtMensaje.getText().isEmpty()) {
+            throw new ErrorDatosErroneosException("El mensaje esta vacío");
+        } else if (rbnSMS.isSelected() == false && rbnEmail.isSelected() == false) {
+            throw new ErrorDatosErroneosException("No se ha seleccionado un método de envío");
 
+        }
+
+    }
+    /**
+     * Método utilizado para mostrar mensajes de error.
+     * @param error error específico.
+     */
+    private void mostrarError(String error) {
+        JOptionPane.showMessageDialog(this, error, "Error!...", JOptionPane.ERROR_MESSAGE);
+    }
+    /**
+     * Método utilizado para mostrar las respuestas del servidor.
+     * @param mensaje mensaje a mostrar.
+     */
     private void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, "Respuesta del servidor", JOptionPane.INFORMATION_MESSAGE);
     }
     
-    private void mostrarError(String error) {
-        JOptionPane.showMessageDialog(this, error, "Error!...", JOptionPane.ERROR_MESSAGE);
-    }
+ 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;

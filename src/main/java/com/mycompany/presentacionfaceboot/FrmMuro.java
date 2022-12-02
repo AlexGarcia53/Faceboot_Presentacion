@@ -29,24 +29,41 @@ import utils.Barra;
 import utils.PublicacionCompleta;
 
 /**
+ * Formulario donde se muestra el muro principal.
  *
- * @author Jarol
+ * @author Equipo broker
  */
 public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarPublicacion, IObservadorEditarPublicacion, IObservadorEliminarPublicacion,
-        IObservadorRegistrarComentario, IObservadorEditarComentario, IObservadorEliminarComentario{
-//    private static FrmMuro frmMuro;
-//    private Long idUsuario;
-    private String hashtagActual="";
-    private Usuario usuario;
-    private IProxy proxyClienteBroker;
-    private List<PublicacionCompleta> publicaciones= new ArrayList<>();
+        IObservadorRegistrarComentario, IObservadorEditarComentario, IObservadorEliminarComentario {
+
     /**
-     * Creates new form FrmMuro
+     * Hashtag actual.
+     */
+    private String hashtagActual = "";
+    /**
+     * Usuario que abre el formulario.
+     */
+    private Usuario usuario;
+    /**
+     * Instancia del proxy que utiliza el cliente.
+     */
+    private IProxy proxyClienteBroker;
+    /**
+     * Lista de componentes que contienen las publicaciones.
+     */
+    private List<PublicacionCompleta> publicaciones = new ArrayList<>();
+
+    /**
+     * Método constructor que inicializa los componentes y atributos del
+     * formulario.
+     *
+     * @param usuario Usuario que abre el formulario.
+     * @param proxyClienteBroker Instancia del proxy que utiliza el cliente.
      */
     public FrmMuro(Usuario usuario, IProxy proxyClienteBroker) {
         initComponents();
-        this.proxyClienteBroker= proxyClienteBroker;
-        this.usuario= usuario;
+        this.proxyClienteBroker = proxyClienteBroker;
+        this.usuario = usuario;
         this.btnEditarPerfil.setText(usuario.getUsuario());
         cpnMuro.setVerticalScrollBar(new Barra());
 //        cpnMuro.setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
@@ -58,95 +75,148 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
         this.suscribirseEventoRegistrarComentario();
         this.suscribirseEventoEliminarComentario();
     }
-    
-    public void consultarPublicaciones(){
-        try{
+
+    /**
+     * Método utilizado para consultar las publicaciones existentes.
+     */
+    public void consultarPublicaciones() {
+        try {
             List<Publicacion> publicaciones = this.proxyClienteBroker.consultarPublicaciones();
             this.pintarPublicaciones(publicaciones);
-        }catch(ErrorBusquedaPublicacionesException e){
+        } catch (ErrorBusquedaPublicacionesException e) {
             this.mostrarError(e.getMessage());
         }
     }
-    
-    public void consultarPublicacionHashtag(String hashtag){
-        try{
+
+    /**
+     * Método utilizado para consultar las publicaciones existentes.
+     *
+     * @param hashtag hashtag con el cual consultar las publicaciones.
+     */
+    public void consultarPublicacionHashtag(String hashtag) {
+        try {
             List<Publicacion> publicaciones = this.proxyClienteBroker.consultarPublicaciones(new Hashtag(hashtag));
             this.pintarPublicaciones(publicaciones);
-        }catch(ErrorConsultarPublicacionException e){
+        } catch (ErrorConsultarPublicacionException e) {
             this.mostrarError(e.getMessage());
         }
     }
-    
-    public void pintarPublicaciones(List<Publicacion> publicaciones){
-        for(Publicacion publicacion: publicaciones){
+
+    /**
+     * Método utilizado para pintar las publicaciones en el muro.
+     *
+     * @param publicaciones lista de publicaciones.
+     */
+    public void pintarPublicaciones(List<Publicacion> publicaciones) {
+        for (Publicacion publicacion : publicaciones) {
             System.out.println(publicacion);
-            PublicacionCompleta pnlPublicacion= new PublicacionCompleta(this.usuario, publicacion, this.proxyClienteBroker);
+            PublicacionCompleta pnlPublicacion = new PublicacionCompleta(this.usuario, publicacion, this.proxyClienteBroker);
             this.publicaciones.add(pnlPublicacion);
-            this.pnlPublicaciones.add(pnlPublicacion,0);
+            this.pnlPublicaciones.add(pnlPublicacion, 0);
         }
         this.pnlPublicaciones.repaint();
         this.pnlPublicaciones.revalidate();
     }
-    
+
+    /**
+     * Método utilizado para mostrar un mensaje de error.
+     *
+     * @param error error específico.
+     */
     private void mostrarError(String error) {
         JOptionPane.showMessageDialog(this, error, "Error!...", JOptionPane.ERROR_MESSAGE);
     }
-    
+
 //    public static FrmMuro obtenerFrmMuro(Long idUsuario, IProxy proxyClienteBroker){
 //        if(frmMuro==null){
 //            frmMuro= new FrmMuro(idUsuario,proxyClienteBroker);
 //        }
 //        return frmMuro;
 //    }
-    
-    public void suscribirseEventoRegistrarComentario(){
+    /**
+     * Método utilizado para suscribirse al evento de registrar comentario.
+     */
+    public void suscribirseEventoRegistrarComentario() {
         this.proxyClienteBroker.suscribirseEventoRegistrarComentario(this);
     }
-    
-    public void desuscribirEventoRegistrarComentario(){
+
+    /**
+     * Método utilizado para desuscribirse al evento de registrar comentario.
+     */
+    public void desuscribirEventoRegistrarComentario() {
         this.proxyClienteBroker.desuscribirseEventoRegistrarComentario(this);
     }
-    
-    public void suscribirseEventoEditarComentario(){
+
+    /**
+     * Método utilizado para suscribirse al evento de editar comentario.
+     */
+    public void suscribirseEventoEditarComentario() {
         this.proxyClienteBroker.suscribirseEventoEditarComentario(this);
     }
-    
-    public void desuscribirEventoEditarComentario(){
+
+    /**
+     * Método utilizado para desuscribirse al evento de editar comentario
+     */
+    public void desuscribirEventoEditarComentario() {
         this.proxyClienteBroker.desuscribirseEventoEditarComentario(this);
     }
-    
-    public void suscribirseEventoEliminarComentario(){
+
+    /**
+     * Método utilizado para suscribirse al evento de eliminar comentario.
+     */
+    public void suscribirseEventoEliminarComentario() {
         this.proxyClienteBroker.suscribirseEventoEliminarComentario(this);
     }
-    
-    public void desuscribirEventoEliminarComentario(){
+
+    /**
+     * Método utilizado para desuscribirse al evento de eliminar comentario.
+     */
+    public void desuscribirEventoEliminarComentario() {
         this.proxyClienteBroker.desuscribirseEventoEliminarComentario(this);
     }
-    
-    public void suscribirseEventoEliminarPublicacion(){
+
+    /**
+     * Método utilizado para suscribirse al evento de eliminar publicación.
+     */
+    public void suscribirseEventoEliminarPublicacion() {
         this.proxyClienteBroker.suscribirseEventoEliminarPublicacion(this);
     }
-    
-    public void desuscribirEventoEliminarPublicacion(){
+
+    /**
+     * Método utilizado para desuscribirse al evento de eliminar publicación.
+     */
+    public void desuscribirEventoEliminarPublicacion() {
         this.proxyClienteBroker.desuscribirseEventoEliminarPublicacion(this);
     }
-    
-    public void suscribirseEventoEditarPublicacion(){
+
+    /**
+     * Método utilizado para suscribirse al evento de editar publicación.
+     */
+    public void suscribirseEventoEditarPublicacion() {
         this.proxyClienteBroker.suscribirseEventoEditarPublicacion(this);
     }
-    
-    public void desuscribirEventoEditarPublicacion(){
+
+    /**
+     * Método utilizado para desuscribirse al evento de editar publicación.
+     */
+    public void desuscribirEventoEditarPublicacion() {
         this.proxyClienteBroker.desuscribirseEventoEditarPublicacion(this);
     }
-    
-    public void suscribirseEventoRegistrarPublicacion(){
+
+    /**
+     * Método utilizado para suscribirse al evento de registrar publicación.
+     */
+    public void suscribirseEventoRegistrarPublicacion() {
         this.proxyClienteBroker.suscribirseEventoRegistrarPublicacion(this);
     }
-    
-    public void desuscribirseEventoRegistrarPublicacion(){
+
+    /**
+     * Método utilizado para desuscribirse al evento de registrar publicación.
+     */
+    public void desuscribirseEventoRegistrarPublicacion() {
         this.proxyClienteBroker.desuscribirseEventoRegistrarPublicacion(this);
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -283,7 +353,11 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Botón que abre el formulario para realizar una publicación.
+     *
+     * @param evt evento.
+     */
     private void btnHacerPublicacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHacerPublicacionActionPerformed
 //        this.desuscribirseEventoRegistrarPublicacion();
 //        this.desuscribirEventoEditarPublicacion();
@@ -291,11 +365,16 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
 //        this.desuscribirEventoEditarComentario();
 //        this.desuscribirEventoRegistrarComentario();
 //        this.desuscribirEventoEliminarComentario();
-        FrmPublicacion frmPublicacion= new FrmPublicacion(usuario, this.proxyClienteBroker);
+        FrmPublicacion frmPublicacion = new FrmPublicacion(usuario, this.proxyClienteBroker);
         frmPublicacion.setVisible(true);
 //        this.dispose();
     }//GEN-LAST:event_btnHacerPublicacionActionPerformed
-
+    /**
+     * Botón que cierra el formulario y desuscribe de todos los eventos al
+     * mismo.
+     *
+     * @param evt evento.
+     */
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         this.desuscribirseEventoRegistrarPublicacion();
         this.desuscribirEventoEditarPublicacion();
@@ -303,11 +382,16 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
         this.desuscribirEventoEditarComentario();
         this.desuscribirEventoRegistrarComentario();
         this.desuscribirEventoEliminarComentario();
-        FrmInicioSesion frmInicioSesion= new FrmInicioSesion(this.proxyClienteBroker);
+        FrmInicioSesion frmInicioSesion = new FrmInicioSesion(this.proxyClienteBroker);
         frmInicioSesion.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
-
+    /**
+     * Botón que cierra el formulario, desuscribe de todos los eventos al mismo
+     * y abre el formulario de editar perfil.
+     *
+     * @param evt evento.
+     */
     private void btnEditarPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarPerfilActionPerformed
         this.desuscribirseEventoRegistrarPublicacion();
         this.desuscribirEventoEditarPublicacion();
@@ -315,11 +399,16 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
         this.desuscribirEventoEditarComentario();
         this.desuscribirEventoRegistrarComentario();
         this.desuscribirEventoEliminarComentario();
-        frmEditarPerfil perfil= new frmEditarPerfil(this.usuario, this.proxyClienteBroker);
+        frmEditarPerfil perfil = new frmEditarPerfil(this.usuario, this.proxyClienteBroker);
         perfil.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnEditarPerfilActionPerformed
-
+    /**
+     * Botón que cierra el formulario, desuscribe de todos los eventos al mismo
+     * y abre el formulario de enviar mensaje.
+     *
+     * @param evt evento.
+     */
     private void btnEnviarMensajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarMensajeActionPerformed
         this.desuscribirseEventoRegistrarPublicacion();
         this.desuscribirEventoEditarPublicacion();
@@ -327,15 +416,20 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
         this.desuscribirEventoEditarComentario();
         this.desuscribirEventoRegistrarComentario();
         this.desuscribirEventoEliminarComentario();
-        FrmNotificar notificacion= new FrmNotificar(usuario, proxyClienteBroker);
+        FrmNotificar notificacion = new FrmNotificar(usuario, proxyClienteBroker);
         notificacion.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnEnviarMensajeActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        
-    }//GEN-LAST:event_formWindowClosed
 
+    }//GEN-LAST:event_formWindowClosed
+    /**
+     * Evento que detecta cuando se cierra el formulario y desuscribe al mismo
+     * de los distintos eventos.
+     *
+     * @param evt evento.
+     */
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         this.desuscribirseEventoRegistrarPublicacion();
         this.desuscribirEventoEditarPublicacion();
@@ -344,15 +438,19 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
         this.desuscribirEventoRegistrarComentario();
         this.desuscribirEventoEliminarComentario();
     }//GEN-LAST:event_formWindowClosing
-
+    /**
+     * Botón utilizado para buscar publicaciónes por hashtag.
+     *
+     * @param evt evento.
+     */
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        this.hashtagActual= this.txtHashtag.getText();
-        if(!this.txtHashtag.getText().equals("")){
-            this.publicaciones= new ArrayList<>();
+        this.hashtagActual = this.txtHashtag.getText();
+        if (!this.txtHashtag.getText().equals("")) {
+            this.publicaciones = new ArrayList<>();
             this.pnlPublicaciones.removeAll();
             this.consultarPublicacionHashtag(this.txtHashtag.getText());
         } else {
-            this.publicaciones= new ArrayList<>();
+            this.publicaciones = new ArrayList<>();
             this.pnlPublicaciones.removeAll();
             this.consultarPublicaciones();
         }
@@ -362,7 +460,7 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
 
     }//GEN-LAST:event_txtHashtagActionPerformed
 
-   
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnEditarPerfil;
@@ -377,7 +475,11 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
     private javax.swing.JPanel seccionMenu;
     private javax.swing.JTextField txtHashtag;
     // End of variables declaration//GEN-END:variables
-
+    /**
+     * Método añade las nuevas publicaciones realizadas.
+     *
+     * @param actualizacion publicación a añadir.
+     */
     @Override
     public void notificarRegistroPublicacion(Publicacion actualizacion) {
 //        JOptionPane.showMessageDialog(this, "Se añadió una nueva publicación", "Mensaje del servidor", JOptionPane.INFORMATION_MESSAGE);
@@ -388,10 +490,10 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
             this.pnlPublicaciones.repaint();
             this.pnlPublicaciones.revalidate();
         } else {
-            if(actualizacion.getHashtags()!=null){
-                List<Hashtag> hashtagsPublicacion= actualizacion.getHashtags();
+            if (actualizacion.getHashtags() != null) {
+                List<Hashtag> hashtagsPublicacion = actualizacion.getHashtags();
                 for (int i = 0; i < hashtagsPublicacion.size(); i++) {
-                    if(hashtagsPublicacion.get(i).getNombre().equals(this.hashtagActual)){
+                    if (hashtagsPublicacion.get(i).getNombre().equals(this.hashtagActual)) {
                         PublicacionCompleta pnlPublicacion = new PublicacionCompleta(this.usuario, actualizacion, this.proxyClienteBroker);
                         this.publicaciones.add(pnlPublicacion);
                         this.pnlPublicaciones.add(pnlPublicacion, 0);
@@ -403,6 +505,11 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
         }
     }
 
+    /**
+     * Método que actualiza las publicaciones existentes en el muro.
+     *
+     * @param publicacion publicación a actualizar.
+     */
     @Override
     public void notificarEdicionPublicacion(Publicacion publicacion) {
         for (int i = 0; i < publicaciones.size(); i++) {
@@ -413,6 +520,11 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
         }
     }
 
+    /**
+     * Método que elimina la publicación del muro.
+     *
+     * @param publicacion publicación a eliminar.
+     */
     @Override
     public void notificarEliminacionPublicacion(Publicacion publicacion) {
         for (int i = 0; i < publicaciones.size(); i++) {
@@ -425,32 +537,47 @@ public class FrmMuro extends javax.swing.JFrame implements IObservadorRegistrarP
         }
     }
 
+    /**
+     * Método que añade los nuevos comentarios en la publicación.
+     *
+     * @param comentario comentario a añadir.
+     */
     @Override
     public void notificarRegistroComentario(Comentario comentario) {
         for (int i = 0; i < publicaciones.size(); i++) {
-            if(publicaciones.get(i).getPublicacion().getId()==comentario.getPublicacion().getId()){
+            if (publicaciones.get(i).getPublicacion().getId() == comentario.getPublicacion().getId()) {
                 publicaciones.get(i).getPublicacion().agregarComentario(comentario);
                 publicaciones.get(i).actualizarEdicionContenido();
             }
         }
     }
 
+    /**
+     * Método que actualiza los comentarios existentes en la publicación.
+     *
+     * @param comentario comentario a actualizar.
+     */
     @Override
     public void notificarEdicionComentario(Comentario comentario) {
         for (int i = 0; i < publicaciones.size(); i++) {
-            if(publicaciones.get(i).getPublicacion().getId()==comentario.getPublicacion().getId()){
+            if (publicaciones.get(i).getPublicacion().getId() == comentario.getPublicacion().getId()) {
                 publicaciones.get(i).getPublicacion().editarComentario(comentario);
                 publicaciones.get(i).actualizarEdicionContenido();
             }
         }
     }
 
+    /**
+     * Método que elimina el comentario de la publicación.
+     *
+     * @param comentario comentario a eliminar.
+     */
     @Override
     public void notificarEliminacionComentario(Comentario comentario) {
         System.out.println("Entró a notificar eliminación");
         System.out.println(comentario);
         for (int i = 0; i < publicaciones.size(); i++) {
-            if(publicaciones.get(i).getPublicacion().getId()==comentario.getPublicacion().getId()){
+            if (publicaciones.get(i).getPublicacion().getId() == comentario.getPublicacion().getId()) {
                 publicaciones.get(i).getPublicacion().eliminarComentario(comentario);
                 publicaciones.get(i).actualizarEdicionContenido();
 //                this.pnlPublicaciones.remove(publicaciones.get(i));

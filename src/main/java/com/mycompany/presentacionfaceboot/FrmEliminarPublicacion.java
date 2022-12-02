@@ -22,36 +22,55 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
+ * Formulario para eliminar una publicación.
  *
- * @author Jarol
+ * @author Equipo broker
  */
 public class FrmEliminarPublicacion extends javax.swing.JFrame {
-    IProxy proxyClienteBroker;
-    Usuario usuario;
-    Publicacion publicacion;
+
     /**
-     * Creates new form FrmPublicacion
+     * Instancia del proxy que utiliza el cliente.
+     */
+    IProxy proxyClienteBroker;
+    /**
+     * Usuario que abre el formulario.
+     */
+    Usuario usuario;
+    /**
+     * Publicación a eliminar.
+     */
+    Publicacion publicacion;
+
+    /**
+     * Constructor que inicializa los componentes y atributos del formulario.
+     *
+     * @param usuario Usuario que abre el formulario.
+     * @param proxyClienteBroker Instancia del proxy que utiliza el cliente.
+     * @param publicacion Publicación a eliminar.
      */
     public FrmEliminarPublicacion(Usuario usuario, IProxy proxyClienteBroker, Publicacion publicacion) {
         initComponents();
         setLocationRelativeTo(null);
         this.usuario = usuario;
-        this.proxyClienteBroker=proxyClienteBroker;
-        this.publicacion=publicacion;
+        this.proxyClienteBroker = proxyClienteBroker;
+        this.publicacion = publicacion;
         this.txtHashtags.setEditable(false);
         this.txtTextoPlano.setEditable(false);
         this.llenarCampos();
     }
-    
-    public void llenarCampos(){
-        if(this.publicacion.getHashtags()!=null){
-            List<Hashtag> hashtags= publicacion.getHashtags();
+
+    /**
+     * Método utilizado para llenar los campos del formulario.
+     */
+    public void llenarCampos() {
+        if (this.publicacion.getHashtags() != null) {
+            List<Hashtag> hashtags = publicacion.getHashtags();
             for (int i = 0; i < hashtags.size(); i++) {
-                txtHashtags.setText(txtHashtags.getText()+"#"+hashtags.get(i).getNombre()+" ");
+                txtHashtags.setText(txtHashtags.getText() + "#" + hashtags.get(i).getNombre() + " ");
             }
         }
         this.txtTextoPlano.setText(publicacion.getContenido().getTextoPlano());
-        if(this.publicacion.getContenido().getImagen()!=null){
+        if (this.publicacion.getContenido().getImagen() != null) {
             Image imagen = new ImageIcon(this.publicacion.getContenido().getImagen()).getImage();
             ImageIcon icono = new ImageIcon(imagen.getScaledInstance(lblImagen.getWidth(), lblImagen.getHeight(), Image.SCALE_SMOOTH));
             lblImagen.setIcon(icono);
@@ -176,32 +195,44 @@ public class FrmEliminarPublicacion extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Botón utilizado para eliminar la publicación.
+     *
+     * @param evt evento.
+     */
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        try{
+        try {
             Publicacion respuesta = this.proxyClienteBroker.eliminarPublicacion(publicacion);
             this.mostrarMensaje("Se eliminó correctamente la publicación");
-        }catch(ErrorGuardarPublicacionException e){
+        } catch (ErrorGuardarPublicacionException e) {
             this.mostrarMensaje(e.getMessage());
         }
-        
+
         this.dispose();
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void txtHashtagsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHashtagsActionPerformed
 
-        
-    }//GEN-LAST:event_txtHashtagsActionPerformed
 
+    }//GEN-LAST:event_txtHashtagsActionPerformed
+    /**
+     * Botón que cierra el formulario actual.
+     *
+     * @param evt evento.
+     */
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
-
+    /**
+     * Método que muestra un mensaje.
+     *
+     * @param mensaje mensaje a mostrar.
+     */
     private void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, "Respuesta del servidor", JOptionPane.INFORMATION_MESSAGE);
     }
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEliminar;

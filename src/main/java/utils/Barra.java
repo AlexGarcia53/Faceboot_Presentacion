@@ -4,19 +4,20 @@
  */
 package utils;
 
-/**
- *
- * @author Gael
- */
 
 import javax.swing.JScrollBar;
 import java.awt.Color;
 import java.awt.Dimension;
-import javax.swing.plaf.basic.BasicScrollBarUI;
-import javax.swing.plaf.synth.SynthScrollBarUI;
 
+/**
+ * Clase utilizada para obtener una ScrollBar personalizada.
+ *
+ * @author Equipo broker
+ */
 public class Barra extends JScrollBar {
-
+    /**
+     * Constructor que inicializa la barra.
+     */
     public Barra() {
         this.setUI(new MyScrollBarUI());
       

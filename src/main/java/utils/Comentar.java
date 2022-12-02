@@ -6,6 +6,7 @@ package utils;
 
 import dominio.*;
 import dominio.Comentario;
+import excepciones.ErrorDatosErroneosException;
 import excepciones.ErrorGuardarComentarioException;
 import interfaces.IProxy;
 import java.awt.Label;
@@ -13,28 +14,39 @@ import java.util.GregorianCalendar;
 import javax.swing.JOptionPane;
 
 /**
+ * Clase utilizada para construir la sección de comentar.
  *
- * @author Gael
+ * @author Equipo broker
  */
 public class Comentar extends javax.swing.JPanel {
-    private Usuario usuario;
-    private Publicacion publicacion;
-    private IProxy proxy;
+
     /**
-     * Creates new form Comentario
+     * Usuario con el que se construye el componente.
+     */
+    private Usuario usuario;
+    /**
+     * Publicación con el que se construye el componente.
+     */
+    private Publicacion publicacion;
+    /**
+     * Instancia del proxy que utiliza el cliente.
+     */
+    private IProxy proxy;
+
+    /**
+     * Constructor qur inicializa los componentes y atributos del panel.
+     *
+     * @param usuario Usuario con el que se construye el componente.
+     * @param publicacion Publicación con el que se construye el componente.
+     * @param proxy Instancia del proxy que utiliza el cliente.
      */
     public Comentar(Usuario usuario, Publicacion publicacion, IProxy proxy) {
         initComponents();
-        this.init();
-        this.usuario= usuario;
-        this.publicacion= publicacion;
-        this.proxy=proxy;
+
+        this.usuario = usuario;
+        this.publicacion = publicacion;
+        this.proxy = proxy;
     }
-    
-    public void init(){
-        
-    }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -99,29 +111,65 @@ public class Comentar extends javax.swing.JPanel {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Botón que realiza la operación de registrar comentario.
+     *
+     * @param evt evento.
+     */
     private void btnComentarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnComentarActionPerformed
-        String contenidoComentario= this.txtpnComentario.getText();
-        Contenido contenido= new Contenido(contenidoComentario);
-        GregorianCalendar fechaActual=new GregorianCalendar();
-        Comentario comentario= new Comentario(fechaActual, this.publicacion, this.usuario, contenido);
-        
-        try{
+        String contenidoComentario = this.txtpnComentario.getText();
+        Contenido contenido = new Contenido(contenidoComentario);
+        GregorianCalendar fechaActual = new GregorianCalendar();
+        Comentario comentario = new Comentario(fechaActual, this.publicacion, this.usuario, contenido);
+
+        try {
+            this.verificarCampos();
+        } catch (ErrorDatosErroneosException ex) {
+            this.mostrarError(ex.getMessage());
+            return;
+        }
+
+        try {
             Comentario respuesta = this.proxy.registrarComentario(comentario);
             this.mostrarMensaje("Se registró correctamente el comentario");
-        }catch(ErrorGuardarComentarioException e){
+        } catch (ErrorGuardarComentarioException e) {
             this.mostrarMensaje(e.getMessage());
         }
     }//GEN-LAST:event_btnComentarActionPerformed
+    /**
+     * Método utilizado para validar los campos del formulario.
+     *
+     * @throws ErrorDatosErroneosException Excepción lanzada en caso de error en
+     * datos.
+     */
+    private void verificarCampos() throws ErrorDatosErroneosException {
+        if (this.txtpnComentario.getText().isEmpty()) {
+            throw new ErrorDatosErroneosException("El comentario esta vacío");
+        }
+
+    }
+
+    /**
+     * Método que muestrar un mensaje de error.
+     *
+     * @param error error específico.
+     */
+    private void mostrarError(String error) {
+        JOptionPane.showMessageDialog(this, error, "Error!...", JOptionPane.ERROR_MESSAGE);
+    }
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
-
+    /**
+     * Método utilizado para mostrar un mensaje.
+     *
+     * @param mensaje mensaje a mostrar.
+     */
     private void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, "Respuesta del servidor", JOptionPane.INFORMATION_MESSAGE);
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnComentar;
     private javax.swing.JScrollPane jScrollPane1;

@@ -5,13 +5,14 @@
 package utils;
 
 /**
+ * Clase utilizada para construir un separador.
  *
- * @author Gael
+ * @author Equipo broker
  */
 public class Separador extends javax.swing.JPanel {
 
     /**
-     * Creates new form Separador
+     * Constructor
      */
     public Separador() {
         initComponents();

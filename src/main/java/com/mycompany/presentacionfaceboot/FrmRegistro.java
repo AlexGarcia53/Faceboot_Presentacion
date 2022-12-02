@@ -22,16 +22,24 @@ import javax.swing.JOptionPane;
 import logueo.ConstructorAdapterFacebook;
 
 /**
+ * Formulario para registrar un usuario.
  *
- * @author Jarol
+ * @author Equipo broker
  */
 public class FrmRegistro extends javax.swing.JFrame {
 
+    /**
+     * Instancia de FrmRegistro.
+     */
     private static FrmRegistro frmRegistro;
+    /**
+     * Instancia del proxy que utiliza el cliente.
+     */
     private IProxy proxyClienteBroker;
 
     /**
-     * Creates new form FrmRegistro
+     * Método constructor que inicializa los componentes y atributos del
+     * formulario.
      */
     private FrmRegistro() {
         initComponents();
@@ -41,6 +49,12 @@ public class FrmRegistro extends javax.swing.JFrame {
         this.llenarComboBoxSexo();
     }
 
+    /**
+     * Método que verfica los campos que tiene el formulario.
+     *
+     * @throws ErrorDatosErroneosException Excepción utilizada para especificar
+     * errores en inserción de datos.
+     */
     private void verificarCampos() throws ErrorDatosErroneosException {
 
         if (this.txtUsuario.getText().equals("")) {
@@ -66,14 +80,22 @@ public class FrmRegistro extends javax.swing.JFrame {
         }
 
     }
-    
-    private void llenarComboBoxSexo(){
-        DefaultComboBoxModel modelo= (DefaultComboBoxModel) this.comboBoxSexo.getModel();
+
+    /**
+     * Método utilizado para llenar el combobox de sexos.
+     */
+    private void llenarComboBoxSexo() {
+        DefaultComboBoxModel modelo = (DefaultComboBoxModel) this.comboBoxSexo.getModel();
         modelo.addElement(Sexo.MASCULINO);
         modelo.addElement(Sexo.FEMENINO);
         this.comboBoxSexo.setSelectedIndex(0);
     }
 
+    /**
+     * Método utilizado para mostrar mensajes de error.
+     *
+     * @param error error específico.
+     */
     private void mostrarError(String error) {
         JOptionPane.showMessageDialog(this, error, "Error!...", JOptionPane.ERROR_MESSAGE);
     }
@@ -251,24 +273,36 @@ public class FrmRegistro extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Botón que abre el formulario de iniciar sesión.
+     *
+     * @param evt evento.
+     */
     private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
         // TODO add your handling code here:
         FrmInicioSesion frmInicioSesion = new FrmInicioSesion(proxyClienteBroker);
         frmInicioSesion.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
-
+    /**
+     * Evento utilizado para escribir solo números en el campo de celular.
+     *
+     * @param evt evento.
+     */
     private void txtCelularKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCelularKeyTyped
         soloNumeros(evt);
     }//GEN-LAST:event_txtCelularKeyTyped
-
+    /**
+     * Botón utilizado para registrar al usuario.
+     *
+     * @param evt evento.
+     */
     private void btnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarseActionPerformed
-        String usuario= this.txtUsuario.getText();
-        String email= this.txtEmail.getText();
-        String contrasenia= this.txtContrasena.getText();
-        String celular= this.txtCelular.getText();
-        Sexo sexo= (Sexo) this.comboBoxSexo.getSelectedItem();
+        String usuario = this.txtUsuario.getText();
+        String email = this.txtEmail.getText();
+        String contrasenia = this.txtContrasena.getText();
+        String celular = this.txtCelular.getText();
+        Sexo sexo = (Sexo) this.comboBoxSexo.getSelectedItem();
 
         try {
             this.verificarCampos();
@@ -276,21 +310,24 @@ public class FrmRegistro extends javax.swing.JFrame {
             this.mostrarError(ex.getMessage());
             return;
         }
-        
-                
-        LocalDate fechaTemporal= this.dtpfechaNacimiento.getDate();
-        GregorianCalendar fechaNacimiento= new GregorianCalendar(fechaTemporal.getYear(), (fechaTemporal.getMonthValue()-1), fechaTemporal.getDayOfMonth(),0,0,0);
+
+        LocalDate fechaTemporal = this.dtpfechaNacimiento.getDate();
+        GregorianCalendar fechaNacimiento = new GregorianCalendar(fechaTemporal.getYear(), (fechaTemporal.getMonthValue() - 1), fechaTemporal.getDayOfMonth(), 0, 0, 0);
         //String usuario, String email, String contraseña, String celular, Sexo sexo, int edad, GregorianCalendar fechaNacimiento
-        Usuario objetoUsuario= new Usuario(usuario, email, contrasenia, celular, sexo, fechaNacimiento);
-        
-        try{
-            Usuario respuesta= this.proxyClienteBroker.registrarUsuario(objetoUsuario);
+        Usuario objetoUsuario = new Usuario(usuario, email, contrasenia, celular, sexo, fechaNacimiento);
+
+        try {
+            Usuario respuesta = this.proxyClienteBroker.registrarUsuario(objetoUsuario);
             this.mostrarMensaje("Se registró correctamente al usuario");
-        } catch(ErrorGuardarUsuarioException e){
+        } catch (ErrorGuardarUsuarioException e) {
             this.mostrarError(e.getMessage());
         }
     }//GEN-LAST:event_btnRegistrarseActionPerformed
-
+    /**
+     * Botón que cierra el formulario.
+     *
+     * @param evt evento.
+     */
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         System.exit(0);
     }//GEN-LAST:event_btnCancelarActionPerformed
@@ -306,36 +343,54 @@ public class FrmRegistro extends javax.swing.JFrame {
     private void comboBoxSexoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxSexoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_comboBoxSexoActionPerformed
-
+    /**
+     * Botón utilizado para iniciar sesión con facebook.
+     *
+     * @param evt evento.
+     */
     private void btnSesionFacebookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSesionFacebookActionPerformed
-        Usuario usuario= ConstructorAdapterFacebook.getInstancia().obtenerAdaptador().iniciarSesion();
-        
-        try{
+        Usuario usuario = ConstructorAdapterFacebook.getInstancia().obtenerAdaptador().iniciarSesion();
+
+        try {
             Usuario respuesta = this.proxyClienteBroker.iniciarSesionFacebook(usuario);
-            int opcionSeleccionada= JOptionPane.showConfirmDialog(this,"Bienvenido "+respuesta.getUsuario()+"!!!", "Confirmación", JOptionPane.YES_OPTION);
-            if(opcionSeleccionada == JOptionPane.YES_OPTION){
-                FrmMuro muro= new FrmMuro(respuesta,this.proxyClienteBroker);
+            int opcionSeleccionada = JOptionPane.showConfirmDialog(this, "Bienvenido " + respuesta.getUsuario() + "!!!", "Confirmación", JOptionPane.YES_OPTION);
+            if (opcionSeleccionada == JOptionPane.YES_OPTION) {
+                FrmMuro muro = new FrmMuro(respuesta, this.proxyClienteBroker);
                 muro.setVisible(true);
                 this.dispose();
             }
-        } catch (ErrorBusquedaUsuarioException e){
+        } catch (ErrorBusquedaUsuarioException e) {
             this.mostrarError(e.getMessage());
         }
     }//GEN-LAST:event_btnSesionFacebookActionPerformed
-
+    /**
+     * Método utilizado para mostrar las respuestas del servidor.
+     *
+     * @param mensaje mensaje a mostrar.
+     */
     private void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, "Respuesta del servidor", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    public static FrmRegistro obtenerFrmRegistro(){
-        if(frmRegistro == null){
-            frmRegistro= new FrmRegistro();
+    /**
+     * Método para obtener una instancia de FrmRegistro.
+     *
+     * @return instancia de FrmRegistro.
+     */
+    public static FrmRegistro obtenerFrmRegistro() {
+        if (frmRegistro == null) {
+            frmRegistro = new FrmRegistro();
         }
         return frmRegistro;
-    }   
+    }
 
+    /**
+     * Método utilizado para recibir solo números.
+     *
+     * @param evt evento.
+     */
     public void soloNumeros(java.awt.event.KeyEvent evt) {
-         char car = evt.getKeyChar();
+        char car = evt.getKeyChar();
         if (Character.isDigit(car)) {
 
         } else {
@@ -343,9 +398,11 @@ public class FrmRegistro extends javax.swing.JFrame {
             getToolkit().beep();
         }
     }
-    
+
     /**
-     * @param args the command line arguments
+     * Método main que crea el formulario de FrmRegistro y lo hace visible.
+     *
+     * @param args
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -355,14 +412,12 @@ public class FrmRegistro extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                
+
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
-              
-               
-            
+
             }
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(FrmInicioSesion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
@@ -382,7 +437,7 @@ public class FrmRegistro extends javax.swing.JFrame {
             }
         });
     }
- 
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;

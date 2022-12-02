@@ -5,25 +5,35 @@
 package logueo;
 import dominio.*;
 /**
+ * Método que construye al adaptador.
  *
- * @author Gael
+ * @author Equipo broker
  */
 public class ConstructorAdapterFacebook {
-//        private IMetodoLogueo estrategia;
-    
+    /**
+     * Instancia de ConstructorAdapter.
+     */
     private static ConstructorAdapterFacebook adapter;
-    
+    /**
+     * Constructor vacío.
+     */
     private ConstructorAdapterFacebook(){
         
     }
-    
+    /**
+     * Método que devuelve una instancia de ConstructorAdapter.
+     * @return instancia de ConstructorAdapter.
+     */
     public static ConstructorAdapterFacebook getInstancia(){
         if(adapter==null){
             adapter= new ConstructorAdapterFacebook();
         }
         return adapter;
     }
-    
+    /**
+     * Método para obtener una instancia AdaptadorFacebook.
+     * @return AdaptadorFacebook
+     */
     public IAdapterLogueo obtenerAdaptador(){
         return new AdaptadorFacebook();
     }

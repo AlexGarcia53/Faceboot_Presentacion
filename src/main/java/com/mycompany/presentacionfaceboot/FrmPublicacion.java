@@ -9,6 +9,7 @@ import dominio.Contenido;
 import dominio.Hashtag;
 import dominio.Publicacion;
 import dominio.Usuario;
+import excepciones.ErrorDatosErroneosException;
 import excepciones.ErrorGuardarPublicacionException;
 import interfaces.IProxy;
 import java.awt.Image;
@@ -17,6 +18,8 @@ import java.io.FileInputStream;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -24,22 +27,35 @@ import javax.swing.JTextArea;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
+ * Formulario para registrar una publicación.
  *
- * @author Jarol
+ * @author Equipo broker
  */
 public class FrmPublicacion extends javax.swing.JFrame {
-    IProxy proxyClienteBroker;
-    Usuario usuario;
+
     /**
-     * Creates new form FrmPublicacion
+     * Instancia del proxy que utiliza el cliente.
+     */
+    IProxy proxyClienteBroker;
+    /**
+     * Usuario que abre el formulario.
+     */
+    Usuario usuario;
+
+    /**
+     * Método constructor que inicializa los componentes y atributos del
+     * formulario.
+     *
+     * @param usuario Usuario que abre el formulario.
+     * @param proxyClienteBroker Instancia del proxy que utiliza el cliente.
      */
     public FrmPublicacion(Usuario usuario, IProxy proxyClienteBroker) {
         initComponents();
         setLocationRelativeTo(null);
         this.usuario = usuario;
-        this.proxyClienteBroker=proxyClienteBroker;
+        this.proxyClienteBroker = proxyClienteBroker;
         this.txtTextoPlano = initTextArea(this.txtTextoPlano);
-        
+
     }
 
     /**
@@ -189,25 +205,33 @@ public class FrmPublicacion extends javax.swing.JFrame {
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnEliminarActionPerformed
-
+    /**
+     * Botón utilizado para registrar la publicación.
+     *
+     * @param evt evento.
+     */
     private void btnPublicarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPublicarActionPerformed
 
-        
 //        Date fechaActual= new Date();
-        GregorianCalendar fechaPublicacion= new GregorianCalendar();
+        GregorianCalendar fechaPublicacion = new GregorianCalendar();
 //        fechaPublicacion.setTimeInMillis(fechaActual.getTime());
 
-
+        try {
+            this.verificarCampos();
+        } catch (ErrorDatosErroneosException ex) {
+            this.mostrarError(ex.getMessage());
+            return;
+        }
 
         String textoPlano = this.txtTextoPlano.getText();
         String imagen = this.lblImagen.getText();
-        Contenido contenido = new Contenido(textoPlano,imagen);
-        Publicacion publicacion = new Publicacion(fechaPublicacion,this.usuario,contenido);
-        String campoHashtags= this.txtHashtags.getText().replace(" ", "");
-        if(!campoHashtags.equals("")){
-            String[] hashtags= campoHashtags.split("#");
+        Contenido contenido = new Contenido(textoPlano, imagen);
+        Publicacion publicacion = new Publicacion(fechaPublicacion, this.usuario, contenido);
+        String campoHashtags = this.txtHashtags.getText().replace(" ", "");
+        if (!campoHashtags.equals("")) {
+            String[] hashtags = campoHashtags.split("#");
             for (int i = 1; i < hashtags.length; i++) {
-                Hashtag hashtag= new Hashtag(hashtags[i]);
+                Hashtag hashtag = new Hashtag(hashtags[i]);
                 hashtag.setPublicacion(publicacion);
                 hashtag.getPublicacion().agregarHashtag(hashtag);
 //                contenido.agregarHashtag(new Hashtag(hashtags[i]));
@@ -215,44 +239,72 @@ public class FrmPublicacion extends javax.swing.JFrame {
         }
 //        Publicacion publicacion = new Publicacion(fechaPublicacion,this.usuario,contenido);
 
- 
-        try{
+        try {
             Publicacion respuesta = this.proxyClienteBroker.registrarPublicacion(publicacion);
             this.mostrarMensaje("Se registró correctamente la publicación");
             this.dispose();
-        }catch(ErrorGuardarPublicacionException e){
+        } catch (ErrorGuardarPublicacionException e) {
             this.mostrarMensaje(e.getMessage());
         }
     }//GEN-LAST:event_btnPublicarActionPerformed
-    private JTextArea initTextArea(JTextArea texto){
+    private JTextArea initTextArea(JTextArea texto) {
         texto.setLineWrap(true);
         texto.setWrapStyleWord(true);
         return texto;
     }
-    
+
+    /**
+     * Botón utilizado para añadir una imagen a la publicación.
+     *
+     * @param evt evento.
+     */
     private void btnAñadirImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAñadirImagenActionPerformed
         JFileChooser jfileChooser = new JFileChooser();
-        FileNameExtensionFilter filtrado = new FileNameExtensionFilter("JPG & PNG", "jpg", "png","gif");
+        FileNameExtensionFilter filtrado = new FileNameExtensionFilter("JPG & PNG", "jpg", "png", "gif");
         jfileChooser.setFileFilter(filtrado);
-        
+
         int respuesta = jfileChooser.showOpenDialog(this);
-        
-        if(respuesta == JFileChooser.APPROVE_OPTION){
-           String path = jfileChooser.getSelectedFile().getPath();
-           Image imagen = new ImageIcon(path).getImage();
-           ImageIcon icono = new ImageIcon(imagen.getScaledInstance(lblImagen.getWidth(), lblImagen.getHeight(),Image.SCALE_SMOOTH));
-           lblImagen.setIcon(icono);
-           lblImagen.setFont(new java.awt.Font("Lucida Grande", 1, 0));
-           lblImagen.setText(path);
-           
+
+        if (respuesta == JFileChooser.APPROVE_OPTION) {
+            String path = jfileChooser.getSelectedFile().getPath();
+            Image imagen = new ImageIcon(path).getImage();
+            ImageIcon icono = new ImageIcon(imagen.getScaledInstance(lblImagen.getWidth(), lblImagen.getHeight(), Image.SCALE_SMOOTH));
+            lblImagen.setIcon(icono);
+            lblImagen.setFont(new java.awt.Font("Lucida Grande", 1, 0));
+            lblImagen.setText(path);
+
         }
     }//GEN-LAST:event_btnAñadirImagenActionPerformed
+    /**
+     * Método que verfica los campos que tiene el formulario.
+     *
+     * @throws ErrorDatosErroneosException Excepción utilizada para especificar
+     * errores en inserción de datos.
+     */
+    private void verificarCampos() throws ErrorDatosErroneosException {
+        if (this.txtHashtags.getText().isEmpty() && this.txtTextoPlano.getText().isEmpty() && this.lblImagen.getText().isEmpty()) {
+            throw new ErrorDatosErroneosException("La publicación esta vacía");
+        }
 
+    }
+
+    /**
+     * Método utilizado para mostrar mensajes de error.
+     *
+     * @param error error específico.
+     */
+    private void mostrarError(String error) {
+        JOptionPane.showMessageDialog(this, error, "Error!...", JOptionPane.ERROR_MESSAGE);
+    }
     private void txtHashtagsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHashtagsActionPerformed
 
-        
-    }//GEN-LAST:event_txtHashtagsActionPerformed
 
+    }//GEN-LAST:event_txtHashtagsActionPerformed
+    /**
+     * Botón que cierra el formulario actual.
+     *
+     * @param evt evento.
+     */
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
@@ -268,8 +320,8 @@ public class FrmPublicacion extends javax.swing.JFrame {
     private void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, "Respuesta del servidor", JOptionPane.INFORMATION_MESSAGE);
     }
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAñadirImagen;
     private javax.swing.JButton btnCancelar;

@@ -13,48 +13,70 @@ import java.awt.Dimension;
 import java.util.Calendar;
 
 /**
+ * Clase utilizada para construir el comentario de la publicación.
  *
- * @author Gael
+ * @author Equipo broker
  */
 public class ComentarioPublicacion extends javax.swing.JPanel {
-    private Usuario usuario;
-    private Comentario comentario;
-    private IProxy proxy;
+
     /**
-     * Creates new form Comentario
+     * Usuario con el que se construye el componente.
+     */
+    private Usuario usuario;
+    /**
+     * Comentario con el que se construye el componente.
+     */
+    private Comentario comentario;
+    /**
+     * Instancia del proxy que utiliza el cliente.
+     */
+    private IProxy proxy;
+
+    /**
+     * Constructor que inicializa los atributos y componentes del panel.
+     *
+     * @param usuario Usuario con el que se construye el componente.
+     * @param comentario Comentario con el que se construye el componente.
+     * @param proxy Instancia del proxy que utiliza el cliente.
      */
     public ComentarioPublicacion(Usuario usuario, Comentario comentario, IProxy proxy) {
         initComponents();
-        this.usuario= usuario;
-        this.comentario= comentario;
-        this.proxy=proxy;
+        this.usuario = usuario;
+        this.comentario = comentario;
+        this.proxy = proxy;
         this.actualizarContenido();
         this.init();
     }
 
+    /**
+     * Método utilizado para actualizar el contenido del componente.
+     */
     public void actualizarContenido() {
         this.lblUsuario.setText(comentario.getUsuario().getUsuario());
-        this.lblFecha.setText(comentario.getFechaCreacion().get(Calendar.DAY_OF_MONTH)+"/"+(comentario.getFechaCreacion().get(Calendar.MONTH)+1)+"/"+comentario.getFechaCreacion().get(Calendar.YEAR)+" "+comentario.getFechaCreacion().get(Calendar.HOUR_OF_DAY)+":"+comentario.getFechaCreacion().get(Calendar.MINUTE)+":"+comentario.getFechaCreacion().get(Calendar.SECOND));
+        this.lblFecha.setText(comentario.getFechaCreacion().get(Calendar.DAY_OF_MONTH) + "/" + (comentario.getFechaCreacion().get(Calendar.MONTH) + 1) + "/" + comentario.getFechaCreacion().get(Calendar.YEAR) + " " + comentario.getFechaCreacion().get(Calendar.HOUR_OF_DAY) + ":" + comentario.getFechaCreacion().get(Calendar.MINUTE) + ":" + comentario.getFechaCreacion().get(Calendar.SECOND));
 //        this.txtpnContenido.setText(textoPlano);
 //        this.repaint();
 //        this.revalidate();
-   
+
         this.pnlComentario.setText(comentario.getContenido().getTextoPlano());
         this.pnlComentario.repaint();
         this.pnlComentario.revalidate();
-        
-        if(usuario.getId()!=comentario.getUsuario().getId()){
+
+        if (usuario.getId() != comentario.getUsuario().getId()) {
             this.pnlOpciones.setVisible(false);
         }
-   
+
         this.repaint();
         this.revalidate();
 
     }
-    
-     public void init(){
-     this.pnlTodoComentario.setPreferredSize(new Dimension(482, 115));
- 
+
+    /**
+     * Método que establece el tamaño del componente.
+     */
+    public void init() {
+        this.pnlTodoComentario.setPreferredSize(new Dimension(482, 115));
+
     }
 
     /**
@@ -193,14 +215,22 @@ public class ComentarioPublicacion extends javax.swing.JPanel {
         add(pnlTodoComentario);
     }// </editor-fold>//GEN-END:initComponents
 
-
+    /**
+     * Botón de editar comentario.
+     *
+     * @param evt evento.
+     */
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        FrmEditarComentario editar= new FrmEditarComentario(this.usuario, this.proxy, this.comentario);
+        FrmEditarComentario editar = new FrmEditarComentario(this.usuario, this.proxy, this.comentario);
         editar.setVisible(true);
     }//GEN-LAST:event_btnEditarActionPerformed
-
+    /**
+     * Botón de eliminar comentario.
+     *
+     * @param evt evento.
+     */
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        FrmEliminarComentario eliminar= new FrmEliminarComentario(this.usuario, this.proxy, this.comentario);
+        FrmEliminarComentario eliminar = new FrmEliminarComentario(this.usuario, this.proxy, this.comentario);
         eliminar.setVisible(true);
     }//GEN-LAST:event_btnEliminarActionPerformed
 

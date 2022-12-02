@@ -12,8 +12,9 @@ import javax.swing.JComponent;
 import javax.swing.plaf.basic.*;
 
 /**
+ * Clase utilizada para crear una scrollbar personalizada.
  *
- * @author Gael
+ * @author Equipo broker
  */
 public class MyScrollBarUI extends BasicScrollBarUI {
   private final Dimension d = new Dimension();

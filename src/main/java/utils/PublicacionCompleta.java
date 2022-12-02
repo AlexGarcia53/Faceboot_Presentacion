@@ -4,43 +4,59 @@
  */
 package utils;
 
-
 import dominio.*;
 import interfaces.IProxy;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 
 /**
+ * Clase utilizada para construir la publicación completa.
  *
- * @author Admin
+ * @author Equipo broker
  */
 public class PublicacionCompleta extends javax.swing.JPanel {
-    private Usuario usuario;
-    private Publicacion publicacion;
-    private IProxy proxy;
+
     /**
-     * Creates new form Publicacion
+     * Usuario con el que se construye el componente.
+     */
+    private Usuario usuario;
+    /**
+     * Publicación con el que se construye el componente.
+     */
+    private Publicacion publicacion;
+    /**
+     * Instancia del proxy que utiliza el cliente.
+     */
+    private IProxy proxy;
+
+    /**
+     * Constructor que inicializa los componentes y atributos del panel.
+     *
+     * @param usuario Usuario con el que se construye el componente.
+     * @param publicacion Publicación con el que se construye el componente.
+     * @param proxy Instancia del proxy que utiliza el cliente.
      */
     public PublicacionCompleta(Usuario usuario, Publicacion publicacion, IProxy proxy) {
         initComponents();
-        this.usuario= usuario;
-        this.publicacion= publicacion;
-        this.proxy= proxy;
+        this.usuario = usuario;
+        this.publicacion = publicacion;
+        this.proxy = proxy;
         this.actualizarContenido();
     }
-    
-    public void actualizarContenido(){
-        CabeceraPublicacion cabeceraPublicacion= new CabeceraPublicacion(this.usuario, this.publicacion, this.proxy);
-        
-//        cabeceraPublicacion.init(usuario, fecha);
 
-        ContenidoPublicacion contenidoPublicacion= new ContenidoPublicacion();
-        
+    /**
+     * Método que actualiza el contenido del panel.
+     */
+    public void actualizarContenido() {
+        CabeceraPublicacion cabeceraPublicacion = new CabeceraPublicacion(this.usuario, this.publicacion, this.proxy);
+
+//        cabeceraPublicacion.init(usuario, fecha);
+        ContenidoPublicacion contenidoPublicacion = new ContenidoPublicacion();
+
         contenidoPublicacion.init(publicacion.getContenido().getTextoPlano(), publicacion.getContenido().getImagen(), publicacion.getHashtags());
-        
+
         Comentarios comentarios = new Comentarios(this.usuario, this.publicacion, this.proxy);
         Comentar comentar = new Comentar(this.usuario, this.publicacion, this.proxy);
-      
 
         this.add(cabeceraPublicacion);
         this.add(contenidoPublicacion);
@@ -48,35 +64,47 @@ public class PublicacionCompleta extends javax.swing.JPanel {
         this.add(comentar);
         this.repaint();
         this.revalidate();
-        
+
     }
-    
-    public void actualizarEdicionContenido(){
-        ContenidoPublicacion contenidoPublicacion= new ContenidoPublicacion();
+
+    /**
+     * Método que actualiza el contenido del panel cuando se edita una
+     * publicación.
+     */
+    public void actualizarEdicionContenido() {
+        ContenidoPublicacion contenidoPublicacion = new ContenidoPublicacion();
         contenidoPublicacion.init(publicacion.getContenido().getTextoPlano(), publicacion.getContenido().getImagen(), publicacion.getHashtags());
         Comentarios comentarios = new Comentarios(this.usuario, this.publicacion, this.proxy);
         Comentar comentar = new Comentar(this.usuario, this.publicacion, this.proxy);
-        
+
         this.remove(1);
         this.add(contenidoPublicacion, 1);
         this.remove(2);
         this.add(comentarios, 2);
         this.remove(3);
-        this.add(comentar,3);
-        
+        this.add(comentar, 3);
+
         this.repaint();
         this.revalidate();
     }
 
+    /**
+     * Método para obtener la publicación.
+     *
+     * @return publicación.
+     */
     public Publicacion getPublicacion() {
         return publicacion;
     }
 
+    /**
+     * Método para establecer la publicación.
+     *
+     * @param publicacion publicación.
+     */
     public void setPublicacion(Publicacion publicacion) {
         this.publicacion = publicacion;
     }
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.

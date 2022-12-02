@@ -6,6 +6,7 @@ package com.mycompany.presentacionfaceboot;
 
 import dominio.Sexo;
 import dominio.Usuario;
+import excepciones.ErrorDatosErroneosException;
 import excepciones.ErrorEditarUsuarioException;
 import interfaces.IProxy;
 import java.time.LocalDate;
@@ -17,52 +18,105 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
 /**
+ * Formulario para editar el perfil de un usuario.
  *
- * @author Jarol
+ * @author Equipo broker
  */
 public class frmEditarPerfil extends javax.swing.JFrame {
-    private Usuario usuario;
-    private IProxy proxy;
-    
+
     /**
-     * Creates new form frmEditarPerfil
+     * Usuario que abre el formulario.
+     */
+    private Usuario usuario;
+    /**
+     * Instancia del proxy que utiliza el cliente.
+     */
+    private IProxy proxy;
+
+    /**
+     * Constructor que inicializa los atributos de la clase.
+     *
+     * @param usuario Usuario que abre el formulario.
+     * @param proxy Instancia del proxy que utiliza el cliente.
      */
     public frmEditarPerfil(Usuario usuario, IProxy proxy) {
         initComponents();
-        this.usuario=usuario;
-        this.proxy= proxy;
+        this.usuario = usuario;
+        this.proxy = proxy;
         this.llenarComboBoxSexo();
         this.llenarCampos();
     }
-    
-    public void llenarComboBoxSexo(){
-        DefaultComboBoxModel modelo= (DefaultComboBoxModel) this.comboBoxSexo.getModel();
+
+    /**
+     * Método utilizado para llenar el combobox de sexos.
+     */
+    public void llenarComboBoxSexo() {
+        DefaultComboBoxModel modelo = (DefaultComboBoxModel) this.comboBoxSexo.getModel();
         modelo.addElement(Sexo.MASCULINO);
         modelo.addElement(Sexo.FEMENINO);
         this.comboBoxSexo.setSelectedIndex(0);
     }
-    
-    public void llenarCampos(){
+
+    /**
+     * Método utilizado para llenar los campos del formulario.
+     */
+    public void llenarCampos() {
         this.txtUsuario.setText(this.usuario.getUsuario());
-        if(this.usuario.getContrasenia()!=null){
+        if (this.usuario.getContrasenia() != null) {
             this.txtContrasena.setText(this.usuario.getContrasenia());
         }
-        if(this.usuario.getSexo()!=null){
+        if (this.usuario.getSexo() != null) {
             this.comboBoxSexo.setSelectedItem(this.usuario.getSexo());
         }
-        if(this.usuario.getFechaNacimiento()!=null){
-            this.fechaNacimiento.setDate(LocalDate.of(this.usuario.getFechaNacimiento().get(Calendar.YEAR), (this.usuario.getFechaNacimiento().get(Calendar.MONTH)+1) , this.usuario.getFechaNacimiento().get(Calendar.DAY_OF_MONTH)));
+        if (this.usuario.getFechaNacimiento() != null) {
+            this.fechaNacimiento.setDate(LocalDate.of(this.usuario.getFechaNacimiento().get(Calendar.YEAR), (this.usuario.getFechaNacimiento().get(Calendar.MONTH) + 1), this.usuario.getFechaNacimiento().get(Calendar.DAY_OF_MONTH)));
         }
     }
-    
+
+    /**
+     * Método utilizado para mostrar las respuestas del servidor.
+     *
+     * @param mensaje mensaje a mostrar.
+     */
     private void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, "Respuesta del servidor", JOptionPane.INFORMATION_MESSAGE);
     }
-    
-    public void cerrarVentana(Usuario usuario, IProxy proxy){
+
+    /**
+     * Método utilizado para cerrar el formulario actual.
+     *
+     * @param usuario usuario
+     * @param proxy Instancia del proxy que utiliza el cliente.
+     */
+    public void cerrarVentana(Usuario usuario, IProxy proxy) {
         FrmMuro muro = new FrmMuro(usuario, proxy);
         muro.setVisible(true);
         this.dispose();
+    }
+
+    /**
+     * Método que verfica los campos que tiene el formulario.
+     *
+     * @throws ErrorDatosErroneosException Excepción utilizada para especificar
+     * errores en inserción de datos.
+     */
+    private void verificarCampos() throws ErrorDatosErroneosException {
+        if (this.txtUsuario.getText().isEmpty()) {
+            throw new ErrorDatosErroneosException("El usuario esta vacío");
+        } else if (this.txtContrasena.getText().isEmpty()) {
+            throw new ErrorDatosErroneosException("La contraseña esta vacía");
+        } else if (this.fechaNacimiento.getText().isEmpty()) {
+            throw new ErrorDatosErroneosException("La fecha de nacimiento esta vacía");
+        }
+    }
+
+    /**
+     * Método utilizado para mostrar mensajes de error.
+     *
+     * @param error error específico.
+     */
+    private void mostrarError(String error) {
+        JOptionPane.showMessageDialog(this, error, "Error!...", JOptionPane.ERROR_MESSAGE);
     }
 
     /**
@@ -156,31 +210,45 @@ public class frmEditarPerfil extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Botón que guarda los cambios realizados.
+     *
+     * @param evt evento.
+     */
     private void btnGuardarCambiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarCambiosActionPerformed
-        Usuario nuevo= this.usuario;
+        try {
+            this.verificarCampos();
+        } catch (ErrorDatosErroneosException ex) {
+            this.mostrarError(ex.getMessage());
+            return;
+        }
+
+        Usuario nuevo = this.usuario;
         nuevo.setUsuario(this.txtUsuario.getText());
         nuevo.setContrasenia(this.txtContrasena.getText());
-        nuevo.setSexo((Sexo)this.comboBoxSexo.getSelectedItem());
-        LocalDate fechaTemporal= this.fechaNacimiento.getDate();
-        GregorianCalendar fechaNacimiento= new GregorianCalendar(fechaTemporal.getYear(), (fechaTemporal.getMonthValue()-1), fechaTemporal.getDayOfMonth(),0,0,0);
+        nuevo.setSexo((Sexo) this.comboBoxSexo.getSelectedItem());
+        LocalDate fechaTemporal = this.fechaNacimiento.getDate();
+        GregorianCalendar fechaNacimiento = new GregorianCalendar(fechaTemporal.getYear(), (fechaTemporal.getMonthValue() - 1), fechaTemporal.getDayOfMonth(), 0, 0, 0);
         nuevo.setFechaNacimiento(fechaNacimiento);
-        
-        try{
+
+        try {
             Usuario respuesta = this.proxy.editarPerfilUsuario(nuevo);
             this.mostrarMensaje("Se editó correctamente el usuario");
             this.cerrarVentana(respuesta, this.proxy);
-        }catch(ErrorEditarUsuarioException e){
+        } catch (ErrorEditarUsuarioException e) {
             this.mostrarMensaje(e.getMessage());
         }
 
     }//GEN-LAST:event_btnGuardarCambiosActionPerformed
-
+    /**
+     * Botón de cancelar.
+     *
+     * @param evt evento.
+     */
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         this.cerrarVentana(this.usuario, this.proxy);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
-   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
