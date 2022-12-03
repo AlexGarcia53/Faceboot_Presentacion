@@ -21,10 +21,6 @@ import logueo.IAdapterLogueo;
 public class FrmInicioSesion extends javax.swing.JFrame {
 
     /**
-     * Instancia de FrmInicioSesion.
-     */
-    private static FrmInicioSesion frmInicioSesion;
-    /**
      * Instancia del proxy que utiliza el cliente.
      */
     private IProxy proxyClienteBroker;

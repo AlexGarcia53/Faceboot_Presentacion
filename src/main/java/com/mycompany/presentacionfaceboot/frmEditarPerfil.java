@@ -50,7 +50,7 @@ public class frmEditarPerfil extends javax.swing.JFrame {
     /**
      * Método utilizado para llenar el combobox de sexos.
      */
-    public void llenarComboBoxSexo() {
+    private void llenarComboBoxSexo() {
         DefaultComboBoxModel modelo = (DefaultComboBoxModel) this.comboBoxSexo.getModel();
         modelo.addElement(Sexo.MASCULINO);
         modelo.addElement(Sexo.FEMENINO);
@@ -60,7 +60,7 @@ public class frmEditarPerfil extends javax.swing.JFrame {
     /**
      * Método utilizado para llenar los campos del formulario.
      */
-    public void llenarCampos() {
+    private void llenarCampos() {
         this.txtUsuario.setText(this.usuario.getUsuario());
         if (this.usuario.getContrasenia() != null) {
             this.txtContrasena.setText(this.usuario.getContrasenia());
@@ -88,7 +88,7 @@ public class frmEditarPerfil extends javax.swing.JFrame {
      * @param usuario usuario
      * @param proxy Instancia del proxy que utiliza el cliente.
      */
-    public void cerrarVentana(Usuario usuario, IProxy proxy) {
+    private void cerrarVentana(Usuario usuario, IProxy proxy) {
         FrmMuro muro = new FrmMuro(usuario, proxy);
         muro.setVisible(true);
         this.dispose();

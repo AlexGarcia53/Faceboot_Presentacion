@@ -29,15 +29,15 @@ public class FrmEliminarComentario extends javax.swing.JFrame {
     /**
      * Instancia del proxy que utiliza el cliente.
      */
-    IProxy proxyClienteBroker;
+    private IProxy proxyClienteBroker;
     /**
      * Usuario que abre el formulario.
      */
-    Usuario usuario;
+    private Usuario usuario;
     /**
      * Comentario a eliminar.
      */
-    Comentario comentario;
+    private Comentario comentario;
 
     /**
      * Constructor que inicializa los componentes y atributos del formulario.
@@ -59,7 +59,7 @@ public class FrmEliminarComentario extends javax.swing.JFrame {
     /**
      * Método utilizado para llenar los campos del formulario.
      */
-    public void llenarCampos() {
+    private void llenarCampos() {
         this.txtTextoPlano.setText(this.comentario.getContenido().getTextoPlano());
     }
 

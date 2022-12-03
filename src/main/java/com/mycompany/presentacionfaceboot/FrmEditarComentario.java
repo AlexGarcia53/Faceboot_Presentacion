@@ -29,15 +29,15 @@ public class FrmEditarComentario extends javax.swing.JFrame {
     /**
      * Instancia del proxy que utiliza el cliente.
      */
-    IProxy proxyClienteBroker;
+    private IProxy proxyClienteBroker;
     /**
      * Usuario que abre el formulario.
      */
-    Usuario usuario;
+    private Usuario usuario;
     /**
      * Comentario a editar.
      */
-    Comentario comentario;
+    private Comentario comentario;
 
     /**
      * Constructor que inicializa los componentes y atributos del formulario.

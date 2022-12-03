@@ -31,15 +31,15 @@ public class FrmEditarPublicacion extends javax.swing.JFrame {
     /**
      * Instancia del proxy que utiliza el cliente.
      */
-    IProxy proxyClienteBroker;
+    private IProxy proxyClienteBroker;
     /**
      * Usuario que abre el formulario.
      */
-    Usuario usuario;
+    private Usuario usuario;
     /**
      * Publicación a editar.
      */
-    Publicacion publicacion;
+    private Publicacion publicacion;
 
     /**
      * Constructor que inicializa los componentes y atributos del formulario.
@@ -61,7 +61,7 @@ public class FrmEditarPublicacion extends javax.swing.JFrame {
     /**
      * Método para llenar los campos del formulario.
      */
-    public void llenarCampos() {
+    private void llenarCampos() {
         if (this.publicacion.getHashtags() != null) {
             List<Hashtag> hashtags = publicacion.getHashtags();
             for (int i = 0; i < hashtags.size(); i++) {
@@ -91,13 +91,13 @@ public class FrmEditarPublicacion extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        btnEliminar = new javax.swing.JButton();
+        btnEliminarImagen = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         jScrollPane5 = new javax.swing.JScrollPane();
         txtTextoPlano = new javax.swing.JTextArea();
         lblImagen = new javax.swing.JLabel();
         btnEditar = new javax.swing.JButton();
-        btnAñadirImagen = new javax.swing.JButton();
+        btnAniadirImagen = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         txtHashtags = new javax.swing.JTextField();
 
@@ -123,16 +123,16 @@ public class FrmEditarPublicacion extends javax.swing.JFrame {
         jLabel5.setText("Mensaje:");
         fondo.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 190, -1, -1));
 
-        btnEliminar.setBackground(new java.awt.Color(240, 115, 0));
-        btnEliminar.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
-        btnEliminar.setForeground(new java.awt.Color(255, 255, 255));
-        btnEliminar.setText("Eliminar");
-        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+        btnEliminarImagen.setBackground(new java.awt.Color(240, 115, 0));
+        btnEliminarImagen.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
+        btnEliminarImagen.setForeground(new java.awt.Color(255, 255, 255));
+        btnEliminarImagen.setText("Eliminar");
+        btnEliminarImagen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarActionPerformed(evt);
+                btnEliminarImagenActionPerformed(evt);
             }
         });
-        fondo.add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 180, 140, 40));
+        fondo.add(btnEliminarImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 180, 140, 40));
 
         btnCancelar.setBackground(new java.awt.Color(102, 102, 102));
         btnCancelar.setForeground(new java.awt.Color(255, 255, 255));
@@ -167,16 +167,16 @@ public class FrmEditarPublicacion extends javax.swing.JFrame {
         });
         fondo.add(btnEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 430, 140, 40));
 
-        btnAñadirImagen.setBackground(new java.awt.Color(240, 115, 0));
-        btnAñadirImagen.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
-        btnAñadirImagen.setForeground(new java.awt.Color(255, 255, 255));
-        btnAñadirImagen.setText("Añadir");
-        btnAñadirImagen.addActionListener(new java.awt.event.ActionListener() {
+        btnAniadirImagen.setBackground(new java.awt.Color(240, 115, 0));
+        btnAniadirImagen.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
+        btnAniadirImagen.setForeground(new java.awt.Color(255, 255, 255));
+        btnAniadirImagen.setText("Añadir");
+        btnAniadirImagen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAñadirImagenActionPerformed(evt);
+                btnAniadirImagenActionPerformed(evt);
             }
         });
-        fondo.add(btnAñadirImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 180, 140, 40));
+        fondo.add(btnAniadirImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 180, 140, 40));
 
         jLabel8.setBackground(new java.awt.Color(0, 0, 0));
         jLabel8.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
@@ -207,9 +207,9 @@ public class FrmEditarPublicacion extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+    private void btnEliminarImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarImagenActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnEliminarActionPerformed
+    }//GEN-LAST:event_btnEliminarImagenActionPerformed
     /**
      * Botón utilizado para editar la publicación.
      *
@@ -236,7 +236,7 @@ public class FrmEditarPublicacion extends javax.swing.JFrame {
      *
      * @param evt evento.
      */
-    private void btnAñadirImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAñadirImagenActionPerformed
+    private void btnAniadirImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAniadirImagenActionPerformed
         JFileChooser jfileChooser = new JFileChooser();
         FileNameExtensionFilter filtrado = new FileNameExtensionFilter("JPG & PNG", "jpg", "png", "gif");
         jfileChooser.setFileFilter(filtrado);
@@ -252,7 +252,7 @@ public class FrmEditarPublicacion extends javax.swing.JFrame {
             lblImagen.setText(path);
 
         }
-    }//GEN-LAST:event_btnAñadirImagenActionPerformed
+    }//GEN-LAST:event_btnAniadirImagenActionPerformed
 
     private void txtHashtagsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHashtagsActionPerformed
 
@@ -277,10 +277,10 @@ public class FrmEditarPublicacion extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAñadirImagen;
+    private javax.swing.JButton btnAniadirImagen;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEditar;
-    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnEliminarImagen;
     private javax.swing.JPanel fondo;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

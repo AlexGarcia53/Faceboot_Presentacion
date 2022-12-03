@@ -31,15 +31,15 @@ public class FrmEliminarPublicacion extends javax.swing.JFrame {
     /**
      * Instancia del proxy que utiliza el cliente.
      */
-    IProxy proxyClienteBroker;
+    private IProxy proxyClienteBroker;
     /**
      * Usuario que abre el formulario.
      */
-    Usuario usuario;
+    private Usuario usuario;
     /**
      * Publicación a eliminar.
      */
-    Publicacion publicacion;
+    private Publicacion publicacion;
 
     /**
      * Constructor que inicializa los componentes y atributos del formulario.
@@ -62,7 +62,7 @@ public class FrmEliminarPublicacion extends javax.swing.JFrame {
     /**
      * Método utilizado para llenar los campos del formulario.
      */
-    public void llenarCampos() {
+    private void llenarCampos() {
         if (this.publicacion.getHashtags() != null) {
             List<Hashtag> hashtags = publicacion.getHashtags();
             for (int i = 0; i < hashtags.size(); i++) {
