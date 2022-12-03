@@ -17,14 +17,14 @@ import javax.swing.plaf.basic.*;
  * @author Equipo broker
  */
 public class MyScrollBarUI extends BasicScrollBarUI {
-  private final Dimension d = new Dimension();
+  private final Dimension DIMENSION = new Dimension();
 
   @Override
   protected JButton createDecreaseButton(int orientation) {
     return new JButton() {
       @Override
       public Dimension getPreferredSize() {
-        return d;
+        return DIMENSION;
       }
     };
   }
@@ -34,7 +34,7 @@ public class MyScrollBarUI extends BasicScrollBarUI {
     return new JButton() {
       @Override
       public Dimension getPreferredSize() {
-        return d;
+        return DIMENSION;
       }
     };
   }

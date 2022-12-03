@@ -67,13 +67,6 @@ public class ContenidoPublicacion extends javax.swing.JPanel {
             pnlContenido.add(labelImagen);
             lblImagen.setIcon(imagenRedimensionada);
         }
-//        txtTexto.setText(textoPlano);
-//        JLabel labelImagen = new JLabel();
-//        
-//        ImageIcon imagenRedimensionada = redimensionarImagen(imagen);
-//        labelImagen.setIcon(imagenRedimensionada);
-//        pnlContenido.add(labelImagen);
-//        lblImagen.setIcon(imagenRedimensionada);
 
         pnlContenido.repaint();
         pnlContenido.revalidate();
