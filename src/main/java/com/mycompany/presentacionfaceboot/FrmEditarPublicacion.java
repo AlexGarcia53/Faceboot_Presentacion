@@ -9,6 +9,7 @@ import dominio.Contenido;
 import dominio.Hashtag;
 import dominio.Publicacion;
 import dominio.Usuario;
+import excepciones.ErrorDatosErroneosException;
 import excepciones.ErrorGuardarPublicacionException;
 import interfaces.IProxy;
 import java.awt.Image;
@@ -206,9 +207,13 @@ public class FrmEditarPublicacion extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Botón para eliminar la imagen que contiene la publicación.
+     * @param evt evento.
+     */
     private void btnEliminarImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarImagenActionPerformed
-        // TODO add your handling code here:
+        this.lblImagen.setText("");
+        this.lblImagen.setIcon(null);
     }//GEN-LAST:event_btnEliminarImagenActionPerformed
     /**
      * Botón utilizado para editar la publicación.
@@ -216,6 +221,14 @@ public class FrmEditarPublicacion extends javax.swing.JFrame {
      * @param evt evento.
      */
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+
+        try {
+            this.verificarCampos();
+        } catch (ErrorDatosErroneosException ex) {
+            this.mostrarError(ex.getMessage());
+            return;
+        }
+
         String textoPlano = this.txtTextoPlano.getText();
         String imagen = this.lblImagen.getText();
 
@@ -231,6 +244,28 @@ public class FrmEditarPublicacion extends javax.swing.JFrame {
 
         this.dispose();
     }//GEN-LAST:event_btnEditarActionPerformed
+    /**
+     * Método que verfica los campos que tiene el formulario.
+     *
+     * @throws ErrorDatosErroneosException Excepción utilizada para especificar
+     * errores en inserción de datos.
+     */
+    private void verificarCampos() throws ErrorDatosErroneosException {
+        if (this.txtHashtags.getText().isEmpty() && this.txtTextoPlano.getText().isEmpty() && this.lblImagen.getText().isEmpty()) {
+            throw new ErrorDatosErroneosException("La publicación esta vacía");
+        }
+
+    }
+
+    /**
+     * Método utilizado para mostrar mensajes de error.
+     *
+     * @param error error específico.
+     */
+    private void mostrarError(String error) {
+        JOptionPane.showMessageDialog(this, error, "Error!...", JOptionPane.ERROR_MESSAGE);
+    }
+    
     /**
      * Botón utilizado para añadir una imagen a la publicación.
      *

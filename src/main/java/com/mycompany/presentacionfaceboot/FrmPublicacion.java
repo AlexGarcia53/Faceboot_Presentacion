@@ -201,9 +201,13 @@ public class FrmPublicacion extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Botón para eliminar la imagen que contiene la publicación.
+     * @param evt evento.
+     */
     private void btnEliminarImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarImagenActionPerformed
-        // TODO add your handling code here:
+        this.lblImagen.setText("");
+        this.lblImagen.setIcon(null);
     }//GEN-LAST:event_btnEliminarImagenActionPerformed
     /**
      * Botón utilizado para registrar la publicación.

@@ -8,6 +8,7 @@ package com.mycompany.presentacionfaceboot;
 import dominio.Contenido;
 import dominio.Comentario;
 import dominio.Usuario;
+import excepciones.ErrorDatosErroneosException;
 import excepciones.ErrorGuardarPublicacionException;
 import interfaces.IProxy;
 import java.awt.Image;
@@ -143,6 +144,13 @@ public class FrmEditarComentario extends javax.swing.JFrame {
      * @param evt evento.
      */
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        try {
+            this.verificarCampos();
+        } catch (ErrorDatosErroneosException ex) {
+            this.mostrarError(ex.getMessage());
+            return;
+        }
+
         String textoPlano = this.txtTextoPlano.getText();
 
         comentario.getContenido().setTextoPlano(textoPlano);
@@ -171,6 +179,27 @@ public class FrmEditarComentario extends javax.swing.JFrame {
      */
     private void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, "Respuesta del servidor", JOptionPane.INFORMATION_MESSAGE);
+    }
+        /**
+     * Método que verfica los campos que tiene el formulario.
+     *
+     * @throws ErrorDatosErroneosException Excepción utilizada para especificar
+     * errores en inserción de datos.
+     */
+    private void verificarCampos() throws ErrorDatosErroneosException {
+        if (this.txtTextoPlano.getText().isEmpty()) {
+            throw new ErrorDatosErroneosException("El comentario esta vacío");
+        }
+
+    }
+
+    /**
+     * Método utilizado para mostrar mensajes de error.
+     *
+     * @param error error específico.
+     */
+    private void mostrarError(String error) {
+        JOptionPane.showMessageDialog(this, error, "Error!...", JOptionPane.ERROR_MESSAGE);
     }
 
 
